@@ -3,126 +3,23 @@ import asyncio
 import os
 import math
 from typing import Optional, Dict, List, Tuple
-
+from pathlib import Path
 import aiohttp
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from .chunithm_music import get_cover_len4_id, total_list
-
+from src.plugins.chunithm.lib.chunithm_music import get_cover_len4_id, total_list
+from src.plugins.chunithm.lib.request_client import generate_best_30_data
+from src.plugins.chunithm.lib.class_utils import BestList,ChartInfo,UserData
+from src.plugins.chunithm.lib.tool import truncate_text
 import asyncio
 
-
-scoreRank = 'D C B BB BBB A AA AAA S S+ SS SS+ SSS SSS+'.split(' ')
-combo = ' FC FC+ AP AP+'.split(' ')
-diffs = 'Basic Advanced Expert Master Re:Master'.split(' ')
-
-
-class ChartInfo(object):
-    def __init__(self, idNum:str, diff:int, achievement:float, rank:float, ra:int, comboId:int,title:str, ds:float, lv:str):
-        self.idNum = idNum
-        self.diff = diff
-        #self.tp = tp
-        self.achievement = achievement
-        self.rank = rank
-        self.ra = ra
-        self.comboId = comboId
-        #self.scoreId = achievement
-        self.title = title
-        self.ds = ds
-        self.lv = lv
-
-
-    def __str__(self):
-        return '%-50s' % f'{self.title}' + f'{self.ds}\t{diffs[self.diff]}\t{self.ra}'
-
-    def __eq__(self, other):
-        return self.ra == other.ra
-
-    def __lt__(self, other):
-        return self.ra < other.ra
-
-    @classmethod
-    def from_json(cls, data):
-        #rate = ['d', 'c', 'b', 'bb', 'bbb', 'a', 'aa', 'aaa', 's', 'sp', 'ss', 'ssp', 'sss', 'sssp']
-        #ri = rate.index(data["rate"])
-        fc = ['', 'fullcombo', 'alljustice']
-        fi = fc.index(data["fc"])
-        return cls(
-            idNum=total_list.by_title(data["title"]).id,
-            title=data["title"],
-            diff=data["level_index"],
-            ra=data["ra"],
-            ds=data["ds"],
-            comboId=fi,
-            #scoreId=ri,
-            lv=data["level"],
-            rank=data["score"],
-            achievement=data["score"],
-            #tp=data["type"]
-        )
-
-    @classmethod
-    def from_json_by_lx(cls, data):
-        
-        def check_is_ajc(achievement,comboId):
-            fc = [None, 'fullcombo', 'alljustice']
-            if achievement == 1010000:
-                return 3
-            else:
-                return fc.index(comboId)
-
-        fi = check_is_ajc(data['score'],data["full_combo"])
-        return cls(
-            idNum=data['id'],
-            title=data["song_name"],
-            diff=data["level_index"],
-            ra=data["rating"],
-            ds=total_list.by_id(int(data['id'])).ds[data["level_index"]],
-            comboId=fi,
-            lv=data["level"],
-            rank=data["rank"],
-            achievement=data["score"],
-        )
-
-
-class BestList(object):
-
-    def __init__(self, size:int):
-        self.data = []
-        self.size = size
-
-    def push(self, elem:ChartInfo):
-        if len(self.data) >= self.size and elem < self.data[-1]:
-            return
-        self.data.append(elem)
-        self.data.sort()
-        self.data.reverse()
-        while(len(self.data) > self.size):
-            del self.data[-1]
-
-    def pop(self):
-        del self.data[-1]
-
-    def __str__(self):
-        return '[\n\t' + ', \n\t'.join([str(ci) for ci in self.data]) + '\n]'
-
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, index):
-        return self.data[index]
-
-
 class DrawBest(object):
-    def __init__(self, sdBest:BestList, dxBest:BestList, userName:str, playerRating:int, musicRating:int):
-        self.sdBest = sdBest
-        self.dxBest = dxBest
-        self.userName = self._stringQ2B(userName)
-        self.playerRating = playerRating
-        self.musicRating = musicRating
-        #self.rankRating = self.playerRating - self.musicRating
+    def __init__(self, userData:UserData):
+        self.userData = userData
         self.pic_dir = 'src/static/chu/b30/'
         self.cover_dir = 'src/static/chu/cover/'
+        self.font_dir = 'src/static/chu/pic/font/'
         self.img = Image.open(self.pic_dir + 'chu-b30-lmn.png').convert('RGBA')
+        self.imgDraw = ImageDraw.Draw(self.img)
         self.ROWS_IMG = [2]
         for i in range(6):
             self.ROWS_IMG.append(116 + 96 * i)
@@ -180,43 +77,6 @@ class DrawBest(object):
 
     def _resizePic(self, img:Image.Image, time:float):
         return img.resize((int(img.size[0] * time), int(img.size[1] * time)))
-
-
-    #def _findRaPic(self) -> str:
-        #num = '10'
-        #if self.playerRating < 1000:
-            #num = '01'
-        #elif self.playerRating < 2000:
-            #num = '02'
-        #elif self.playerRating < 3000:
-            #num = '03'
-        #elif self.playerRating < 4000:
-            #num = '04'
-        #elif self.playerRating < 5000:
-            #num = '05'
-        #elif self.playerRating < 6000:
-            #num = '06'
-        #elif self.playerRating < 7000:
-            #num = '07'
-        #elif self.playerRating < 8000:
-            #num = '08'
-        #elif self.playerRating < 8500:
-            #num = '09'
-        #return f'UI_CMN_DXRating_S_{num}.png'
-
-    #def _drawRating(self, ratingBaseImg:Image.Image):
-        #COLOUMS_RATING = [86, 100, 115, 130, 145]
-        #theRa = self.playerRating
-        #i = 4
-        #while theRa:
-            #digit = theRa % 10
-            #theRa = theRa // 10
-            #digitImg = Image.open(self.pic_dir + f'UI_NUM_Drating_{digit}.png').convert('RGBA')
-            #digitImg = self._resizePic(digitImg, 0.6)
-            #ratingBaseImg.paste(digitImg, (COLOUMS_RATING[i] - 2, 9), mask=digitImg.split()[3])
-            #i = i - 1
-        #return ratingBaseImg
-
 
 
     def _drawBestList(self, img:Image.Image, sdBest:BestList, dxBest:BestList):
@@ -326,7 +186,141 @@ class DrawBest(object):
             temp = temp.filter(ImageFilter.GaussianBlur(1))
             img.paste(temp, (self.COLOUMS_IMG[j + 7] + 4, self.ROWS_IMG[i + 1] + 4))
 
+
+    def get_trophy_file_id(self,titleColor):
+        title_color_map = {
+            'normal':0,
+            'bronze':1,
+            'silver':2,
+            'gold':3,
+            'platina':4,
+            'rainbow':5,
+            'staff':6,
+            'maimai':8,
+            'ongeki':7
+        }
+        fileName = f"CHU_UI_Trophy_{title_color_map.get(titleColor,0)}.png"
+        return fileName
+
+    def get_rating_color(self):
+        if self.userData.rating <= 3.99:
+            return 'green'
+        elif self.userData.rating <= 6.99:
+            return 'orange'
+        elif self.userData.rating <= 9.99:
+            return 'red'
+        elif self.userData.rating <= 11.99:
+            return 'murasaki'
+        elif self.userData.rating <= 13.24:
+            return 'bronze'
+        elif self.userData.rating <= 14.49:
+            return 'sliver'
+        elif self.userData.rating <= 15.24:
+            return 'gold'
+        elif self.userData.rating <= 15.99:
+            return 'platinum'
+        else:
+            return 'rainbow'
+    
+    def drawRating(self,ratingColor):
+        if self.userData.rating < 10:
+            drawXCoorDinate = [271,283,295,311]
+        else:
+            drawXCoorDinate = [255,271,283,295,311]
+        for i,v in enumerate(str(self.userData.rating)):
+            v = "point" if v == "." else v
+            numImg = Image.open(self.pic_dir + f"num/{v}_{ratingColor}.png").convert('RGBA')
+            numImg = numImg.resize((18,24))
+            self.img.paste(numImg,(drawXCoorDinate[i],173),numImg.split()[3])
+    
+    def calculationAvgRating(self,ScoreList):
+        if len(ScoreList) > 0:
+            DetailedRating = sum([score.ra for score in ScoreList])
+            averageTotalRating = DetailedRating / len(ScoreList)
+            averageTotalRating = str(int(averageTotalRating * 10000) / 10000)  
+            if '.0' == averageTotalRating[-2:]:
+                averageTotalRating += '000'
+            return averageTotalRating
+        else:
+            return "0.0000"
+
+
+    def drawDetailedRating(self):
+        totalScore = []
+        for score in self.userData.recent_10: totalScore.append(score)
+        for score in self.userData.best_30: totalScore.append(score)
+        averageTotalRating = self.calculationAvgRating(totalScore)
+        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 16, encoding='utf-8')
+        self.imgDraw.text((346, 179), f"({averageTotalRating})", 'black', tempFont)
+
+
+        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 24, encoding='utf-8')
+
+        averageBest30Rating = self.calculationAvgRating(self.userData.best_30)
+        contentX = tempFont.getsize(averageBest30Rating)[0]
+        self.imgDraw.text((835-int(contentX/2), 79), f"{averageBest30Rating}", '#1E3663', tempFont)
+
+        averageRecent10Rating = self.calculationAvgRating(self.userData.recent_10)
+        contentX = tempFont.getsize(averageRecent10Rating)[0]
+        self.imgDraw.text((835-int(contentX/2), 119), f"{averageRecent10Rating}", '#1E3663', tempFont)
+
+        totalScore = []
+        for _ in range(10):
+            totalScore.append(self.userData.recent_10[0])
+        for score in self.userData.best_30: totalScore.append(score)
+        averageMaxRating = self.calculationAvgRating(totalScore)
+        contentX = tempFont.getsize(averageMaxRating)[0]
+        self.imgDraw.text((835-int(contentX/2), 159), f"{averageMaxRating}", '#1E3663', tempFont)
+
+    def drawGenerateUserInfo(self):
+        if self.userData.namePlate:
+            namePlateFileName = f"CHU_UI_NamePlate_{str(self.userData.namePlate).zfill(8)}.png"
+            namePlateImg = Image.open(self.pic_dir + f"nameplate/{namePlateFileName}").convert('RGBA')
+            self.img.paste(namePlateImg,(25,31),namePlateImg.split()[3])
+
+        if self.userData.icon:
+            temp_str = str(self.userData.icon)
+            icon_id = temp_str[:-1] if temp_str[:-1] else "0"
+            icon_index = temp_str[-1]
+            iconFileName = f"CHU_UI_Character_{icon_id.zfill(4)}_{icon_index.zfill(2)}_02.png"
+            iconImg = Image.open(self.pic_dir + f"character/{iconFileName}").convert('RGBA')
+            iconImg = iconImg.resize((80,80))
+            self.img.paste(iconImg,(495,119),iconImg.split()[3])
+
+        if self.userData.titleContent:
+            titleBoxImg = Image.open(self.pic_dir + f"honor/{self.get_trophy_file_id(self.userData.titleColor)}").convert('RGBA')
+            titleBoxImg = titleBoxImg.resize((538,50))
+            self.img.paste(titleBoxImg,(104,71),titleBoxImg.split()[3])
+
+            tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 20, encoding='utf-8')
+            titleContent = truncate_text(self.userData.titleContent, tempFont, 375)
+            contentX,contentY = tempFont.getsize(titleContent)
+            self.imgDraw.text((373-int(contentX/2), 94-int(contentY/2)), titleContent, 'black', tempFont)
+
+        userNameBox = Image.open(self.pic_dir + f"name/name_01.png").convert('RGBA')
+        self.img.paste(userNameBox,(160,113),userNameBox.split()[3])
+
+        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 20, encoding='utf-8')
+        self.imgDraw.text((175, 144), "Lv.", 'black', tempFont)
+        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 30, encoding='utf-8')
+        self.imgDraw.text((206, 135), str(self.userData.level), 'black', tempFont)
+        tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 32, encoding='utf-8')
+        userName = truncate_text(self._stringQ2B(self.userData.userName), tempFont, 230)
+        self.imgDraw.text((265, 124), userName, 'black', tempFont)
+
+        ratingColor = self.get_rating_color()
+        ratingImg = Image.open(self.pic_dir + f"num/rating_{ratingColor}.png").convert('RGBA')
+        ratingImg = ratingImg.resize((70,16))
+        self.img.paste(ratingImg,(175,180),ratingImg.split()[3])
+        self.drawRating(ratingColor)
+        self.drawDetailedRating()
+        
+
+
+
+
     def draw(self):
+        self.drawGenerateUserInfo()
         return self.img
         chuLogo = Image.open(self.pic_dir + 'UI_CMN_TabTitle.png').convert('RGBA')
         chuLogo = self._resizePic(chuLogo, 0.65)
@@ -431,23 +425,37 @@ def computeRa(ds: float, achievement:float) -> int:
     return math.floor(ds * (min(100.5, achievement) / 100) * baseRa)
 
 
-async def generate(payload: Dict) -> Tuple[Optional[Image.Image], bool]:
-    async with aiohttp.request("POST", "https://www.diving-fish.com/api/chunithmprober/query/player", json=payload) as resp:
-        if resp.status == 400:
-            return None, 400
-        if resp.status == 403:
-            return None, 403
-        b30_best = BestList(30)
-        r10_best = BestList(10)
-        obj = await resp.json()
-        b30: List[Dict] = obj["records"]["b30"]
-        r10: List[Dict] = obj["records"]["r10"]
-        for c in b30:
-            b30_best.push(ChartInfo.from_json(c))
-        for c in r10:
-            r10_best.push(ChartInfo.from_json(c))
-        print(obj)
-        # pic = DrawBest(b30_best, r10_best, obj["nickname"], obj["rating"], obj["rating"]).getDir()
-        # pic.show()
-        # return pic, 0
 
+async def generate_by_lx(user_id):
+    statuscode,userData = await UserData.generate_best_30_data_by_lx(user_id)
+    if isinstance(userData,UserData):
+        pic = DrawBest(userData).getDir()
+        pic.show()
+    else:
+        print(statuscode,userData)
+    
+    
+    
+
+# async def generate(payload: Dict) -> Tuple[Optional[Image.Image], bool]:
+#     async with aiohttp.request("POST", "https://www.diving-fish.com/api/chunithmprober/query/player", json=payload) as resp:
+#         if resp.status == 400:
+#             return None, 400
+#         if resp.status == 403:
+#             return None, 403
+#         b30_best = BestList(30)
+#         r10_best = BestList(10)
+#         obj = await resp.json()
+#         b30: List[Dict] = obj["records"]["b30"]
+#         r10: List[Dict] = obj["records"]["r10"]
+#         for c in b30:
+#             b30_best.push(ChartInfo.from_json(c))
+#         for c in r10:
+#             r10_best.push(ChartInfo.from_json(c))
+#         print(obj)
+#         pic = DrawBest(b30_best, r10_best, obj["nickname"], obj["rating"], obj["rating"]).getDir()
+#         # pic.show()
+#         # return pic, 0
+
+
+# asyncio.run(generate_by_lx("1826356872"))
