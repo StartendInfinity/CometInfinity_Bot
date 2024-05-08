@@ -202,7 +202,75 @@ class DrawBest(object):
         fileName = f"CHU_UI_Trophy_{title_color_map.get(titleColor,0)}.png"
         return fileName
 
+    def get_rating_color(self):
+        if self.userData.rating <= 3.99:
+            return 'green'
+        elif self.userData.rating <= 6.99:
+            return 'orange'
+        elif self.userData.rating <= 9.99:
+            return 'red'
+        elif self.userData.rating <= 11.99:
+            return 'murasaki'
+        elif self.userData.rating <= 13.24:
+            return 'bronze'
+        elif self.userData.rating <= 14.49:
+            return 'sliver'
+        elif self.userData.rating <= 15.24:
+            return 'gold'
+        elif self.userData.rating <= 15.99:
+            return 'platinum'
+        else:
+            return 'rainbow'
+    
+    def drawRating(self,ratingColor):
+        if self.userData.rating < 10:
+            drawXCoorDinate = [271,283,295,311]
+        else:
+            drawXCoorDinate = [255,271,283,295,311]
+        for i,v in enumerate(str(self.userData.rating)):
+            v = "point" if v == "." else v
+            numImg = Image.open(self.pic_dir + f"num/{v}_{ratingColor}.png").convert('RGBA')
+            numImg = numImg.resize((18,24))
+            self.img.paste(numImg,(drawXCoorDinate[i],173),numImg.split()[3])
+    
+    def calculationAvgRating(self,ScoreList):
+        if len(ScoreList) > 0:
+            DetailedRating = sum([score.ra for score in ScoreList])
+            averageTotalRating = DetailedRating / len(ScoreList)
+            averageTotalRating = str(int(averageTotalRating * 10000) / 10000)  
+            if '.0' == averageTotalRating[-2:]:
+                averageTotalRating += '000'
+            return averageTotalRating
+        else:
+            return "0.0000"
 
+
+    def drawDetailedRating(self):
+        totalScore = []
+        for score in self.userData.recent_10: totalScore.append(score)
+        for score in self.userData.best_30: totalScore.append(score)
+        averageTotalRating = self.calculationAvgRating(totalScore)
+        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 16, encoding='utf-8')
+        self.imgDraw.text((346, 179), f"({averageTotalRating})", 'black', tempFont)
+
+
+        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 24, encoding='utf-8')
+
+        averageBest30Rating = self.calculationAvgRating(self.userData.best_30)
+        contentX = tempFont.getsize(averageBest30Rating)[0]
+        self.imgDraw.text((835-int(contentX/2), 79), f"{averageBest30Rating}", '#1E3663', tempFont)
+
+        averageRecent10Rating = self.calculationAvgRating(self.userData.recent_10)
+        contentX = tempFont.getsize(averageRecent10Rating)[0]
+        self.imgDraw.text((835-int(contentX/2), 119), f"{averageRecent10Rating}", '#1E3663', tempFont)
+
+        totalScore = []
+        for _ in range(10):
+            totalScore.append(self.userData.recent_10[0])
+        for score in self.userData.best_30: totalScore.append(score)
+        averageMaxRating = self.calculationAvgRating(totalScore)
+        contentX = tempFont.getsize(averageMaxRating)[0]
+        self.imgDraw.text((835-int(contentX/2), 159), f"{averageMaxRating}", '#1E3663', tempFont)
 
     def drawGenerateUserInfo(self):
         if self.userData.namePlate:
@@ -226,7 +294,8 @@ class DrawBest(object):
 
             tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 20, encoding='utf-8')
             titleContent = truncate_text(self.userData.titleContent, tempFont, 375)
-            self.imgDraw.text((373, 94), titleContent, 'black', tempFont,anchor='mm')
+            contentX,contentY = tempFont.getsize(titleContent)
+            self.imgDraw.text((373-int(contentX/2), 94-int(contentY/2)), titleContent, 'black', tempFont)
 
         userNameBox = Image.open(self.pic_dir + f"name/name_01.png").convert('RGBA')
         self.img.paste(userNameBox,(160,113),userNameBox.split()[3])
@@ -236,11 +305,18 @@ class DrawBest(object):
         tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 30, encoding='utf-8')
         self.imgDraw.text((206, 135), str(self.userData.level), 'black', tempFont)
         tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 32, encoding='utf-8')
-        # userName = truncate_text(self.userData.userName, tempFont, 220)
-        userName = self.userData.userName
-        userName = truncate_text("ABCDEFGHABCDEFGH", tempFont, 220)
-        self.imgDraw.text((265, 124), self._stringQ2B(userName), 'black', tempFont)
+        userName = truncate_text(self._stringQ2B(self.userData.userName), tempFont, 230)
+        self.imgDraw.text((265, 124), userName, 'black', tempFont)
+
+        ratingColor = self.get_rating_color()
+        ratingImg = Image.open(self.pic_dir + f"num/rating_{ratingColor}.png").convert('RGBA')
+        ratingImg = ratingImg.resize((70,16))
+        self.img.paste(ratingImg,(175,180),ratingImg.split()[3])
+        self.drawRating(ratingColor)
+        self.drawDetailedRating()
         
+
+
 
 
     def draw(self):
@@ -351,10 +427,12 @@ def computeRa(ds: float, achievement:float) -> int:
 
 
 async def generate_by_lx(user_id):
-    userData = await UserData.generate_best_30_data_by_lx(user_id)
-    print(userData)
-    pic = DrawBest(userData).getDir()
-    pic.show()
+    statuscode,userData = await UserData.generate_best_30_data_by_lx(user_id)
+    if isinstance(userData,UserData):
+        pic = DrawBest(userData).getDir()
+        pic.show()
+    else:
+        print(statuscode,userData)
     
     
     

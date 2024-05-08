@@ -17,7 +17,6 @@ async def get_player_info(user_id):
     request_url = f"https://maimai.lxns.net/api/v0/chunithm/player/qq/{user_id}"
     async with aiohttp.request('GET', request_url, headers = HEADERS) as resp:
         obj = await resp.json()
-        print(obj)
         if obj['code'] == 200:
             return 200,obj['data']
         else:
@@ -40,7 +39,7 @@ async def generate_best_30_data(user_id):
         player_data = {**player_info,**player_best}
         return 200,player_data
     else:
-        return status_code,None
+        return status_code,player_info
     
 
 

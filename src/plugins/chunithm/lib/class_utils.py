@@ -100,7 +100,7 @@ class UserData(object):
         self.userName = user_Name
         self.rating = rating
         self.best_30 = best_30
-        self.recent_10 = recent_10,
+        self.recent_10 = recent_10
         self.namePlate = namePlate
         self.titleColor = titleColor
         self.titleContent = titleContent
@@ -108,13 +108,13 @@ class UserData(object):
         self.icon = icon
 
     def __str__(self) -> str:
-        return f"{self.userName}-{self.rating}-{self.namePlate}-{self.icon}-{len(self.best_30)}-{len(self.recent_10)}"
+        return f"userName:{self.userName}-rating:{self.rating}-namePlate:{self.namePlate}-icon:{self.icon}-{len(self.best_30)}-{len(self.recent_10)}"
 
     @classmethod  
     async def generate_best_30_data_by_lx(cls, user_id):  
         status_code, player_data = await generate_best_30_data(user_id)
         if status_code != 200:
-            return None,status_code
+            return status_code,player_data
         b30_best = BestList(30)
         r10_best = BestList(10)
         b30 = player_data["bests"]
@@ -123,12 +123,11 @@ class UserData(object):
             b30_best.push(ChartInfo.from_json_by_lx(c))
         for c in r10:
             r10_best.push(ChartInfo.from_json_by_lx(c))
-        return cls(player_data['name'],player_data['rating'],b30_best,r10_best,
+        return 200,cls(player_data['name'],player_data['rating'],b30_best,r10_best,
                    namePlate=str(player_data['name_plate']['id']),
                    titleColor=player_data['trophy']['color'],
                    titleContent=player_data['trophy']['name'],
                    level=player_data['level'],
                    icon = str(player_data['character']['id'])
                 )
-
-        
+    
