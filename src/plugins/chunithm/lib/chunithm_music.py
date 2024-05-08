@@ -3,9 +3,6 @@ import random
 from typing import Dict, List, Optional, Union, Tuple, Any
 from copy import deepcopy
 from pydantic import BaseModel
-
-
-from .. import json_update
 import requests
 
 def get_cover_len4_id(mid) -> str:
