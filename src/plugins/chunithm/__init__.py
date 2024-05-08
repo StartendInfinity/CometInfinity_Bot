@@ -11,7 +11,6 @@ from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
 from .lib.tool import *
 from .lib.chunithm_music import *
 from .lib.image import *
-from .lib.chunithm_best_30 import generate
 from .lib.chart import get_chunithm_chart
 
 

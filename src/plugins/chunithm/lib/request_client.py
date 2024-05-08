@@ -7,7 +7,6 @@ import json
 import aiohttp
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from src.plugins.chunithm.lib.chunithm_music import get_cover_len4_id, total_list
-from src.plugins.chunithm.lib.chunithm_best_30 import BestList,ChartInfo
 import asyncio
 
 LXNSAUTH = "pCx9K3Sta3034GljtbR6ykfQfbR12uZbnbYdePcQKGM="
@@ -43,22 +42,22 @@ async def generate_best_30_data(user_id):
     
 
 
-async def generate(payload: Dict) -> Tuple[Optional[Image.Image], bool]:
-    async with aiohttp.request("POST", "https://www.diving-fish.com/api/chunithmprober/query/player", json=payload) as resp:
-        if resp.status == 400:
-            return None, 400
-        if resp.status == 403:
-            return None, 403
-        b30_best = BestList(30)
-        r10_best = BestList(10)
-        obj = await resp.json()
-        b30: List[Dict] = obj["records"]["b30"]
-        r10: List[Dict] = obj["records"]["r10"]
-        for c in b30:
-            b30_best.push(ChartInfo.from_json(c))
-        for c in r10:
-            r10_best.push(ChartInfo.from_json(c))
-        print(obj)
-        pic = DrawBest(b30_best, r10_best, obj["nickname"], obj["rating"], obj["rating"]).getDir()
-        # pic.show()
-        # return pic, 0
+# async def generate(payload: Dict) -> Tuple[Optional[Image.Image], bool]:
+#     async with aiohttp.request("POST", "https://www.diving-fish.com/api/chunithmprober/query/player", json=payload) as resp:
+#         if resp.status == 400:
+#             return None, 400
+#         if resp.status == 403:
+#             return None, 403
+#         b30_best = BestList(30)
+#         r10_best = BestList(10)
+#         obj = await resp.json()
+#         b30: List[Dict] = obj["records"]["b30"]
+#         r10: List[Dict] = obj["records"]["r10"]
+#         for c in b30:
+#             b30_best.push(ChartInfo.from_json(c))
+#         for c in r10:
+#             r10_best.push(ChartInfo.from_json(c))
+#         print(obj)
+#         pic = DrawBest(b30_best, r10_best, obj["nickname"], obj["rating"], obj["rating"]).getDir()
+#         # pic.show()
+#         # return pic, 0

@@ -2,13 +2,9 @@
 import asyncio
 import os
 import math
-from typing import Optional, Dict, List, Tuple
-from pathlib import Path
-import aiohttp
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from src.plugins.chunithm.lib.chunithm_music import get_cover_len4_id, total_list
-from src.plugins.chunithm.lib.request_client import generate_best_30_data
-from src.plugins.chunithm.lib.class_utils import BestList,ChartInfo,UserData
+from src.plugins.chunithm.lib.class_utils import BestList,UserData
 from src.plugins.chunithm.lib.tool import truncate_text
 import asyncio
 
@@ -430,9 +426,9 @@ async def generate_by_lx(user_id):
     statuscode,userData = await UserData.generate_best_30_data_by_lx(user_id)
     if isinstance(userData,UserData):
         pic = DrawBest(userData).getDir()
-        pic.show()
+        return pic,0
     else:
-        print(statuscode,userData)
+        return None,statuscode
     
     
     
