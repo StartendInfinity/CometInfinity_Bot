@@ -119,6 +119,8 @@ class DrawBest(object):
             averageTotalRating = str(int(averageTotalRating * 10000) / 10000)  
             if '.0' == averageTotalRating[-2:]:
                 averageTotalRating += '000'
+            if len(averageTotalRating.split('.')[1]) < 4:
+                averageTotalRating += ('0'* (4-(len(averageTotalRating.split('.')[1]))))
             return averageTotalRating
         else:
             return "0.0000"
