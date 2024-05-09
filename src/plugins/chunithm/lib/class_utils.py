@@ -1,5 +1,5 @@
 from .chunithm_music import total_list
-from .request_client import generate_best_30_data
+from .request_client import generate_best_30_data_by_lx,generate_best_30_data_by_df
 
 scoreRank = 'D C B BB BBB A AA AAA S S+ SS SS+ SSS SSS+'.split(' ')
 combo = ' FC FC+ AP AP+'.split(' ')
@@ -30,9 +30,15 @@ class ChartInfo(object):
         return self.ra < other.ra
 
     @classmethod
-    def from_json(cls, data):
-        fc = ['', 'fullcombo', 'alljustice']
-        fi = fc.index(data["fc"])
+    def from_json_by_df(cls, data):
+        def check_is_ajc(achievement,comboId):
+            fc = ['', 'fullcombo', 'alljustice']
+            if achievement == 1010000:
+                return 3
+            else:
+                return fc.index(comboId)
+            
+        fi = check_is_ajc(data['score'],data["fc"])
         return cls(
             idNum=total_list.by_title(data["title"]).id,
             title=data["title"],
@@ -96,7 +102,7 @@ class BestList(object):
         return self.data[index]
 
 class UserData(object):
-    def __init__(self, user_Name,rating,best_30,recent_10,namePlate=None,icon=None,titleColor=None,titleContent=None,level=None):
+    def __init__(self, user_Name,rating,best_30,recent_10,namePlate="2",icon="0",titleColor="Trophy",titleContent="Chunithm Best 30",level="??"):
         self.userName = user_Name
         self.rating = rating
         self.best_30 = best_30
@@ -111,8 +117,8 @@ class UserData(object):
         return f"userName:{self.userName}-rating:{self.rating}-namePlate:{self.namePlate}-icon:{self.icon}-{len(self.best_30)}-{len(self.recent_10)}"
 
     @classmethod  
-    async def generate_best_30_data_by_lx(cls, user_id):  
-        status_code, player_data = await generate_best_30_data(user_id)
+    async def generate_best_30_data_lx_mode(cls, user_id):  
+        status_code, player_data = await generate_best_30_data_by_lx(user_id)
         if status_code != 200:
             return status_code,player_data
         b30_best = BestList(30)
@@ -130,4 +136,19 @@ class UserData(object):
                    level=player_data['level'],
                    icon = str(player_data['character']['id'])
                 )
+    
+    @classmethod  
+    async def generate_best_30_data_df_mode(cls, user_id):  
+        status_code, player_data = await generate_best_30_data_by_df(user_id)
+        if status_code != 200:
+            return status_code,player_data
+        b30_best = BestList(30)
+        r10_best = BestList(10)
+        b30 = player_data["records"]['b30']
+        r10 = player_data["records"]['r10']
+        for c in b30:
+            b30_best.push(ChartInfo.from_json_by_df(c))
+        for c in r10:
+            r10_best.push(ChartInfo.from_json_by_df(c))
+        return 200,cls(player_data['nickname'],player_data['rating'],b30_best,r10_best)
     
