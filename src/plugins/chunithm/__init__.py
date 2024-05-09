@@ -21,36 +21,33 @@ import json
 import math
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+from .lib.chunithm_best_30 import generate_by_lx
 
 chu_regex = r'/chu\s*'
 
-# best_30_pic = on_command('b30' , aliases={'B50','chub30','chu b30','cb30'})
+best_30_pic = on_command('b30' , aliases={'B50','chub30','chu b30','cb30'})
 
 
-# @best_30_pic.handle()
-# async def _(event: Event, message: Message = CommandArg()):
-#     with open("./data/maibind_data.json", "r", encoding="utf-8") as f:
-#             maibind_data = json.load(f)
-#     await best_30_pic.send("正在查询你的哔三十（中二节奏），少女祈祷中...")
-#     username = str(message).strip()
-#     if username == "":
-#         if str(event.user_id) in maibind_data:
-#             payload = {'username': maibind_data[str(event.user_id)]}
-#         else:
-#             await best_30_pic.finish("找不到对象（划掉）找不到这位玩家捏\n如果没绑定请发送/bind chu 你的水鱼用户名")
-#     else:
-#         payload = {'username': username}
-#     img, success = await generate(payload)
-#     if success == 400:
-#         await best_30_pic.send("找不到对象（划掉）找不到这位玩家捏\n如果没绑定请到水鱼官网进行相关操作")
-#     elif success == 403:
-#         await best_30_pic.send("ta不让别人获取数据呢")
-#     else:
-#         await best_30_pic.send(Message([
-#             MessageSegment("image", {
-#                 "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
-#             })
-#         ]))
+@best_30_pic.handle()
+async def _(event: Event, message: Message = CommandArg()):
+    with open("./data/maibind_data.json", "r", encoding="utf-8") as f:
+            maibind_data = json.load(f)
+    username = str(message).strip()
+
+    if str(event.user_id) in maibind_data:
+        img, success = await generate_by_lx(maibind_data[str(event.user_id)],username if username != "" else None)
+        if success != 0:
+            await best_30_pic.send(img)
+        else:
+            await best_30_pic.send(Message([
+                MessageSegment("image", {
+                    "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
+                })
+            ]))
+    else:
+        await best_30_pic.finish("找不到对象")
+
+
 
 def getSongCover(songId):
     cover = Image.open(rf"src\static\chu\cover\CHU_UI_Jacket_{get_cover_len4_id(songId)}.png")

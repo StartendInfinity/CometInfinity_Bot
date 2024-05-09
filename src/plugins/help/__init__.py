@@ -146,13 +146,13 @@ async def _(event: GroupMessageEvent, matcher: Matcher, arg: Message = CommandAr
             base64_data = base64.b64encode(image_data).decode('utf-8')
         await b50.send(f'[CQ:image,file=base64://{base64_data}]')
 
-b30 = on_command("/b30", priority=5)
-@b30.handle()
-async def _(event: GroupMessageEvent, matcher: Matcher, arg: Message = CommandArg()):
-        with open(B30PIC, 'rb') as image_file:
-            image_data = image_file.read()
-            base64_data = base64.b64encode(image_data).decode('utf-8')
-        await b30.send(f'[CQ:image,file=base64://{base64_data}]')
+# b30 = on_command("/b30", priority=5)
+# @b30.handle()
+# async def _(event: GroupMessageEvent, matcher: Matcher, arg: Message = CommandArg()):
+#         with open(B30PIC, 'rb') as image_file:
+#             image_data = image_file.read()
+#             base64_data = base64.b64encode(image_data).decode('utf-8')
+#         await b30.send(f'[CQ:image,file=base64://{base64_data}]')
 
 ap50 = on_command("/ap50", priority=5)
 @ap50.handle()
