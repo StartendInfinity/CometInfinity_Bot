@@ -117,8 +117,8 @@ class UserData(object):
         return f"userName:{self.userName}-rating:{self.rating}-namePlate:{self.namePlate}-icon:{self.icon}-{len(self.best_30)}-{len(self.recent_10)}"
 
     @classmethod  
-    async def generate_best_30_data_lx_mode(cls, user_id):  
-        status_code, player_data = await generate_best_30_data_by_lx(user_id)
+    async def generate_best_30_data_lx_mode(cls, user_id,friend_code=None):
+        status_code, player_data = await generate_best_30_data_by_lx(user_id,friend_code)
         if status_code != 200:
             return status_code,player_data
         b30_best = BestList(30)
@@ -129,17 +129,22 @@ class UserData(object):
             b30_best.push(ChartInfo.from_json_by_lx(c))
         for c in r10:
             r10_best.push(ChartInfo.from_json_by_lx(c))
+        character = player_data.get('character',{})
+        if character:
+            icon = character.get('id',"0")
+        else:
+            icon = "0"
         return 200,cls(player_data['name'],player_data['rating'],b30_best,r10_best,
-                   namePlate=str(player_data['name_plate']['id']),
+                   namePlate=str(player_data.get('name_plate',{}).get('id',"2")),
                    titleColor=player_data['trophy']['color'],
                    titleContent=player_data['trophy']['name'],
                    level=player_data['level'],
-                   icon = str(player_data['character']['id'])
+                   icon = str(icon)
                 )
     
     @classmethod  
-    async def generate_best_30_data_df_mode(cls, user_id):  
-        status_code, player_data = await generate_best_30_data_by_df(user_id)
+    async def generate_best_30_data_df_mode(cls, params):  
+        status_code, player_data = await generate_best_30_data_by_df(params)
         if status_code != 200:
             return status_code,player_data
         b30_best = BestList(30)

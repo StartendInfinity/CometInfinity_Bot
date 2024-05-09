@@ -4,12 +4,12 @@ from src.plugins.chunithm.lib.class_utils import UserData,ChartInfo
 from src.plugins.chunithm.lib.tool import truncate_text
 
 class DrawBest(object):
-    def __init__(self, userData:UserData):
+    def __init__(self, userData:UserData,mode="落雪"):
         self.userData = userData
-        self.pic_dir = 'src/static/chu/b30/'
-        self.cover_dir = 'src/static/chu/cover/'
-        self.font_dir = 'src/static/chu/pic/font/'
-        self.img = Image.open(self.pic_dir + 'chu-b30-lmn.png').convert('RGBA')
+        self.pic_dir = 'src/static/chunithm/b30/'
+        self.cover_dir = 'src/static/chunithm/cover/'
+        self.font_dir = 'src/static/chunithm/pic/font/'
+        self.img = Image.open(self.pic_dir + ('chu-b30-lmn.png' if mode=='落雪' else 'b30-xray-fish.png')).convert('RGBA')
         self.imgDraw = ImageDraw.Draw(self.img)
         self.draw()
 
@@ -102,6 +102,8 @@ class DrawBest(object):
         averageTotalRating = str(int(self.userData.rating * 100) / 100)  
         if '.0' == averageTotalRating[-2:]:
             averageTotalRating += '0'
+        if len(averageTotalRating.split('.')[1]) == 1:
+            averageTotalRating += '0'
         self.userData.rating = averageTotalRating
 
         for i,v in enumerate(str(self.userData.rating)):
@@ -173,7 +175,7 @@ class DrawBest(object):
             titleBoxImg = titleBoxImg.resize((538,50))
             self.img.paste(titleBoxImg,(104,71),titleBoxImg.split()[3])
 
-            tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 20, encoding='utf-8')
+            tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_37.ttf", 20, encoding='utf-8')
             titleContent = truncate_text(self.userData.titleContent, tempFont, 375)
             contentX,contentY = tempFont.getsize(titleContent)
             self.imgDraw.text((373-int(contentX/2), 92-int(contentY/2)), titleContent, 'black', tempFont)
@@ -185,7 +187,7 @@ class DrawBest(object):
         self.imgDraw.text((175, 144), "Lv.", 'black', tempFont)
         tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 30, encoding='utf-8')
         self.imgDraw.text((206, 135), str(self.userData.level), 'black', tempFont)
-        tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 32, encoding='utf-8')
+        tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_37.ttf", 32, encoding='utf-8')
         userName = truncate_text(self._stringQ2B(self.userData.userName), tempFont, 230)
         self.imgDraw.text((265, 124), userName, 'black', tempFont)
 
@@ -273,18 +275,18 @@ class DrawBest(object):
 
 
 
-async def generate_by_lx(user_id):
-    statuscode,userData = await UserData.generate_best_30_data_lx_mode(user_id)
+async def generate_by_lx(user_id,friend_code=None):
+    statuscode,userData = await UserData.generate_best_30_data_lx_mode(user_id,friend_code)
     if isinstance(userData,UserData):
         pic = DrawBest(userData).getDir()
         return pic,0
     else:
-        return None,statuscode
+        return userData,statuscode
 
-async def generate_by_df(user_id):
-    statuscode,userData = await UserData.generate_best_30_data_df_mode(user_id)
+async def generate_by_df(params):
+    statuscode,userData = await UserData.generate_best_30_data_df_mode(params)
     if isinstance(userData,UserData):
-        pic = DrawBest(userData).getDir()
+        pic = DrawBest(userData,mode="水鱼").getDir()
         return pic,0
     else:
-        return None,statuscode
+        return userData,statuscode
