@@ -25,12 +25,11 @@ from .lib.chunithm_best_30 import generate_by_lx
 
 chu_regex = r'/chu\s*'
 
-best_30_pic = on_command('b30' , aliases={'B50','chub30','chu b30','cb30'})
-
+best_30_pic = on_command('/b30' , aliases={'chub30','chu b30','cb30'}, priority=5)
 
 @best_30_pic.handle()
 async def _(event: Event, message: Message = CommandArg()):
-    with open("./data/maibind_data.json", "r", encoding="utf-8") as f:
+    with open("./data/bind_data.json", "r", encoding="utf-8") as f:
             maibind_data = json.load(f)
     username = str(message).strip()
 
@@ -480,6 +479,28 @@ async def _(event: Event, message: Message = EventMessage()):
     
     await alias_look.finish(f"\n这首歌的别名有: \n{data}\n别名数据来自落雪咖啡屋。")
 #-----s-lookalia-----END
+
+#-----s-rating_cal-----START
+rating_cal = on_regex(chu_regex + r"ra计算\s*([0-9]+\.?[0-9]*[+]?)?\s*([0-9]+\.?[0-9]*[+]?)?")
+
+@rating_cal.handle()
+async def _(event: Event, message: Message = EventMessage()):
+    regex = chu_regex + r"ra计算\s*([0-9]+\.?[0-9]*[+]?)?\s*([0-9]+\.?[0-9]*[+]?)?"
+    match = re.search(regex, str(message)).groups()
+    ds, ach = match
+    # if not ds and not ach:
+    #     await rating_cal.send("\n异常\n请输入正确的定数与达成率！")
+    if not (1.0 <= float(ds) <= 15.4):
+        await rating_cal.finish("\n请输入正确的定数与达成率！")
+    try:
+        ra = computeRaB30(float(ds), int(ach))
+        f_ra = truncate_f(ra,2)
+        await rating_cal.send(f"\n定数 {float(ds)} \n在 {int(ach)} 的得分是 {f_ra}")
+    except ValueError:
+        await rating_cal.send("\n请输入正确的定数与达成率！")
+    except TypeError:
+        await rating_cal.send("\n请输入正确的定数与达成率！")
+#-----s-rating_cal-----END
 
 # searchChartInfo = on_regex(r"^(中二|c|chu)\s*c?查谱([0-9]+)", permission=GROUP, priority=1, block=False)
 

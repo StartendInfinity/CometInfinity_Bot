@@ -2,13 +2,14 @@
 from PIL import Image, ImageDraw, ImageFont
 from src.plugins.chunithm.lib.class_utils import UserData,ChartInfo
 from src.plugins.chunithm.lib.tool import truncate_text
+from src.lib.utils import timing_decorator,timing_decorator_async
 
 class DrawBest(object):
     def __init__(self, userData:UserData,mode="落雪"):
         self.userData = userData
-        self.pic_dir = 'src/static/chunithm/b30/'
-        self.cover_dir = 'src/static/chunithm/cover/'
-        self.font_dir = 'src/static/chunithm/pic/font/'
+        self.pic_dir = 'src/static/chu/b30/'
+        self.cover_dir = 'src/static/chu/cover/'
+        self.font_dir = 'src/static/chu/pic/font/'
         self.img = Image.open(self.pic_dir + ('chu-b30-lmn.png' if mode=='落雪' else 'b30-xray-fish.png')).convert('RGBA')
         self.imgDraw = ImageDraw.Draw(self.img)
         self.draw()
@@ -257,7 +258,7 @@ class DrawBest(object):
             musicBoxImg.paste(fcIconImg,(188-19,365-274),fcIconImg.split()[3])
         return musicBoxImg
 
-
+    @timing_decorator
     def draw(self):
         self.drawGenerateUserInfo()
         for index,ci in enumerate(self.userData.best_30):
@@ -273,7 +274,7 @@ class DrawBest(object):
             self.img.paste(MusicBoxImg,(18 + (280 * j),1049 + (120 * i)),MusicBoxImg.split()[3])
 
     def getDir(self):
-        return self.img
+        return self.img.convert("RGB")
 
 
 

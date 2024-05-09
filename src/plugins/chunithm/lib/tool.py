@@ -4,6 +4,7 @@ import json
 import os
 import random
 import time
+import math
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
@@ -49,6 +50,14 @@ def TextToImg(text):
     newImgDr.text((1, 1), text, font=font, fill="#000000")
     return newImg
 
+def lerp(start, end, start_val, end_val, value):
+    if value < start:
+        return start_val
+    elif value > end:
+        return end_val
+    else:
+        return start_val + (end_val - start_val) * ((value -start)/(end-start))
+
 def wrap_text(text, font, max_width):
     lines = []
     line = ''
@@ -69,3 +78,34 @@ def truncate_text(text, font, max_width):
             if font.getsize(text[:i] + '...')[0] <= max_width:
                 return text[:i] + '...'
         return '...'
+
+def computeRaB30(ds: float, achievement: int):
+    if achievement <= 500000:
+        baseRa = 0
+    elif achievement < 800000:
+        baseRa = max(0,lerp(500000, 800000, 0, (ds -5)/2, achievement))
+    elif achievement < 900000:
+        baseRa = max(0,lerp(800000, 900000, (ds -5)/2, ds -5, achievement))
+    elif achievement < 925000:
+        baseRa = max(0,lerp(900000, 925000, ds -5, ds -3, achievement))
+    elif achievement < 975000:
+        baseRa = max(0,lerp(925000, 975000, ds -3, ds, achievement))
+    elif achievement < 1000000:
+        baseRa = ds + (achievement - 975000) // 250 * 0.01
+    elif achievement < 1005000:
+        baseRa = ds + 1.0 + (achievement - 1000000) // 100 * 0.01
+    elif achievement < 1007500:
+        baseRa = ds + 1.5 + (achievement - 1005000) // 50 * 0.01
+    elif achievement < 1009000:
+        baseRa = ds + 2.0 + (achievement - 1007500) // 100 * 0.01
+    else:
+        baseRa = ds + 2.15
+    print(baseRa)
+    return baseRa
+
+def truncate_f(f, n):
+    s = '{}'.format(f)
+    if 'e' in s or 'E' in s:
+        return '{0:.{1}f}'.format(f, n)
+    i, p, d = s.partition('.')
+    return '.'.join([i, (d+'0'*n)[:n]])

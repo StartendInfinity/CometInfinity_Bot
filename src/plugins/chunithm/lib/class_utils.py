@@ -1,5 +1,6 @@
 from .chunithm_music import total_list
 from .request_client import generate_best_30_data_by_lx,generate_best_30_data_by_df
+from src.lib.utils import timing_decorator,timing_decorator_async
 
 scoreRank = 'D C B BB BBB A AA AAA S S+ SS SS+ SSS SSS+'.split(' ')
 combo = ' FC FC+ AP AP+'.split(' ')
@@ -116,7 +117,8 @@ class UserData(object):
     def __str__(self) -> str:
         return f"userName:{self.userName}-rating:{self.rating}-namePlate:{self.namePlate}-icon:{self.icon}-{len(self.best_30)}-{len(self.recent_10)}"
 
-    @classmethod  
+    @classmethod
+    @timing_decorator_async
     async def generate_best_30_data_lx_mode(cls, user_id,friend_code=None):
         status_code, player_data = await generate_best_30_data_by_lx(user_id,friend_code)
         if status_code != 200:
