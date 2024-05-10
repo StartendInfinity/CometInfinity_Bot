@@ -100,7 +100,7 @@ class DrawBest(object):
         else:
             drawXCoorDinate = [249,265,277,289,305]
 
-        averageTotalRating = str(int(self.userData.rating * 100) / 100)  
+        averageTotalRating = str(int(round(self.userData.rating * 100,8)) / 100)  
         if '.0' == averageTotalRating[-2:]:
             averageTotalRating += '0'
         if len(averageTotalRating.split('.')[1]) == 1:
@@ -117,7 +117,7 @@ class DrawBest(object):
         if len(ScoreList) > 0:
             DetailedRating = sum([score.ra for score in ScoreList])
             averageTotalRating = DetailedRating / len(ScoreList)
-            averageTotalRating = str(int(averageTotalRating * 10000) / 10000)  
+            averageTotalRating = str(int(round(averageTotalRating * 10000,8)) / 10000)  
             if '.0' == averageTotalRating[-2:]:
                 averageTotalRating += '000'
             if len(averageTotalRating.split('.')[1]) < 4:
@@ -241,7 +241,7 @@ class DrawBest(object):
             musicBoxDraw.text((126-19-contentX, 368-274), f"{float(musicChartInfo.ds):.1f} ▶", 'black', tempFont)
 
             tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-EB.otf", 14, encoding='utf-8')
-            averageTotalRating = str(int(musicChartInfo.ra * 100) / 100)  
+            averageTotalRating = str(int(round(musicChartInfo.ra * 100,8)) / 100)  
             if '.0' == averageTotalRating[-2:]:
                 averageTotalRating += '0'
             if len(averageTotalRating.split('.')[1]) == 1:
