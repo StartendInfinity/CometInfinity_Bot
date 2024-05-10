@@ -96,9 +96,9 @@ class DrawBest(object):
     
     def drawRating(self,ratingColor):
         if self.userData.rating < 10:
-            drawXCoorDinate = [271,283,295,311]
+            drawXCoorDinate = [265,277,289,305]
         else:
-            drawXCoorDinate = [255,271,283,295,311]
+            drawXCoorDinate = [249,265,277,289,305]
 
         averageTotalRating = str(int(self.userData.rating * 100) / 100)  
         if '.0' == averageTotalRating[-2:]:
@@ -132,7 +132,7 @@ class DrawBest(object):
         for score in self.userData.best_30: totalScore.append(score)
         averageTotalRating = self.calculationAvgRating(totalScore)
         tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 16, encoding='utf-8')
-        self.imgDraw.text((346, 179), f"({averageTotalRating})", 'black', tempFont)
+        self.imgDraw.text((340, 178), f"({averageTotalRating})", 'black', tempFont)
 
         tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 24, encoding='utf-8')
 
@@ -192,7 +192,7 @@ class DrawBest(object):
         self.imgDraw.text((206, 135), str(self.userData.level), 'black', tempFont)
         tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_37.ttf", 32, encoding='utf-8')
         userName = truncate_text(self._stringQ2B(self.userData.userName), tempFont, 230)
-        self.imgDraw.text((265, 124), userName, 'black', tempFont)
+        self.imgDraw.text((259, 123), userName, 'black', tempFont)
 
         ratingColor = self.get_rating_color()
         ratingImg = Image.open(self.pic_dir + f"num/rating_{ratingColor}.png").convert('RGBA')
@@ -202,74 +202,88 @@ class DrawBest(object):
         self.drawDetailedRating()
         
     def drawMusicBox(self,musicChartInfo:ChartInfo,Bestindex:int,is_r10=False):
-        musicBoxImg = Image.open(self.pic_dir + f"chu-frame-{musicChartInfo.diff}.png").convert('RGBA')
-        musicBoxImg = musicBoxImg.resize((282,120))
-        musicBoxDraw = ImageDraw.Draw(musicBoxImg)
+        if musicChartInfo:
+            musicBoxImg = Image.open(self.pic_dir + f"chu-frame-{musicChartInfo.diff}.png").convert('RGBA')
+            musicBoxImg = musicBoxImg.resize((282,120))
+            musicBoxDraw = ImageDraw.Draw(musicBoxImg)
 
-        coverPath = self.cover_dir + f"CHU_UI_Jacket_{str(musicChartInfo.idNum).zfill(4)}.png"
-        musicCoverImg = Image.open(coverPath).convert('RGBA')
-        musicCoverImg = musicCoverImg.resize((60,60))
-        musicBoxImg.paste(musicCoverImg,(17,17),musicCoverImg.split()[3])
+            coverPath = self.cover_dir + f"CHU_UI_Jacket_{str(musicChartInfo.idNum).zfill(4)}.png"
+            musicCoverImg = Image.open(coverPath).convert('RGBA')
+            musicCoverImg = musicCoverImg.resize((60,60))
+            musicBoxImg.paste(musicCoverImg,(17,17),musicCoverImg.split()[3])
 
-        # 曲名
-        tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 16, encoding='utf-8')
-        musicTitle = truncate_text(musicChartInfo.title, tempFont, 178)
-        musicBoxDraw.text((85, 12), musicTitle, 'white', tempFont)
+            # 曲名
+            tempFont = ImageFont.truetype(self.font_dir + "SourceHanSans_35.otf", 16, encoding='utf-8')
+            musicTitle = truncate_text(musicChartInfo.title, tempFont, 178)
+            musicBoxDraw.text((85, 12), musicTitle, 'white', tempFont)
 
-        # id
-        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 12, encoding='utf-8')
-        musicBoxDraw.text((86, 315-274), "ID "+str(musicChartInfo.idNum), 'white', tempFont)
+            # id
+            tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 12, encoding='utf-8')
+            musicBoxDraw.text((86, 315-274), "ID "+str(musicChartInfo.idNum), 'white', tempFont)
 
-        # 分数
-        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 20, encoding='utf-8')
-        achievement = f"{musicChartInfo.achievement:,}"
-        musicBoxDraw.text((86, 333-274), str(achievement), 'white', tempFont)
+            # 分数
+            tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 20, encoding='utf-8')
+            achievement = f"{musicChartInfo.achievement:,}"
+            musicBoxDraw.text((86, 333-274), str(achievement), 'white', tempFont)
 
-        # 评级字母
-        rankImg = Image.open(self.pic_dir + f'rank_lmn_edited/UI_GAM_Rank_{self.get_rank(musicChartInfo.achievement)}.png')
-        rankImg = rankImg.resize((55,22))
-        musicBoxImg.paste(rankImg,(233-19,332-274),rankImg.split()[3])
+            # 评级字母
+            rankImg = Image.open(self.pic_dir + f'rank_lmn_edited/UI_GAM_Rank_{self.get_rank(musicChartInfo.achievement)}.png')
+            rankImg = rankImg.resize((55,22))
+            musicBoxImg.paste(rankImg,(233-19,332-274),rankImg.split()[3])
 
-        # 序号
-        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-EB.otf", 14, encoding='utf-8')
-        musicBoxDraw.text((35-19, 366-274), f"#{Bestindex}", 'black', tempFont)
+            # 序号
+            tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-EB.otf", 14, encoding='utf-8')
+            musicBoxDraw.text((35-19, 366-274), f"#{Bestindex}", 'black', tempFont)
 
-        # 定数
-        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 12, encoding='utf-8')
-        contentX = tempFont.getsize(f"{float(musicChartInfo.ds):.1f} ▶")[0]
-        musicBoxDraw.text((126-19-contentX, 368-274), f"{float(musicChartInfo.ds):.1f} ▶", 'black', tempFont)
+            # 定数
+            tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-B.otf", 12, encoding='utf-8')
+            contentX = tempFont.getsize(f"{float(musicChartInfo.ds):.1f} ▶")[0]
+            musicBoxDraw.text((126-19-contentX, 368-274), f"{float(musicChartInfo.ds):.1f} ▶", 'black', tempFont)
 
-        tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-EB.otf", 14, encoding='utf-8')
-        averageTotalRating = str(int(musicChartInfo.ra * 100) / 100)  
-        if '.0' == averageTotalRating[-2:]:
-            averageTotalRating += '0'
-        if len(averageTotalRating.split('.')[1]) == 1:
-            averageTotalRating += '0'
-        musicBoxDraw.text((130-19, 366-274), averageTotalRating, 'black', tempFont)
+            tempFont = ImageFont.truetype(self.font_dir + "FOT-RodinNTLGPro-EB.otf", 14, encoding='utf-8')
+            averageTotalRating = str(int(musicChartInfo.ra * 100) / 100)  
+            if '.0' == averageTotalRating[-2:]:
+                averageTotalRating += '0'
+            if len(averageTotalRating.split('.')[1]) == 1:
+                averageTotalRating += '0'
+            musicBoxDraw.text((130-19, 366-274), averageTotalRating, 'black', tempFont)
 
-        # 连击情况
-        if is_r10:
-            fcIconImg = Image.open(self.pic_dir + 'r10_not_support.png').convert('RGBA')
-            fcIconImg = fcIconImg.resize((70,16))
-            musicBoxImg.paste(fcIconImg,(205-19,1140-1049),fcIconImg.split()[3])
+            # 连击情况
+            if is_r10:
+                fcIconImg = Image.open(self.pic_dir + 'r10_not_support.png').convert('RGBA')
+                fcIconImg = fcIconImg.resize((70,16))
+                musicBoxImg.paste(fcIconImg,(205-19,1140-1049),fcIconImg.split()[3])
+            else:
+                fcIconImg = Image.open(self.pic_dir + f'full_combo_{musicChartInfo.comboId}.png').convert('RGBA')
+                fcIconImg = fcIconImg.resize((103,16))
+                musicBoxImg.paste(fcIconImg,(188-19,365-274),fcIconImg.split()[3])
+            return musicBoxImg
         else:
-            fcIconImg = Image.open(self.pic_dir + f'full_combo_{musicChartInfo.comboId}.png').convert('RGBA')
-            fcIconImg = fcIconImg.resize((103,16))
-            musicBoxImg.paste(fcIconImg,(188-19,365-274),fcIconImg.split()[3])
-        return musicBoxImg
+            musicBoxImg = Image.open(self.pic_dir + "chu-empty.png").convert('RGBA')
+            musicBoxImg = musicBoxImg.resize((282,120))
+            return musicBoxImg
+
 
     @timing_decorator
     def draw(self):
         self.drawGenerateUserInfo()
-        for index,ci in enumerate(self.userData.best_30):
+        for index in range(30):
             i = index // 5  #  需要多少行
             j = index % 5    # 一行有几个
+            if index+1 <= len(self.userData.best_30):
+                ci = self.userData.best_30[index]
+            else:
+                ci = None
             MusicBoxImg = self.drawMusicBox(ci,index+1)
             self.img.paste(MusicBoxImg,(18 + (280 * j),250 + (120 * i)),MusicBoxImg.split()[3])
 
-        for index,ci in enumerate(self.userData.recent_10):
+        for index in range(10):
             i = index // 5  #  需要多少行
             j = index % 5    # 一行有几个
+            if index+1 <= len(self.userData.recent_10):
+                ci = self.userData.recent_10[index]
+            else:
+                ci = None
             MusicBoxImg = self.drawMusicBox(ci,index+1,is_r10=True)
             self.img.paste(MusicBoxImg,(18 + (280 * j),1049 + (120 * i)),MusicBoxImg.split()[3])
 
