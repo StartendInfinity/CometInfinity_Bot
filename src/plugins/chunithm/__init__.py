@@ -44,7 +44,7 @@ async def _(event: Event, message: Message = CommandArg()):
                 })
             ]))
     else:
-        await best_30_pic.finish("找不到对象")
+        await best_30_pic.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
 
 
 
