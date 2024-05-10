@@ -40,11 +40,18 @@ class ChartInfo(object):
                 return fc.index(comboId)
             
         fi = check_is_ajc(data['score'],data["fc"])
+
+        averageTotalRating = str(int(round(data["ra"] * 100, 8)) / 100)
+        if '.0' == averageTotalRating[-2:]:
+            averageTotalRating += '0'
+        if len(averageTotalRating.split('.')[1]) == 1:
+            averageTotalRating += '0'
+        averageTotalRating = float(averageTotalRating)
         return cls(
             idNum=total_list.by_title(data["title"]).id,
             title=data["title"],
             diff=data["level_index"],
-            ra=data["ra"],
+            ra=averageTotalRating,
             ds=data["ds"],
             comboId=fi,
             lv=data["level"],
@@ -63,11 +70,18 @@ class ChartInfo(object):
                 return fc.index(comboId)
             
         fi = check_is_ajc(data['score'],data["full_combo"])
+
+        averageTotalRating = str(int(round(data["rating"] * 100, 8)) / 100)
+        if '.0' == averageTotalRating[-2:]:
+            averageTotalRating += '0'
+        if len(averageTotalRating.split('.')[1]) == 1:
+            averageTotalRating += '0'
+        averageTotalRating = float(averageTotalRating)
         return cls(
             idNum=data['id'],
             title=data["song_name"],
             diff=data["level_index"],
-            ra=data["rating"],
+            ra=averageTotalRating,
             ds=total_list.by_id(int(data['id'])).ds[data["level_index"]],
             comboId=fi,
             lv=data["level"],

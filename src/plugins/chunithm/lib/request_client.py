@@ -42,8 +42,11 @@ async def generate_best_30_data_by_lx(user_id,friend_code=None):
     status_code, player_info = await get_player_info_by_lx(user_id,friend_code)
     if status_code == 200:
         status_code, player_best = await get_player_best_by_lx(player_info)
-        player_data = {**player_info,**player_best}
-        return 200,player_data
+        if status_code == 200:
+            player_data = {**player_info,**player_best}
+            return 200,player_data
+        else:
+            return status_code, player_best
     else:
         return status_code,player_info
     
