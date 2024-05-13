@@ -30,11 +30,11 @@ async def maibind(event: GroupMessageEvent, matcher: Matcher, arg: Message = Com
             bind_data = {}
     username = arg.extract_plain_text().strip()
     if not username:
-        await mai_bind.send("\n请在指令后输入您的绑定信息。")
+        await mai_bind.send("\n请在指令后输入您的好友码。")
         return
-    if not username.isdigit() or len(username) > 10:
-        await mai_bind.send("\n请输入正确的 QQ 号码！")
-        return
+    # if not username.isdigit() or len(username) > 10:
+    #     await mai_bind.send("\n请输入正确的 QQ 号码！")
+    #     return
     #load_maibind_data()
     user_id = str(event.user_id) # 获取用户 ID
     if user_id not in bind_data: # 如果该用户还没有绑定过任何用户名

@@ -4,6 +4,7 @@ from nonebot.adapters import Event
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 
 
+
 #内建模块
 import math
 import re
@@ -15,6 +16,7 @@ import base64
 from .lib.tool import get_cover_len6_id, image_to_base64, is_pro_group, computeRaB50, get_cover_len4_id
 from .lib.music import total_list, total_alias_list
 from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
+from .lib.score_line import score_line
 
 #依赖项
 from PIL import Image, ImageDraw, ImageFont
@@ -568,3 +570,21 @@ async def _(event: Event, message: Message = EventMessage()):
     
     await alias_look.finish(f"\n这首歌的别名有: \n{data}\n别名数据来自Xray Bot。")
 #-----s-lookalia-----END
+
+#-----s-score_line-----START
+score_x = on_regex(mai_regex + r"分数线\s*([绿黄红紫白])\s*(\d+)", priority=2, block=True)
+
+@score_x.handle()
+async def _(event: Event, message: Message = EventMessage()):
+    regex = mai_regex + r"分数线\s*([绿黄红紫白])\s*(\d+)"
+    match = re.match(regex, str(message)).groups()
+    color, mid = match
+    level_labels = ['绿', '黄', '红', '紫', '白']
+    level_index = int(level_labels.index(color))
+    print (level_index)
+    img = await score_line(mid, level_index)
+
+    await score_x.finish(img)
+
+
+#-----s-score_line-----END

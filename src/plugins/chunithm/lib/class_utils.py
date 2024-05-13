@@ -85,7 +85,7 @@ class ChartInfo(object):
             ds=total_list.by_id(int(data['id'])).ds[data["level_index"]],
             comboId=fi,
             lv=data["level"],
-            rank=data["rank"],
+            rank="rank",
             achievement=data["score"],
         )
 

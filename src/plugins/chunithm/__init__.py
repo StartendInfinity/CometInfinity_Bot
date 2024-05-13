@@ -33,8 +33,9 @@ async def _(event: Event, message: Message = CommandArg()):
             maibind_data = json.load(f)
     username = str(message).strip()
 
-    if str(event.user_id) in maibind_data:
-        img, success = await generate_by_lx(maibind_data[str(event.user_id)],username if username != "" else None)
+    if username == "理论值":
+        username = "888888888888888"
+        img, success = await generate_by_lx("None",username if username != "" else None)
         if success != 0:
             await best_30_pic.send(img)
         else:
@@ -44,7 +45,19 @@ async def _(event: Event, message: Message = CommandArg()):
                 })
             ]))
     else:
-        await best_30_pic.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+        if str(event.user_id) in maibind_data:
+            img, success = await generate_by_lx(maibind_data[str(event.user_id)],username if username != "" else None)
+            if success != 0:
+                await best_30_pic.send(img)
+            else:
+                await best_30_pic.send(Message([
+                    MessageSegment("image", {
+                        "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
+                    })
+                ]))
+        else:
+            await best_30_pic.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+
 
 
 
