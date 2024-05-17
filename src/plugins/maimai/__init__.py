@@ -11,12 +11,14 @@ import re
 import os
 import random
 import base64
+import json
 
 #加载工具组，以正确显示图片、获取曲目信息等
 from .lib.tool import get_cover_len6_id, image_to_base64, is_pro_group, computeRaB50, get_cover_len4_id
 from .lib.music import total_list, total_alias_list
 from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
 from .lib.score_line import score_line
+from .lib.request_client import fetch_mai_best50_lxns
 
 #依赖项
 from PIL import Image, ImageDraw, ImageFont
@@ -585,6 +587,20 @@ async def _(event: Event, message: Message = EventMessage()):
     img = await score_line(mid, level_index)
 
     await score_x.finish(img)
-
-
 #-----s-score_line-----END
+
+
+#-----b50-----START
+mai_b50 = on_command("b50", priority=2, block=True)
+
+@mai_b50.handle() 
+async def _(event: Event):
+    user_id = str(event.user_id)#获取用户ID
+    try:
+        with open("./data/bind_data.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+            user_friendcode = data[user_id]
+    except KeyError:
+        await mai_b50.send("您暂未绑定,请您先使用/bind <用户名/好友码>进行绑定")
+    #TODO: 接下来写fetch diving_fish
+#-----b50-----END
