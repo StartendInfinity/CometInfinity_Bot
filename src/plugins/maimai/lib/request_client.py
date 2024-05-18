@@ -26,17 +26,24 @@ async def fetch_mai_best50_lxns(friend_code):
             return "User Not Found", None, None
         else:
             playerInfo = await resp.json()
-            playerFC = playerInfo["data"]["friend_code"]
             playerName = playerInfo["data"]["name"]
             playerTrophy = playerInfo["data"]["trophy"]
             playerCourseRank = playerInfo["data"]["course_rank"]
             playerClassRank = playerInfo["data"]["class_rank"]
             try:
                 playerPlate = playerInfo["data"]["name_plate"]
-            except:
+            except KeyError:
                 playerPlate = None
-            #由于爬取姓名框是可设置的，当参数为None时，调用默认姓名框
+            try:
+                playerIcon = playerInfo["data"]["icon"]
+            except KeyError:
+                playerIcon = None
+            try:
+                playerFrame = playerInfo["data"]["frame"]
+            except KeyError:
+                playerFrame = None
+            #由于爬取收藏品是可设置的，当参数为None时，调用默认/或不绘制
     async with aiohttp.request("GET", f"https://maimai.lxns.net/api/v0/maimai/player/{friend_code}/bests", headers = HEADERS) as resp:
         if resp.status == 404:
             return "Score Not Uploaded", None, None
-        return "Success", await resp.json(), [playerName, playerTrophy, playerCourseRank, playerClassRank, playerPlate]
+        return "Success", await resp.json(), [playerName, playerTrophy, playerCourseRank, playerClassRank, playerPlate, playerIcon, playerFrame]
