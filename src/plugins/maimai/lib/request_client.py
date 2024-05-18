@@ -31,7 +31,6 @@ async def fetch_mai_best50_lxns(friend_code):
             playerTrophy = playerInfo["data"]["trophy"]
             playerCourseRank = playerInfo["data"]["course_rank"]
             playerClassRank = playerInfo["data"]["class_rank"]
-            playerStar = playerInfo["data"]["star"]
             try:
                 playerPlate = playerInfo["data"]["name_plate"]
             except:
@@ -40,4 +39,4 @@ async def fetch_mai_best50_lxns(friend_code):
     async with aiohttp.request("GET", f"https://maimai.lxns.net/api/v0/maimai/player/{friend_code}/bests", headers = HEADERS) as resp:
         if resp.status == 404:
             return "Score Not Uploaded", None, None
-        return "Success", await resp.json(), [playerName, playerTrophy, playerCourseRank, playerClassRank, playerStar, playerPlate]
+        return "Success", await resp.json(), [playerName, playerTrophy, playerCourseRank, playerClassRank, playerPlate]
