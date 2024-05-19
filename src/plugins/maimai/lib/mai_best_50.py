@@ -36,7 +36,7 @@ class mai_best50():
         player_trophy_name = player_data[1]["name"]
         player_trophy_color = player_data[1]["color"]
         player_course_rank = player_data[2]
-        player_class_rank = player_data[3]
+        player_class_rank = '{:02d}'.format(player_data[3])
         if player_data[4] == None:  #playerPlate
             player_plate_id = "000001"
         else:
@@ -54,17 +54,29 @@ class mai_best50():
         else:
             player_frame_id = str(player_data[6]["id"])
             #后续检测若frame_id == None则不绘制底板
-        b50_image = Image.open("./src/static/mai/pic/mai-b50-bud.png")
+        b50_image = Image.open("./src/static/mai/b50/mai-b50-bud.png")
         if player_frame_id != None:
-            frame_img = Image.open(f"./src/static/mai/frame/UI_Frame_{player_frame_id}.png")
+            frame_img = Image.open(f"./src/static/mai/b50/frame/UI_Frame_{player_frame_id}.png")
             frame_img_resize = frame_img.resize([1440, 603])
-            b50_image.paste(frame_img_resize, (0,0))
-        plate_img = Image.open(f"./src/static/mai/plate/UI_Plate_{player_plate_id}.png")
+            b50_image.paste(frame_img_resize, (0,0), frame_img_resize)
+        mode_img = Image.open("./src/static/mai/b50/LXNS.png")
+        mode_img_resize = mode_img.resize([174, 24])
+        b50_image.paste(mode_img_resize, (1188, 110), mode_img_resize)
+        plate_img = Image.open(f"./src/static/mai/b50/plate/UI_Plate_{player_plate_id}.png")
         plate_img_resize = plate_img.resize([960, 155])
-        b50_image.paste(plate_img_resize, (40, 40))
-        icon_img = Image.open(f"./src/static/mai/icon/UI_Icon_{player_icon_id}.png")
+        b50_image.paste(plate_img_resize, (40, 40), plate_img_resize)
+        icon_img = Image.open(f"./src/static/mai/b50/icon/UI_Icon_{player_icon_id}.png")
         icon_img_resize = icon_img.resize([131, 131])
-        b50_image.paste(icon_img_resize, (52, 52))
+        b50_image.paste(icon_img_resize, (52, 52), icon_img_resize)
+        ra_bg_index = mai_best50.returnRatingBackground(mai_best50, dxRating=dxRating)
+        rating_image = Image.open(f"./src/static/mai/b50/rating/UI_CMN_DXRating_{ra_bg_index}.png")
+        rating_image_resize = rating_image.resize([225, 44])
+        b50_image.paste(rating_image_resize, (190, 50), rating_image_resize)
+        b50_image = mai_best50.draw_number(mai_best50, dx_rating=dxRating, b50_image=b50_image)
+        #绘制DX Rating数字
+        class_image = Image.open(f"./src/static/mai/b50/class/UI_CMN_Class_S_{player_class_rank}.png")
+        class_image_resize = class_image.resize([120,72])
+        b50_image.paste(class_image_resize, (430, 24), class_image_resize)
         
         b50_image.show()
 
@@ -75,6 +87,43 @@ class mai_best50():
                 return plate_data[rank_plate_name]
             else:
                 return None
+
+    def returnRatingBackground(self, dxRating):
+        match dxRating:
+            case dxRating if dxRating < 1000:
+                return "01"
+            case dxRating if dxRating < 2000:
+                return "02"
+            case dxRating if dxRating < 4000:
+                return "03"
+            case dxRating if dxRating < 7000:
+                return "04"
+            case dxRating if dxRating < 10000:
+                return "05"
+            case dxRating if dxRating < 12000:
+                return "06"
+            case dxRating if dxRating < 13000:
+                return "07"
+            case dxRating if dxRating < 14000:
+                return "08"
+            case dxRating if dxRating < 14500:
+                return "09"
+            case dxRating if dxRating < 15000:
+                return "10"
+            case _:
+                return "11"
+
+    def draw_number(self, dx_rating, b50_image):
+        x = 295
+        rating_list = list(str(dx_rating))
+        if dx_rating < 10000:
+            x = 313
+        for file_name in rating_list:
+            num_image = Image.open(f"./src/static/mai/b50/numbers/{file_name}.png")
+            num_image_resize = num_image.resize([19, 22])
+            b50_image.paste(num_image_resize, (x, 62), num_image_resize)
+            x+=18
+        return b50_image
 
     def fish(self, b50_info):
         pass
