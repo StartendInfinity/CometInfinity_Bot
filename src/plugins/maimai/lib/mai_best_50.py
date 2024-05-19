@@ -59,6 +59,12 @@ class mai_best50():
             frame_img = Image.open(f"./src/static/mai/frame/UI_Frame_{player_frame_id}.png")
             frame_img_resize = frame_img.resize([1440, 603])
             b50_image.paste(frame_img_resize, (0,0))
+        plate_img = Image.open(f"./src/static/mai/plate/UI_Plate_{player_plate_id}.png")
+        plate_img_resize = plate_img.resize([960, 155])
+        b50_image.paste(plate_img_resize, (40, 40))
+        icon_img = Image.open(f"./src/static/mai/icon/UI_Icon_{player_icon_id}.png")
+        icon_img_resize = icon_img.resize([131, 131])
+        b50_image.paste(icon_img_resize, (52, 52))
         
         b50_image.show()
 
