@@ -32,11 +32,15 @@ class mai_best50():
         best_35_info = b50_info["standard"]
         best_15_info = b50_info["dx"]
         dxRating = b50_info["standard_total"] + b50_info["dx_total"]
-        player_name = player_data[0]
+        player_name = mai_best50.fullwidth_to_halfwidth(mai_best50, player_data[0])
         player_trophy_name = player_data[1]["name"]
+        if len(player_trophy_name) > 21:
+            player_trophy_name[0:21] + "..."
+        # TODO:这边应该还有优化的空间,回头再看
         player_trophy_color = player_data[1]["color"]
-        player_course_rank = player_data[2]
+        player_course_rank = '{:02d}'.format(player_data[2])
         player_class_rank = '{:02d}'.format(player_data[3])
+        #不足2位补0
         if player_data[4] == None:  #playerPlate
             player_plate_id = "000001"
         else:
@@ -55,6 +59,8 @@ class mai_best50():
             player_frame_id = str(player_data[6]["id"])
             #后续检测若frame_id == None则不绘制底板
         b50_image = Image.open("./src/static/mai/b50/mai-b50-bud.png")
+        HanSans37_28 = ImageFont.truetype("./src/static/mai/pic/font/SourceHanSans_37.ttf", size=28)
+        HanSans37_16 = ImageFont.truetype("./src/static/mai/pic/font/SourceHanSans_37.ttf", size=16)
         if player_frame_id != None:
             frame_img = Image.open(f"./src/static/mai/b50/frame/UI_Frame_{player_frame_id}.png")
             frame_img_resize = frame_img.resize([1440, 603])
@@ -77,8 +83,40 @@ class mai_best50():
         class_image = Image.open(f"./src/static/mai/b50/class/UI_CMN_Class_S_{player_class_rank}.png")
         class_image_resize = class_image.resize([120,72])
         b50_image.paste(class_image_resize, (430, 24), class_image_resize)
-        
+        nickname_bg = Image.open("./src/static/mai/b50/playername.png")
+        nickname_bg_resize = nickname_bg.resize([386, 78])
+        b50_image.paste(nickname_bg_resize, [178, 87], nickname_bg_resize)
+        draw_nickname = ImageDraw.Draw(b50_image)
+        draw_nickname.text((203, 100), player_name, (0,0,0), HanSans37_28)
+        course_image = Image.open(f"./src/static/mai/b50/course/UI_CMN_DaniPlate_{player_course_rank}.png")
+        course_image_resize = course_image.resize([104,48])
+        b50_image.paste(course_image_resize, (437, 98), course_image_resize)
+        trophy_bg = Image.open(f"./src/static/mai/b50/trophy/UI_CMN_Shougou_{player_trophy_color}.png")
+        trophy_bg_resize = trophy_bg.resize([368 ,48])
+        b50_image.paste(trophy_bg_resize, (185, 145), trophy_bg_resize)
+        draw_trophy = ImageDraw.Draw(b50_image)
+        trophy_x = 369 - int(draw_trophy.textlength(player_trophy_name, HanSans37_16) / 2)
+        #计算居中后的X值
+        draw_trophy.text([trophy_x, 153], player_trophy_name, (255, 255, 255), HanSans37_16, stroke_width = 1, stroke_fill=(0, 0, 0))
+        rating_table = Image.open("./src/static/mai/b50/ratingtable.png")
+        rating_table_resize = rating_table.resize([814, 325])
+        b50_image.paste(rating_table_resize, (40, 240), rating_table_resize)
+
         b50_image.show()
+
+    def fullwidth_to_halfwidth(self, text):
+        result = []
+        for char in text:
+            code_point = ord(char)
+            # 全角空格（U+3000）转换为半角空格（U+0020）
+            if code_point == 0x3000:
+                result.append(chr(0x0020))
+            # 其他全角字符（U+FF01 至 U+FF5E）转换为对应的半角字符（U+0021 至 U+007E）
+            elif 0xFF01 <= code_point <= 0xFF5E:
+                result.append(chr(code_point - 0xFEE0))
+            else:
+                result.append(char)
+        return ''.join(result)
 
     def get_rank_plate_id(self, rank_plate_name):
         with open("./src/plugins/maimai/lib/id_to_plate_name.json", "r", encoding="utf-8") as f:
