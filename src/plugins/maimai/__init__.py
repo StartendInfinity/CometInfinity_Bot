@@ -1,8 +1,7 @@
 from nonebot import on_command, on_regex, get_driver
-from nonebot.params import CommandArg, EventMessage
+from nonebot.params import CommandArg, RegexGroup, Endswith, EventMessage
 from nonebot.adapters import Event
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
-
 
 
 #内建模块
@@ -11,14 +10,18 @@ import re
 import os
 import random
 import base64
+import json
 
 #加载工具组，以正确显示图片、获取曲目信息等
 from .lib.tool import get_cover_len6_id, image_to_base64, is_pro_group, computeRaB50, get_cover_len4_id
-from .lib.music import total_list, total_alias_list
+from .lib.music import total_list, total_alias_list, plate_to_version, player_plate_data, levelList, scoreRank , comboRank, syncRank, level_process_data
 from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
 from .lib.score_line import score_line
+from .lib.request_client import fetch_mai_best50_lxns, fetch_mai_best50_lxns_qq
+from .lib.mai_best_50 import mai_best50
 
 #依赖项
+from typing import Tuple, Optional
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 SUPERUSERS = get_driver().config.superusers
@@ -588,3 +591,100 @@ async def _(event: Event, message: Message = EventMessage()):
 
 
 #-----s-score_line-----END
+
+#-----s-plate_process-----START
+plate_process = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽舞霸星宙])([極极将舞神者]舞?)进度\s?(.+)?', priority=1, block=True)
+
+@plate_process.handle()
+async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
+    try:
+        with open("./data/bind_data.json", "r", encoding="utf-8") as f:
+            bind_data = json.load(f)
+    except UnicodeDecodeError:
+        with open("./data/bind_data.json", "r", encoding="utf-8-sig") as f:
+            bind_data = json.load(f)
+    qqid = bind_data[str(event.user_id)]
+    nickname = ''
+    if f'{match[0]}{match[1]}' == '真将':
+        await plate_process.finish('真系没有真将哦', reply_message=True)
+    elif match[2]:
+        nickname = match[2]
+        payload = {'username': match[2].strip()}
+    else:
+        payload = {'username': qqid}
+    if match[0] in ['霸', '舞']:
+        payload['version'] = list(set(version for version in list(plate_to_version.values())[:-9]))
+    elif match[0] == '真':
+        payload['version'] = list(set(version for version in list(plate_to_version.values())[0:2]))
+    else:
+        payload['version'] = [plate_to_version[match[0]]]
+
+    data = await player_plate_data(payload, match, nickname)
+    await plate_process.finish(data)
+#-----s-plate_process-----END
+
+#-----s-level_process-----START
+level_process = on_regex(mai_regex + r'\s?等级进度\s?([0-9]+\+?)\s?(.+)\s?(.+)?', priority=1,block=True)
+
+@level_process.handle()
+async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
+    try:
+        with open("./data/bind_data.json", "r", encoding="utf-8") as f:
+            bind_data = json.load(f)
+    except UnicodeDecodeError:
+        with open("./data/bind_data.json", "r", encoding="utf-8-sig") as f:
+            bind_data = json.load(f)
+    qqid = bind_data[str(event.user_id)]
+    nickname = ''
+
+    if match[0] not in levelList:
+        await level_process.finish('输入不正确。', reply_message=True)
+    if match[1].lower() not in scoreRank + comboRank + syncRank:
+        await level_process.finish('输入不正确。', reply_message=True)
+    elif match[2]:
+        nickname = match[2]
+        payload = {'username': match[2].strip()}
+    else:
+        payload = {'username': qqid}
+
+
+    payload['version'] = list(set(version for version in plate_to_version.values()))
+
+    data = await level_process_data(payload, match, nickname)
+    await level_process.finish(data, reply_message=True)
+#-----s-level_process-----END
+
+#-----b50-----START
+mai_b50 = on_command("/b50", priority=2, block=True)
+
+
+@mai_b50.handle() 
+async def _(event: Event, message: Message = CommandArg()):
+    with open("./data/bind_data.json", "r", encoding="utf-8") as f:
+            maibind_data = json.load(f)
+    username = str(message).strip()
+
+    if username == "理论值":
+        username = "888888888888888"
+        status, b50_data, other_data = await fetch_mai_best50_lxns(username)
+        b64data = mai_best50.lxns(b50_data["data"], other_data)
+        await mai_b50.send(MessageSegment.image(f"base64://{b64data}"))
+        #理论值账号应该不会不让抓,就不写判断了
+    else:
+        if str(event.user_id) in maibind_data.keys():
+            status, b50_data, other_data = await fetch_mai_best50_lxns_qq(maibind_data[str(event.user_id)])
+            match status:
+                case "Not Allow Thirdparty Dev Fetch Score":
+                    await mai_b50.send("\n该用户禁止了其他人获取游戏数据。")
+                case "User Not Found":
+                    await mai_b50.send("\n没有在落雪咖啡屋找到用户信息。\n请确认是否已正确绑定落雪咖啡屋，并且已允许第三方开发者获取游戏数据。")
+                case "Score Not Uploaded":
+                    await mai_b50.send("\n成绩存在错误。\n请尝试重新上传成绩。")
+                case "Success":
+                    b64Data = mai_best50.lxns(b50_data["data"], other_data)
+                    await mai_b50.send(MessageSegment.image(f"base64://{b64Data}"))
+                case _:
+                    await mai_b50.send("\n发生了预期外的错误。\n请联系管理员。")
+        else:
+            await mai_b50.send("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+#-----b50-----END
