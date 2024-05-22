@@ -309,9 +309,10 @@ class mai_best50():
             index_y+=1
         generate_tool.draw_bests(b50_image, best_15_info, 15)
         generate_tool.draw_bests(b50_image, best_35_info, 35)
+        n_b50_image =  b50_image.convert("RGB")
         
         out_buffer = BytesIO()
-        b50_image.save(out_buffer, "PNG")
+        n_b50_image.save(out_buffer, "JPEG")
         bytes_data = out_buffer.getvalue()
         return base64.b64encode(bytes_data).decode()
 
