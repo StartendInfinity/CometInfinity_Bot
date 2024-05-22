@@ -1,9 +1,10 @@
 import json
-import time
+import base64
 
 from music import total_list
 
 from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 
 class generate_tool():
 
@@ -226,7 +227,6 @@ class generate_tool():
 class mai_best50():
 
     def lxns(b50_info, player_data):
-        start_time = time.time()
         best_35_info = b50_info["standard"]
         best_15_info = b50_info["dx"]
         avg_best_35 = generate_tool.calc_avg_rating_lxns(best_35_info)
@@ -238,9 +238,6 @@ class mai_best50():
         dxRating = b50_info["standard_total"] + b50_info["dx_total"]
         player_name = generate_tool.fullwidth_to_halfwidth(player_data[0])
         player_trophy_name = player_data[1]["name"]
-        if len(player_trophy_name) > 21:
-            player_trophy_name[0:21] + "..."
-        # TODO:这边应该还有优化的空间,回头再看
         player_trophy_color = player_data[1]["color"]
         player_course_rank = '{:02d}'.format(player_data[2])
         player_class_rank = '{:02d}'.format(player_data[3])
@@ -278,6 +275,17 @@ class mai_best50():
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/course/UI_CMN_DaniPlate_{player_course_rank}.png", [104, 48], [437, 98])
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/trophy/UI_CMN_Shougou_{player_trophy_color}.png", [368, 48], [185, 145])
         draw_trophy = ImageDraw.Draw(b50_image)
+
+        count = 0
+        if draw_trophy.textlength(player_trophy_name, HanSans37_16) > 336.0:
+            for _count_ in range(len(player_trophy_name)):
+                text_len = draw_trophy.textlength(player_trophy_name[0:_count_], HanSans37_16)
+                if text_len > 336.0:
+                    player_trophy_name = player_trophy_name[0:_count_ - 2] + "..."
+                    break
+                count+=1
+        #优化后的过长省略
+
         trophy_x = generate_tool.center_font(369, draw_trophy, player_trophy_name, HanSans37_16)
         #计算居中后的X值
         draw_trophy.text([trophy_x, 153], player_trophy_name, (255, 255, 255), HanSans37_16, stroke_width = 1, stroke_fill=(0, 0, 0))
@@ -302,41 +310,10 @@ class mai_best50():
         generate_tool.draw_bests(b50_image, best_15_info, 15)
         generate_tool.draw_bests(b50_image, best_35_info, 35)
         
-        print(str((time.time() - start_time) * 1000) + "ms")
-        b50_image.show()
+        out_buffer = BytesIO()
+        b50_image.save(out_buffer, "PNG")
+        bytes_data = out_buffer.getvalue()
+        return base64.b64encode(bytes_data).decode()
 
     def fish():
         print("fish")
-
-#----导入测试数据----
-
-post_data = {}
-other_data = []
-
-def test():
-    with open ("./src/plugins/maimai/lib/temp/testdata_lxns.json", "r", encoding="utf-8") as f:
-        all_data = dict(json.load(f))
-    with open ("./src/plugins/maimai/lib/temp/testdata2_lxns.json", "r", encoding="utf-8") as f:
-        playerInfo = dict(json.load(f))
-        playerName = playerInfo["data"]["name"]
-        playerTrophy = playerInfo["data"]["trophy"]
-        playerCourseRank = playerInfo["data"]["course_rank"]
-        playerClassRank = playerInfo["data"]["class_rank"]
-        try:
-            playerPlate = playerInfo["data"]["name_plate"]
-        except KeyError:
-            playerPlate = None
-        try:
-            playerIcon = playerInfo["data"]["icon"]
-        except KeyError:
-            playerIcon = None
-        try:
-            playerFrame = playerInfo["data"]["frame"]
-        except KeyError:
-            playerFrame = None
-        #由于爬取收藏品是可设置的，当参数为None时，调用默认/或不绘制
-        return all_data, [playerName, playerTrophy, playerCourseRank, playerClassRank, playerPlate, playerIcon, playerFrame]
-
-post_data, other_data = test()
-
-mai_best50.lxns(post_data["data"], other_data)

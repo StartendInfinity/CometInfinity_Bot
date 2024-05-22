@@ -18,7 +18,8 @@ from .lib.tool import get_cover_len6_id, image_to_base64, is_pro_group, computeR
 from .lib.music import total_list, total_alias_list
 from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
 from .lib.score_line import score_line
-from .lib.request_client import fetch_mai_best50_lxns
+from .lib.request_client import fetch_mai_best50_lxns, fetch_mai_best50_lxns_qq
+from .lib.mai_best_50 import mai_best50
 
 #依赖项
 from PIL import Image, ImageDraw, ImageFont
@@ -593,14 +594,34 @@ async def _(event: Event, message: Message = EventMessage()):
 #-----b50-----START
 mai_b50 = on_command("b50", priority=2, block=True)
 
+
 @mai_b50.handle() 
-async def _(event: Event):
-    user_id = str(event.user_id)#获取用户ID
-    try:
-        with open("./data/bind_data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-            user_friendcode = data[user_id]
-    except KeyError:
-        await mai_b50.send("您暂未绑定,请您先使用/bind <用户名/好友码>进行绑定")
-    #TODO: 接下来写fetch diving_fish
+async def _(event: Event, message: Message = CommandArg()):
+    with open("./data/bind_data.json", "r", encoding="utf-8") as f:
+        maibind_data = json.load(f)
+    username = str(message).strip()
+
+    if username == "理论值":
+        username = "888888888888888"
+        status, b50_data, other_data = fetch_mai_best50_lxns(username)
+        b64data = mai_best50.lxns(b50_data["data"], other_data)
+        await mai_b50.send(MessageSegment.image(f"base64://{b64data}"))
+        #理论值账号应该不会不让抓,就不写判断了
+    else:
+        if str(event.user_id) in maibind_data:
+            status, b50_data, other_data = fetch_mai_best50_lxns_qq(str(event.user_id))
+            match status:
+                case "Not Allow Thirdparty Dev Fetch Score":
+                    await mai_b50.send("\n该用户禁止了其他人获取游戏数据。")
+                case "User Not Found":
+                    await mai_b50.send("\n没有在落雪咖啡屋找到用户信息。\n请确认是否已正确绑定落雪咖啡屋，并且已允许第三方开发者获取游戏数据。")
+                case "Score Not Uploaded":
+                    await mai_b50.finish("\n成绩存在错误。\n请尝试重新上传成绩。")
+                case "Success":
+                    b64Data = mai_best50.lxns(b50_data["data"], other_data)
+                    await mai_b50.finish(MessageSegment.image(f"base64://{b64Data}"), reply_message = True)
+                case _:
+                    await mai_b50.finish("\n发生了预期外的错误。\n请联系管理员。")
+        else:
+            await mai_b50.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
 #-----b50-----END
