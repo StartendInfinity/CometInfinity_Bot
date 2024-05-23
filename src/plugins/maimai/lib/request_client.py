@@ -31,15 +31,15 @@ async def fetch_mai_best50_lxns(friend_code):
             playerCourseRank = playerInfo["data"]["course_rank"]
             playerClassRank = playerInfo["data"]["class_rank"]
             try:
-                playerPlate = playerInfo["data"]["name_plate"]
+                playerPlate = '{:.06d}'.format(str(playerInfo["data"]["name_plate"]))
             except KeyError:
                 playerPlate = None
             try:
-                playerIcon = playerInfo["data"]["icon"]
+                playerIcon = '{:.06d}'.format(str(playerInfo["data"]["icon"]))
             except KeyError:
                 playerIcon = None
             try:
-                playerFrame = playerInfo["data"]["frame"]
+                playerFrame = '{:.06d}'.format(str(playerInfo["data"]["frame"]))
             except KeyError:
                 playerFrame = None
             #由于爬取收藏品是可设置的，当参数为None时，调用默认/或不绘制
