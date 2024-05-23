@@ -1,7 +1,7 @@
 import json
 import base64
 
-from music import total_list
+from .music import total_list
 
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
@@ -171,7 +171,7 @@ class generate_tool():
                 song_level = song_info["level_index"]
                 song_id = song_info["id"]
                 song_dx_score = song_info["dx_score"]
-                song_achi = f"{song_info["achievements"]:.4f}"
+                song_achi = f"{song_info['achievements']:.4f}"
                 dx_ra = int(song_info["dx_rating"])
                 song_rate = song_info["rate"].upper()
                 song_fc = song_info["fc"]
@@ -250,11 +250,11 @@ class mai_best50():
             player_plate_id = generate_tool.get_rank_plate_id(player_plate_name)
             #plate_name仅用于获取正确的将牌ID, 无其他用途
             if player_plate_id == None:
-                player_plate_id = str(player_data[4]["id"])
+                player_plate_id = str('{:06d}'.format(player_data[4]["id"]))
         if player_data[5] != None: #playerIcon
-            player_icon_id = str(player_data[5]["id"])
+            player_icon_id = str('{:06d}'.format(player_data[5]["id"]))
         if player_data[6] != None: #playerFrame
-            player_frame_id = str(player_data[6]["id"])
+            player_frame_id = str('{:06d}'.format(player_data[6]["id"]))
         b50_image = Image.open("./src/static/mai/b50/mai-b50-bud.png")
         HanSans37_28 = ImageFont.truetype("./src/static/mai/pic/font/SourceHanSans_37.ttf", size=28)
         HanSans37_16 = ImageFont.truetype("./src/static/mai/pic/font/SourceHanSans_37.ttf", size=16)
