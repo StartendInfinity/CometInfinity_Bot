@@ -12,7 +12,11 @@ class generate_tool():
         all_rating = 0
         for info in score_info:
             all_rating+=info["dx_rating"]
-        return f"{all_rating / len(score_info):.01f}"
+        try:
+            avg_rating = f"{all_rating / len(score_info):.01f}"
+        except ZeroDivisionError:
+            avg_rating = "0"
+        return avg_rating
 
     def fullwidth_to_halfwidth(text):
         result = []
@@ -231,10 +235,16 @@ class mai_best50():
         best_15_info = b50_info["dx"]
         avg_best_35 = generate_tool.calc_avg_rating_lxns(best_35_info)
         avg_best_15 = generate_tool.calc_avg_rating_lxns(best_15_info)
-        best_35_top = int(best_35_info[0]["dx_rating"])
-        best_35_low = int(best_35_info[-1]["dx_rating"])
-        best_15_top = int(best_15_info[0]["dx_rating"])
-        best_15_low = int(best_15_info[-1]["dx_rating"])
+        best_35_top = 0
+        best_35_low = 0
+        best_15_top = 0
+        best_15_low = 0
+        if len(best_35_info) != 0:
+            best_35_top = int(best_35_info[0]["dx_rating"])
+            best_35_low = int(best_35_info[-1]["dx_rating"])
+        if len(best_15_info) != 0:
+            best_15_top = int(best_15_info[0]["dx_rating"])
+            best_15_low = int(best_15_info[-1]["dx_rating"])
         dxRating = b50_info["standard_total"] + b50_info["dx_total"]
         player_name = generate_tool.fullwidth_to_halfwidth(player_data[0])
         player_trophy_name = player_data[1]["name"]
