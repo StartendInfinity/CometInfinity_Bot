@@ -238,7 +238,8 @@ async def music_info_pic(music: Music) -> str:
                 
             notes = music.charts[num]['notes']
             #total = sum(notes)
-            total = sum(int(note) for note in notes)
+            #total = sum(int(note) for note in notes)
+            total = sum(int(note) if isinstance(note, str) and note.isdigit() else note for note in notes if isinstance(note, int) or (isinstance(note, str) and note.isdigit()))
             if num < 4:
                 FEB.draw(370, 655 + 80 * num, 32, total, default_color, 'ma')
             if num == 4:
@@ -305,7 +306,10 @@ async def music_info_pic(music: Music) -> str:
             notes = music.charts[num]['notes']
             
             #total = sum(notes)
-            total = sum(int(note) for note in notes)
+            #total = sum(int(note) for note in notes)
+            #total = sum(int(note) for note in notes if note.isdigit())
+            #total = sum(int(note) if isinstance(note, str) and note.isdigit() else note for note in notes)
+            total = sum(int(note) if isinstance(note, str) and note.isdigit() else note for note in notes if isinstance(note, int) or (isinstance(note, str) and note.isdigit()))
             FEB.draw(370, 655 + 80 * num, 32, total, default_color, 'ma')
             if len(notes) == 5:
                 for n, c in enumerate(notes):

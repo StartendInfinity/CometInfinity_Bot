@@ -142,6 +142,7 @@ class UserData(object):
         b30 = player_data["bests"]
         r10 = player_data["recents"]
         for c in b30:
+            print(c)
             b30_best.push(ChartInfo.from_json_by_lx(c))
         for c in r10:
             r10_best.push(ChartInfo.from_json_by_lx(c))

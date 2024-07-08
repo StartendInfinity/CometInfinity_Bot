@@ -1,8 +1,7 @@
 from nonebot import on_command, on_regex, get_driver
-from nonebot.params import CommandArg, EventMessage
+from nonebot.params import CommandArg, RegexGroup, Endswith, EventMessage
 from nonebot.adapters import Event
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
-
 
 
 #内建模块
@@ -11,19 +10,44 @@ import re
 import os
 import random
 import base64
+import json
+import aiofiles
 
 #加载工具组，以正确显示图片、获取曲目信息等
 from .lib.tool import get_cover_len6_id, image_to_base64, is_pro_group, computeRaB50, get_cover_len4_id
-from .lib.music import total_list, total_alias_list
+from .lib.music import total_list, total_alias_list, plate_to_version, player_plate_data, levelList, scoreRank , comboRank, syncRank, level_process_data
 from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
 from .lib.score_line import score_line
+from .lib.request_client import fetch_mai_best50_lxns, fetch_single_score_lxns
+from .lib.mai_best_50 import mai_best50
+from .lib.mai_score import mai_score
 
 #依赖项
+from typing import Tuple, Optional
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 SUPERUSERS = get_driver().config.superusers
 
 mai_regex = r'/mai\s*'
+
+async def read_id(mode: str, user_id: str):
+    try:
+        async with aiofiles.open("./data/bind_data.json", "r", encoding="utf-8") as f:
+            bind_data = json.loads(await f.read())
+    except Exception as e:
+        bind_data = {}
+        print(f"{e}")
+
+    user_bind_data = bind_data.get(user_id, {})  
+
+    qqid = user_bind_data.get(mode)  
+
+    if qqid is None:
+        print("没有用户")
+    else:
+        print(f"{user_id}: {qqid}")
+
+    return qqid
 
 
 #-----s-maisong------START
@@ -228,7 +252,7 @@ async def _(event: Event, message: Message = EventMessage()):
         #     music_jp = total_list.by_id(id)
         # if music is None and music_jp is None:
         #     await mai_id.finish('歌曲不存在哦！')
-        #print(music)
+        print(music)
         msg = await music_info_pic(music)           
         await mai_id.send(msg)
     else:
@@ -588,3 +612,162 @@ async def _(event: Event, message: Message = EventMessage()):
 
 
 #-----s-score_line-----END
+
+#-----s-plate_process-----START
+plate_process = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙])([極极将舞神者]舞?)进度\s?', priority=1, block=True)
+
+@plate_process.handle()
+async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
+    user_id = str(event.user_id)
+    mode = "lm"
+    qqid = await read_id(mode, user_id)
+
+    if f'{match[0]}{match[1]}' == '真将':
+        await plate_process.finish()
+
+    #payload = {'username': qqid}
+    
+
+    try:
+        data = await player_plate_data(qqid, match)
+    except Exception as e:
+        await plate_process.finish(f"\n您没有绑定信息。\n请使用 /bind 命令进行绑定。\n{e}")
+    await plate_process.finish(data)
+#-----s-plate_process-----END
+
+#-----s-level_process-----START
+level_process = on_regex(mai_regex + r'\s?等级进度\s?([0-9]+\+?)\s?(.+)\s?(.+)?', priority=1,block=True)
+
+@level_process.handle()
+async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
+    # try:
+    #     with open("./data/bind_data.json", "r", encoding="utf-8") as f:
+    #         bind_data = json.load(f)
+    # except UnicodeDecodeError:
+    #     with open("./data/bind_data.json", "r", encoding="utf-8-sig") as f:
+    #         bind_data = json.load(f)
+    # qqid = bind_data[str(event.user_id)]
+    # nickname = ''
+
+    # if match[0] not in levelList:
+    #     await level_process.finish('输入不正确。', reply_message=True)
+    # if match[1].lower() not in scoreRank + comboRank + syncRank:
+    #     await level_process.finish('输入不正确。', reply_message=True)
+    # elif match[2]:
+    #     nickname = match[2]
+    #     payload = {'username': match[2].strip()}
+    # else:
+    #     payload = {'username': qqid}
+
+
+    # payload['version'] = list(set(version for version in plate_to_version.values()))
+
+    # data = await level_process_data(payload, match, nickname)
+    await level_process.finish("暂未支持")
+#-----s-level_process-----END
+
+#-----b50-----START
+mai_b50 = on_command("/b50", priority=2, block=True)
+
+
+@mai_b50.handle() 
+async def _(event: Event, message: Message = CommandArg()):
+    user_id = str(event.user_id)
+    mode = "lm"
+    qqid = await read_id(mode, user_id)
+    username = str(message).strip()
+
+    if username == "理论值":
+        username = "888888888888888"
+        status, b50_data, other_data = await fetch_mai_best50_lxns(username)
+        b64data = mai_best50.lxns(b50_data["data"], other_data, ap=False)
+        await mai_b50.send(MessageSegment.image(f"base64://{b64data}"))
+        #理论值账号应该不会不让抓,就不写判断了
+    else:
+        if qqid:
+            status, b50_data, other_data = await fetch_mai_best50_lxns(qqid, ap=False)
+            match status:
+                case "Not Allow Thirdparty Dev Fetch Score":
+                    await mai_b50.send("\n该用户禁止了其他人获取游戏数据。")
+                case "User Not Found":
+                    await mai_b50.send("\n没有在落雪咖啡屋找到用户信息。\n请确认是否已正确绑定落雪咖啡屋，并且已允许第三方开发者获取游戏数据。")
+                case "Score Not Uploaded":
+                    await mai_b50.send("\n成绩存在错误。\n请尝试重新上传成绩。")
+                case "Success":
+                    b64Data = mai_best50.lxns(b50_data["data"], other_data)
+                    await mai_b50.send(MessageSegment.image(f"base64://{b64Data}"))
+                case _:
+                    await mai_b50.send("\n发生了预期外的错误。\n请联系管理员。")
+        else:
+            await mai_b50.send(f"\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+#-----b50-----END
+
+#-----AP50------START
+mai_ap_50 = on_command("/ap50", priority=2, block=True)
+
+
+@mai_ap_50.handle()
+async def _(event: Event):
+    user_id = str(event.user_id)
+    mode = "lm"
+    qqid = await read_id(mode, user_id)
+    #username = str(message).strip()
+
+    try:
+        status, b50_data, other_data = await fetch_mai_best50_lxns(qqid, ap=True)
+        match status:
+            case "Not Allow Thirdparty Dev Fetch Score":
+                await mai_b50.send("\n该用户禁止了其他人获取游戏数据。")
+            case "User Not Found":
+                await mai_b50.send("\n没有在落雪咖啡屋找到用户信息。\n请确认是否已正确绑定落雪咖啡屋，并且已允许第三方开发者获取游戏数据。")
+            case "Score Not Uploaded":
+                await mai_b50.send("\n成绩存在错误。\n请尝试重新上传成绩。")
+            case "Success":
+                b64Data = mai_best50.lxns(b50_data["data"], other_data)
+                await mai_b50.send(MessageSegment.image(f"base64://{b64Data}"))
+            case _:
+                await mai_b50.send("\n发生了预期外的错误。\n请联系管理员。")
+    except:
+        await mai_b50.send("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+#-----AP50------END
+
+#-----Single_Score-----START
+mai_single_score = on_regex(r"^/mai score (.+)$", priority=1, block=True)
+
+
+@mai_single_score.handle()
+async def _(event: Event):
+    user_id = str(event.user_id)
+    mode = "lm"
+    qqid = await read_id(mode, user_id)
+    # if str(event.user_id) not in maibind_data.keys():
+    #     await mai_single_score.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+    #判断用户是否绑定
+    try:
+        match = re.match(r"^/mai score (.+)$", event.get_plaintext())
+        if match:
+            mid = int(match.group(1))
+        else:
+            await mai_single_score.finish("\nID不存在。\n请尝试重新查询。")
+        song_info = total_list.by_id(str(mid))
+        song_type = song_info["type"].lower()
+        if song_type == "标准":
+            song_type = "standard"
+        else:
+            song_type = "dx"
+            mid = mid % 10000
+        status, resp = await fetch_single_score_lxns(qqid, mid, song_type)
+        match status:
+            case "Song Type Not Found":
+                await mai_single_score.finish("\n谱面类型不存在。\n请尝试重新查询。")
+            case "Score Not Found":
+                await mai_single_score.finish("\n未游玩过该歌曲。")
+            case "Success":
+                b64Data = mai_score.lxns(resp, song_info)
+                await mai_single_score.send(MessageSegment.image(f"base64://{b64Data}"))
+            case _:
+                await mai_single_score.finish("\n发生了预期外的错误。\n请联系管理员。")
+    except:
+        await mai_single_score.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+
+#-----Single_Score-----END

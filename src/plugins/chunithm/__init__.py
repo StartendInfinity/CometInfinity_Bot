@@ -13,15 +13,38 @@ from .lib.chunithm_music import *
 from .lib.image import *
 from .lib.chart import get_chunithm_chart
 
-
+import aiofiles
 import re
 import os
 import base64
 import json
 import math
+
+from .json_update import *
+
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from .lib.chunithm_best_30 import generate_by_lx
+
+async def read_id(mode: str, user_id: str):
+    try:
+        async with aiofiles.open("./data/bind_data.json", "r", encoding="utf-8") as f:
+            bind_data = json.loads(await f.read())
+    except Exception as e:
+        bind_data = {}
+        print(f"{e}")
+
+    user_bind_data = bind_data.get(user_id, {})  
+
+    qqid = user_bind_data.get(mode)  
+
+    if qqid is None:
+        print("没有用户")
+    else:
+        print(f"{user_id}: {qqid}")
+
+    return qqid
+
 
 chu_regex = r'/chu\s*'
 
@@ -29,8 +52,9 @@ best_30_pic = on_command('/b30' , aliases={'chub30','chu b30','cb30'}, priority=
 
 @best_30_pic.handle()
 async def _(event: Event, message: Message = CommandArg()):
-    with open("./data/bind_data.json", "r", encoding="utf-8") as f:
-            maibind_data = json.load(f)
+    user_id = str(event.user_id)
+    mode = "lc"
+    friend_code = await read_id(mode, user_id)
     username = str(message).strip()
 
     if username == "理论值":
@@ -45,18 +69,18 @@ async def _(event: Event, message: Message = CommandArg()):
                 })
             ]))
     else:
-        if str(event.user_id) in maibind_data:
-            img, success = await generate_by_lx(maibind_data[str(event.user_id)],username if username != "" else None)
-            if success != 0:
-                await best_30_pic.send(img)
-            else:
-                await best_30_pic.send(Message([
-                    MessageSegment("image", {
-                        "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
-                    })
-                ]))
+        # try:
+        img, success = await generate_by_lx(None,friend_code)
+        if success != 0:
+            await best_30_pic.send(img)
         else:
-            await best_30_pic.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+            await best_30_pic.send(Message([
+                MessageSegment("image", {
+                    "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
+                })
+            ]))
+        # except:
+        #     await best_30_pic.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
 
 
 

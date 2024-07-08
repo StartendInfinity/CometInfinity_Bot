@@ -5,6 +5,8 @@ from copy import deepcopy
 from collections import namedtuple
 from pydantic import BaseModel, Field
 
+from .request_client import HEADERS
+
 #对于json相关，第一个为CN，第二个为JP
 import json
 with open('src/plugins/maimai/music_data/maidxCN.json', 'r', encoding='utf-8') as f:
@@ -12,7 +14,371 @@ with open('src/plugins/maimai/music_data/maidxCN.json', 'r', encoding='utf-8') a
 
 # with open('src/plugins/maimai/music_data/maidxJP-135B.json', 'r', encoding='utf-8') as f:
 #     obj_JP = json.load(f)
+scoreRank = ['d', 'c', 'b', 'bb', 'bbb', 'a', 'aa', 'aaa', 's', 's+', 'ss', 'ss+', 'sss', 'sss+']
+score_Rank = {'d': 'D', 'c': 'C', 'b': 'B', 'bb': 'BB', 'bbb': 'BBB', 'a': 'A', 'aa': 'AA', 'aaa': 'AAA', 's': 'S', 'sp': 'Sp', 'ss': 'SS', 'ssp': 'SSp', 'sss': 'SSS', 'sssp': 'SSSp'}
+comboRank = ['fc', 'fc+', 'ap', 'ap+']
+combo_rank = ['fc', 'fcp', 'ap', 'app']
+syncRank = ['fs', 'fs+', 'fdx', 'fdx+']
+sync_rank = ['fs', 'fsp', 'fsd', 'fsdp']
+diffs = ['绿', '黄', '红', '紫', '白']
+levelList = ['1', '2', '3', '4', '5', '6', '7', '7+', '8', '8+', '9', '9+', '10', '10+', '11', '11+', '12', '12+', '13', '13+', '14', '14+', '15']
+achievementList = [50.0, 60.0, 70.0, 75.0, 80.0, 90.0, 94.0, 97.0, 98.0, 99.0, 99.5, 100.0, 100.5]
+BaseRaSpp = [7.0, 8.0, 9.6, 11.2, 12.0, 13.6, 15.2, 16.8, 20.0, 20.3, 20.8, 21.1, 21.6, 22.4]
+fcl = {'fc': 'FC', 'fcp': 'FCp', 'ap': 'AP', 'app': 'APp'}
+fsl = {'fs': 'FS', 'fsp': 'FSp', 'fsd': 'FSD', 'fsdp': 'FSDp'}
+
+plate_to_version = {
+    '真极': '6101',
+    '真神': '6102',
+    '真舞舞': '6103',
+    '超极': '6104',
+    '超将': '6105',
+    '超神': '6106',
+    '超舞舞': '6107',
+    '檄极': '6108',
+    '檄将': '6109',
+    '檄神': '6110',
+    '檄舞舞': '6111',
+    '橙极': '6112',
+    '橙将': '6113',
+    '橙神': '6114',
+    '橙舞舞': '6115',
+    '晓极': '6116',
+    '晓将': '6117',
+    '晓神': '6118',
+    '晓舞舞': '6119',
+    '桃极': '6120',
+    '桃将': '6121',
+    '桃神': '6122',
+    '桃舞舞': '6123',
+    '樱极': '6124',
+    '樱将': '6125',
+    '樱神': '6126',
+    '樱舞舞': '6127',
+    '紫极': '6128',
+    '紫将': '6129',
+    '紫神': '6130',
+    '紫舞舞': '6131',
+    '堇极': '6132',
+    '堇将': '6133',
+    '堇神': '6134',
+    '堇舞舞': '6135',
+    '白极': '6136',
+    '白将': '6137',
+    '白神': '6138',
+    '白舞舞': '6139',
+    '雪极': '6140',
+    '雪将': '6141',
+    '雪神': '6142',
+    '雪舞舞': '6143',
+    '辉极': '6144',
+    '辉将': '6145',
+    '辉神': '6146',
+    '辉舞舞': '6147',
+    '霸者': '6148',
+    '舞极': '6149',
+    '舞将': '6150',
+    '舞神': '6151',
+    '舞舞舞': '6152',
+    '熊极': '55101',
+    '熊将': '55102',
+    '熊神': '55103',
+    '熊舞舞': '55104',
+    '华极': '109101',
+    '华将': '109102',
+    '华神': '109103',
+    '华舞舞': '109104',
+    '爽极': '159101',
+    '爽将': '159102',
+    '爽神': '159103',
+    '爽舞舞': '159104',
+    '煌极': '209101',
+    '煌将': '209102',
+    '煌神': '209103',
+    '煌舞舞': '209104',
+    '宙极': '259101',
+    '宙将': '259102',
+    '宙神': '259103',
+    '宙舞舞': '259104',
+    '星极': '309101',
+    '星将': '309102',
+    '星神': '309103',
+    '星舞舞': '309104',
+    "祭极": "359101",
+    "祭将": "359102",
+    "祭神": "359103",
+    "祭舞舞": "359104",
+    "祝极": "409101",
+    "祝将": "409102",
+    "祝神": "409103",
+    "祝舞舞": "409104",
+    "双极": "459101",
+    "双将": "459102",
+    "双神": "459103",
+    "双舞舞": "459104"
+}
+
+async def get_player_data(project: str, payload: dict) -> Union[dict, str]:
+    import httpx
+    maimaiapi = 'https://www.diving-fish.com/api/maimaidxprober'
+    """
+    获取用户数据，获取失败时返回字符串
+    - `project` : 项目
+        - `best` : 玩家数据
+        - `plate` : 牌子
+    - `payload` : 传递给查分器的数据
+    """
+    if project == 'best':
+        p = 'player'
+    elif project == 'plate':
+        p = 'plate'
+    else:
+        return '项目错误'
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            resp = await client.post(f'{maimaiapi}/query/{p}', json=payload)
+            if resp.status_code == 400:
+                data = 'player_error'
+            elif resp.status_code == 403:
+                data = '该用户禁止了其他人获取数据。'
+            elif resp.status_code == 200:
+                data = resp.json()
+            else:
+                data = '未知错误'
+    except Exception as e:
+        data = f'获取玩家数据时发生错误: {type(e)}'
+    return data
+
+async def get_player_data_lx(project: str, payload: str, plate_name: str) -> Union[dict, str]:
+    import httpx
+    maimaiapi = 'https://maimai.lxns.net/api/v0/maimai/player'
     
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            if project == 'scores':
+                p = 'scores'
+                resp = await client.get(f'{maimaiapi}/{payload}/{p}', headers=HEADERS)
+            elif project == 'plate':
+                p = 'plate'
+                plate_num = plate_to_version[plate_name]
+                resp = await client.get(f'{maimaiapi}/{payload}/{p}/{plate_num}', headers=HEADERS)
+            else:
+                return '项目错误'
+            
+            if resp.status_code == 400:
+                data = 'player_error'
+            elif resp.status_code == 403:
+                data = '该用户禁止了其他人获取数据。'
+            elif resp.status_code == 200:
+                data = resp.json()
+            else:
+                data = '未知错误'
+    except Exception as e:
+        data = f'获取玩家数据时发生错误: {type(e)}'
+    return data
+
+
+
+async def player_plate_data(payload: str, match: str):
+    from nonebot.adapters.onebot.v11 import Message, MessageSegment
+
+    song_played = []
+    song_remain_basic = []
+    song_remain_advanced = []
+    song_remain_expert = []
+    song_remain_master = []
+    total_re_master = []
+    song_remain_re_master = []
+    song_remain_difficult = []
+    total_basic = []
+    total_advanced = []
+    total_expert = []
+    total_master = []
+    
+
+    #data = await get_player_data('plate', payload)
+    match_str = "".join(match)
+    data = await get_player_data_lx('plate', payload, match_str)
+
+    #除了白谱
+      
+    diff = data['data']['required'][0]
+    songs = diff['songs']
+
+    if len(data['data']['required']) > 1: #判断有无白谱，遍历第二个diff
+
+        diff_rem = data['data']['required'][1]
+        songs_rem = diff_rem['songs'] #白谱歌曲数据
+
+        #统计
+        rem_total = len(songs_rem)
+        total = len(songs)
+        c_total = total * 4 + rem_total
+
+        for song in songs: #遍历第一个diff               
+            if 4 in song['completed_difficulties']:
+                total_re_master.append(song)
+            if 3 in song['completed_difficulties']:
+                total_master.append(song)
+            if 2 in song['completed_difficulties']:
+                total_expert.append(song)
+            if 1 in song['completed_difficulties']:
+                total_advanced.append(song)
+            if 0 in song['completed_difficulties']:
+                total_basic.append(song)
+
+            if 0 not in song['completed_difficulties']:
+                song_remain_basic.append(song)
+            if 1 not in song['completed_difficulties']:
+                song_remain_advanced.append(song)
+            if 2 not in song['completed_difficulties']:
+                song_remain_expert.append(song)
+            if 3 not in song['completed_difficulties']:
+                song_remain_master.append(song)
+
+        for song_rem in songs_rem: #遍历第二个diff
+            if 4 in song_rem['completed_difficulties']:
+                total_re_master.append(song_rem)
+            if 4 not in song_rem['completed_difficulties']:
+                song_remain_re_master.append(song_rem)
+
+        #song_remain_re_master = rem_total - len(total_re_master)
+        completed_songs = len(total_basic) + len(total_advanced) + len(total_expert) + len(total_master) + len(total_re_master)
+        total_songs_noRe = len(song_remain_basic) + len(song_remain_advanced) + len(song_remain_expert) +len(song_remain_master) + len(song_remain_re_master)
+        msg = f'''\n您的 {match_str} 完成情况如下：
+已完成 {completed_songs}/{c_total}，剩余 {total_songs_noRe}
+绿：{len(total_basic)}/{total}，剩余 {len(song_remain_basic)}
+黄：{len(total_advanced)}/{total}，剩余 {len(song_remain_advanced)}
+红：{len(total_expert)}/{total}，剩余 {len(song_remain_expert)}
+紫：{len(total_master)}/{total}，剩余 {len(song_remain_master)}
+白：{len(total_re_master)}/{rem_total}，剩余 {len(song_remain_re_master)}
+'''
+    else:
+        for song in songs:
+            total = len(songs)
+            c_total = total * 4
+            # 检查每个难度是否完成，并只将歌曲添加到最高完成的难度列表
+            if 3 in song['completed_difficulties']:
+                total_master.append(song)
+            if 2 in song['completed_difficulties']:
+                total_expert.append(song)
+            if 1 in song['completed_difficulties']:
+                total_advanced.append(song)
+            if 0 in song['completed_difficulties']:
+                total_basic.append(song)
+            # 如果没有完成任何难度
+            if 0 not in song['completed_difficulties']:
+                song_remain_basic.append(song)
+            if 1 not in song['completed_difficulties']:
+                song_remain_advanced.append(song)
+            if 2 not in song['completed_difficulties']:
+                song_remain_expert.append(song)
+            if 3 not in song['completed_difficulties']:
+                song_remain_master.append(song)
+        completed_songs = len(total_basic) + len(total_advanced) + len(total_expert) + len(total_master)
+        total_songs_noRe = len(song_remain_basic) + len(song_remain_advanced) + len(song_remain_expert) +len(song_remain_master)
+        msg = f'''\n您的 {match_str} 完成情况如下：
+已完成 {completed_songs}/{c_total}，剩余 {total_songs_noRe}
+绿：{len(total_basic)}/{total}，剩余 {len(song_remain_basic)}
+黄：{len(total_advanced)}/{total}，剩余 {len(song_remain_advanced)}
+红：{len(total_expert)}/{total}，剩余 {len(song_remain_expert)}
+紫：{len(total_master)}/{total}，剩余 {len(song_remain_master)}
+'''
+        
+
+    # if isinstance(data, str):
+    #     return data
+    #print(data)
+    # 遍历歌曲，根据完成的难度分配到相应的列表
+    # 总歌曲数和完成数
+    
+    
+
+    
+
+    return msg
+
+
+async def level_process_data(payload: str, match: Tuple):
+    song_played = []
+    song_remain = []
+    song_total = []
+
+    #data = await get_player_data('plate', payload)
+    data = await get_player_data_lx('scores', payload)
+
+    if isinstance(data, str):
+        return data
+    
+    # if match[1].lower() in scoreRank:
+    #     achievement = achievementList[scoreRank.index(match[1].lower()) - 1]
+    #     for song in data['verlist']:
+    #         if song['level'] == match[0] and song['achievements'] < achievement:
+    #             song_remain.append([song['id'], song['level_index']])
+                
+    #         song_played.append([song['id'], song['level_index']])
+    # elif match[1].lower() in comboRank:
+    #     combo_index = comboRank.index(match[1].lower())
+    #     for song in data['verlist']:
+    #         if song['level'] == match[0] and ((song['fc'] and combo_rank.index(song['fc']) < combo_index) or not song['fc']):
+    #             song_remain.append([song['id'], song['level_index']])
+    #         song_played.append([song['id'], song['level_index']])
+    # elif match[1].lower() in syncRank:
+    #     sync_index = syncRank.index(match[1].lower())
+    #     for song in data['verlist']:
+    #         if song['level'] == match[0] and ((song['fs'] and sync_rank.index(song['fs']) < sync_index) or not song['fs']):
+    #             song_remain.append([song['id'], song['level_index']])
+    #         song_played.append([song['id'], song['level_index']])
+    # for music in total_list:
+    #     for i, lv in enumerate(music.level[2:]):
+    #         if lv == match[0]:
+    #             song_total.append([song['id']])
+    #         if lv == match[0] and [int(music.id), i + 2] not in song_played:
+    #             song_remain.append([int(music.id), i + 2])
+
+    if match[1].lower() in scoreRank:
+        #achievement = achievementList[scoreRank.index(match[1].lower()) - 1]
+        for song in data['data']:
+            if song['level'] == match[0] and song['rate'] == match[1]:
+                song_remain.append([song['id'], song['level_index']])
+                
+            song_played.append([song['id'], song['level_index']])
+    elif match[1].lower() in comboRank:
+        combo_index = comboRank.index(match[1].lower())
+        for song in data['verlist']:
+            if song['level'] == match[0] and ((song['fc'] and combo_rank.index(song['fc']) < combo_index) or not song['fc']):
+                song_remain.append([song['id'], song['level_index']])
+            song_played.append([song['id'], song['level_index']])
+    elif match[1].lower() in syncRank:
+        sync_index = syncRank.index(match[1].lower())
+        for song in data['verlist']:
+            if song['level'] == match[0] and ((song['fs'] and sync_rank.index(song['fs']) < sync_index) or not song['fs']):
+                song_remain.append([song['id'], song['level_index']])
+            song_played.append([song['id'], song['level_index']])
+    for music in total_list:
+        for i, lv in enumerate(music.level[2:]):
+            if lv == match[0]:
+                song_total.append([song['id']])
+            if lv == match[0] and [int(music.id), i + 2] not in song_played:
+                song_remain.append([int(music.id), i + 2])
+
+    song_total = sorted(song_total, key=lambda i: int(i[0]))
+    song_remain = sorted(song_remain, key=lambda i: int(i[1]))
+    song_remain = sorted(song_remain, key=lambda i: int(i[0]))
+    # songs = []
+    # for song in song_remain:
+    #     music = total_list.by_id(str(song[0]))
+    #     songs.append([music.id, music.title, diffs[song[1]], music.ds[song[1]], song[1]])
+
+    r_total = len(song_total) - len(song_remain)
+    msg = '\n'
+    #song_record = [[s['id'], s['level_index']] for s in data['verlist']]
+    msg += f'您的 {match[0]}  {match[1].upper()}\n'
+    msg += f'完成进度：{r_total} / {len(song_total)}\n'
+    msg += f'还有 {len(song_remain)} 张谱面！'
+
+    return msg
+
 
 Notes1 = namedtuple('Notes', ['tap', 'hold', 'slide', 'brk'])
 Notes2 = namedtuple('Notes', ['tap', 'hold', 'slide', 'touch', 'brk'])
@@ -279,5 +645,176 @@ for music_data in obj.values():
 #     total_list_JP.append(music)
 
 
+#     if match[0] == '真':
+#         verlist = list(filter(lambda x: x['title'] != 'ジングルベル', data['verlist']))
+#     else:
+#         verlist = data['verlist']
+
+#     if match[1] in ['将', '者']:
+#         for song in verlist:
+#             if song['level_index'] == 0 and song['achievements'] < (100.0 if match[1] == '将' else 80.0):
+#                 song_remain_basic.append([song['id'], song['level_index']])
+#             if song['level_index'] == 1 and song['achievements'] < (100.0 if match[1] == '将' else 80.0):
+#                 song_remain_advanced.append([song['id'], song['level_index']])
+#             if song['level_index'] == 2 and song['achievements'] < (100.0 if match[1] == '将' else 80.0):
+#                 song_remain_expert.append([song['id'], song['level_index']])
+#             if song['level_index'] == 3 and song['achievements'] < (100.0 if match[1] == '将' else 80.0):
+#                 song_remain_master.append([song['id'], song['level_index']])
+#             if match[0] in ['舞', '霸'] and song['level_index'] == 4 and song['achievements'] < (100.0 if match[1] == '将' else 80.0):
+#                 song_remain_re_master.append([song['id'], song['level_index']])
+#             song_played.append([song['id'], song['level_index']])
+#     elif match[1] in ['極', '极']:
+#         for song in verlist:
+#             if song['level_index'] == 0 and not song['fc']:
+#                 song_remain_basic.append([song['id'], song['level_index']])
+#             if song['level_index'] == 1 and not song['fc']:
+#                 song_remain_advanced.append([song['id'], song['level_index']])
+#             if song['level_index'] == 2 and not song['fc']:
+#                 song_remain_expert.append([song['id'], song['level_index']])
+#             if song['level_index'] == 3 and not song['fc']:
+#                 song_remain_master.append([song['id'], song['level_index']])
+#             if match[0] == '舞' and song['level_index'] == 4 and not song['fc']:
+#                 song_remain_re_master.append([song['id'], song['level_index']])
+#             song_played.append([song['id'], song['level_index']])
+#     elif match[1] == '舞舞':
+#         for song in verlist:
+#             if song['level_index'] == 0 and song['fs'] not in ['fsd', 'fsdp']:
+#                 song_remain_basic.append([song['id'], song['level_index']])
+#             if song['level_index'] == 1 and song['fs'] not in ['fsd', 'fsdp']:
+#                 song_remain_advanced.append([song['id'], song['level_index']])
+#             if song['level_index'] == 2 and song['fs'] not in ['fsd', 'fsdp']:
+#                 song_remain_expert.append([song['id'], song['level_index']])
+#             if song['level_index'] == 3 and song['fs'] not in ['fsd', 'fsdp']:
+#                 song_remain_master.append([song['id'], song['level_index']])
+#             if match[0] == '舞' and song['level_index'] == 4 and song['fs'] not in ['fsd', 'fsdp']:
+#                 song_remain_re_master.append([song['id'], song['level_index']])
+#             song_played.append([song['id'], song['level_index']])
+#     elif match[1] == '神':
+#         for song in verlist:
+#             if song['level_index'] == 0 and song['fc'] not in ['ap', 'app']:
+#                 song_remain_basic.append([song['id'], song['level_index']])
+#             if song['level_index'] == 1 and song['fc'] not in ['ap', 'app']:
+#                 song_remain_advanced.append([song['id'], song['level_index']])
+#             if song['level_index'] == 2 and song['fc'] not in ['ap', 'app']:
+#                 song_remain_expert.append([song['id'], song['level_index']])
+#             if song['level_index'] == 3 and song['fc'] not in ['ap', 'app']:
+#                 song_remain_master.append([song['id'], song['level_index']])
+#             if match[0] == '舞' and song['level_index'] == 4 and song['fc'] not in ['ap', 'app']:
+#                 song_remain_re_master.append([song['id'], song['level_index']])
+#             song_played.append([song['id'], song['level_index']])
+#     for music in total_list:
+#         if match[0] == '真' and music.title == 'ジングルベル':
+#             continue
+#         if music['basic_info']['from'] in payload['version']:
+#             total_basic.append([int(music.id), 0])
+#             total_advanced.append([int(music.id), 1])
+#             total_expert.append([int(music.id), 2])
+#             total_master.append([int(music.id), 3])
+#             total_re_master.append([int(music.id), 4])
+#             if [int(music.id), 0] not in song_played:
+#                 song_remain_basic.append([int(music.id), 0])
+#             if [int(music.id), 1] not in song_played:
+#                 song_remain_advanced.append([int(music.id), 1])
+#             if [int(music.id), 2] not in song_played:
+#                 song_remain_expert.append([int(music.id), 2])
+#             if [int(music.id), 3] not in song_played:
+#                 song_remain_master.append([int(music.id), 3])
+#             if match[0] in ['舞', '霸'] and len(music.level) == 5 and [int(music.id), 4] not in song_played:
+#                 song_remain_re_master.append([int(music.id), 4])
+#     total_basic = sorted(total_basic, key=lambda i: int(i[0]))
+#     total_advanced = sorted(total_advanced, key=lambda i: int(i[0]))
+#     total_expert = sorted(total_expert, key=lambda i: int(i[0]))
+#     total_master = sorted(total_master, key=lambda i: int(i[0]))
+#     total_re_master = sorted(total_re_master, key=lambda i: int(i[0]))
+#     song_remain_basic = sorted(song_remain_basic, key=lambda i: int(i[0]))
+#     song_remain_advanced = sorted(song_remain_advanced, key=lambda i: int(i[0]))
+#     song_remain_expert = sorted(song_remain_expert, key=lambda i: int(i[0]))
+#     song_remain_master = sorted(song_remain_master, key=lambda i: int(i[0]))
+#     song_remain_re_master = sorted(song_remain_re_master, key=lambda i: int(i[0]))
+#     for song in song_remain_basic + song_remain_advanced + song_remain_expert + song_remain_master + song_remain_re_master:
+#         music = total_list.by_id(str(song[0]))
+#         if music.ds[song[1]] > 13.6:
+#             song_remain_difficult.append([music.id, music.title, diffs[song[1]], music.ds[song[1]], song[1]])
+
+
+#     # total_basic = len([music for music in total_list if music['basic_info']['from'] in payload['version'][0]])
+#     # print(f"绿：{[s for s in verlist if s['level_index'] == 0]}")
+#     # total_advanced = len([music for music in total_list if music['basic_info']['from'] in payload['version']== 1])
+#     # total_expert = len([music for music in total_list if music['basic_info']['from'] in payload['version']== 2])
+#     # total_master = len([music for music in total_list if music['basic_info']['from'] in payload['version']== 3])
+#     # print(f"紫：{[music for music in total_list if music['basic_info']['from'] in payload['version']== 3]}")
+#     # total_re_master = len([music for music in total_list if music['basic_info']['from'] in payload['version']== 4])
+
+#     completed_basic = len(total_basic )-len(song_remain_basic)
+#     completed_advanced = len(total_advanced)-len(song_remain_advanced) 
+#     completed_expert = len(total_expert)-len(song_remain_expert) 
+#     completed_master = len(total_master) -len(song_remain_master)  
+#     completed_re_master =len(total_re_master)-len(song_remain_re_master) 
+
+#     total_songs_noRe = len(song_remain_basic) + len(song_remain_advanced) + len(song_remain_expert) + len(song_remain_master)
+#     completed_songs = completed_basic + completed_advanced + completed_expert + completed_master + completed_re_master
+#     c_total = total_basic + total_advanced + total_expert + total_master
+# msg =
+#     song_remain: list[list] = song_remain_basic + song_remain_advanced + song_remain_expert + song_remain_master + song_remain_re_master
+#     song_record = [[s['id'], s['level_index']] for s in verlist]
+#     if match[0] in ['舞', '霸']:
+#         msg += f'白：{len(total_re_master) - len(song_remain_re_master)}/{len(total_re_master)}，剩余 {len(song_remain_re_master)}\n'
+#     if len(song_remain_difficult) > 0:
+#         if len(song_remain_difficult) < 5:
+#             msg += '等级 13+ 以上剩余的谱面：\n'
+#             for i, s in enumerate(song_remain_difficult):
+#                 self_record = ''
+#                 if [int(s[0]), s[-1]] in song_record:
+#                     record_index = song_record.index([int(s[0]), s[-1]])
+#                     if match[1] in ['将', '者']:
+#                         self_record = str(verlist[record_index]['achievements']) + '%'
+#                     elif match[1] in ['極', '极', '神']:
+#                         if verlist[record_index]['fc']:
+#                             self_record = comboRank[combo_rank.index(verlist[record_index]['fc'])].upper()
+#                     elif match[1] == '舞舞':
+#                         if verlist[record_index]['fs']:
+#                             self_record = syncRank[sync_rank.index(verlist[record_index]['fs'])].upper()
+#                 msg += f'{s[0]} {s[2]} {s[1]} {s[3]} {self_record}'.strip() + '\n'
+#         else:
+#             msg += '等级 13+ 以上剩余的谱面：\n'
+#             for i, s in enumerate(song_remain_difficult[:5]):
+#                 self_record = ''
+#                 if [int(s[0]), s[-1]] in song_record:
+#                     record_index = song_record.index([int(s[0]), s[-1]])
+#                     if match[1] in ['将', '者']:
+#                         self_record = str(verlist[record_index]['achievements']) + '%'
+#                     elif match[1] in ['極', '极', '神']:
+#                         if verlist[record_index]['fc']:
+#                             self_record = comboRank[combo_rank.index(verlist[record_index]['fc'])].upper()
+#                     elif match[1] == '舞舞':
+#                         if verlist[record_index]['fs']:
+#                             self_record = syncRank[sync_rank.index(verlist[record_index]['fs'])].upper()
+#                 msg += f'{s[0]} {s[2]} {s[1]} {s[3]} {self_record}'.strip() + '\n'
+#             msg += f'还有 {len(song_remain_difficult) - 5} 首13+定数的曲目未展示。'
+#     elif len(song_remain) > 0:
+#         for i, s in enumerate(song_remain):
+#             m = total_list.by_id(str(s[0]))
+#             ds = m.ds[s[1]]
+#             song_remain[i].append(ds)
+#         if len(song_remain) < 5:
+#             msg += '剩余曲目：\n'
+#             for i, s in enumerate(sorted(song_remain, key=lambda i: i[2])):
+#                 m = total_list.by_id(str(s[0]))
+#                 self_record = ''
+#                 if [int(s[0]), s[-1]] in song_record:
+#                     record_index = song_record.index([int(s[0]), s[-1]])
+#                     if match[1] in ['将', '者']:
+#                         self_record = str(verlist[record_index]['achievements']) + '%'
+#                     elif match[1] in ['極', '极', '神']:
+#                         if verlist[record_index]['fc']:
+#                             self_record = comboRank[combo_rank.index(verlist[record_index]['fc'])].upper()
+#                     elif match[1] == '舞舞':
+#                         if verlist[record_index]['fs']:
+#                             self_record = syncRank[sync_rank.index(verlist[record_index]['fs'])].upper()
+#                 msg += f'{m.id} {m.title} {diffs[s[1]]} {m.ds[s[1]]} {self_record}'.strip() + '\n'
+#         else:
+#             msg += '已经没有定数大于13.6的曲目了,加油清谱！\n'
+#     else:
+#         msg += f'恭喜您完成{match[0]}{match[1]}！'
 
 

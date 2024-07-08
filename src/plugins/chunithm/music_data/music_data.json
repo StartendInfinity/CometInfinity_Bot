@@ -443,7 +443,7 @@
             "title": "Blue Noise",
             "artist": "from PACA PACA PASSION",
             "genre": "VARIETY",
-            "bpm": 150,
+            "bpm": 149,
             "from": "CHUNITHM"
         },
         "ds": [
@@ -2217,7 +2217,7 @@
             "title": "JET",
             "artist": "from PACA PACA PASSION Special",
             "genre": "VARIETY",
-            "bpm": 164,
+            "bpm": 163,
             "from": "CHUNITHM"
         },
         "ds": [
@@ -4186,19 +4186,22 @@
             2,
             5,
             9,
-            10.6
+            10.6,
+            13.5
         ],
         "level": [
             "2",
             "5",
             "9",
-            "10+"
+            "10+",
+            "13+"
         ],
         "cids": [
             1,
             2,
             3,
-            4
+            4,
+            5
         ],
         "charts": [
             {
@@ -4216,6 +4219,10 @@
             {
                 "combo": 1509,
                 "charter": "ロシェ＠ペンギン"
+            },
+            {
+                "combo": 2478,
+                "charter": "Moon Strix"
             }
         ]
     },
@@ -5281,7 +5288,7 @@
             "title": "XL TECHNO",
             "artist": "from PACA PACA PASSION",
             "genre": "VARIETY",
-            "bpm": 130,
+            "bpm": 129,
             "from": "CHUNITHM PLUS"
         },
         "ds": [
@@ -5328,7 +5335,7 @@
             "title": "Halcyon",
             "artist": "xi",
             "genre": "VARIETY",
-            "bpm": 96,
+            "bpm": 95,
             "from": "CHUNITHM PLUS"
         },
         "ds": [
@@ -9405,7 +9412,7 @@
             "title": "檄!帝国華撃団",
             "artist": "真宮寺さくら（横山智佐）＆帝国歌劇団「サクラ大戦」",
             "genre": "VARIETY",
-            "bpm": 143,
+            "bpm": 142,
             "from": "AIR"
         },
         "ds": [
@@ -9969,7 +9976,7 @@
             "title": "In The Blue Sky '01",
             "artist": "電脳戦機バーチャロンフォース",
             "genre": "VARIETY",
-            "bpm": 167,
+            "bpm": 166,
             "from": "AIR"
         },
         "ds": [
@@ -14220,7 +14227,7 @@
             "title": "Glorious Crown (tpz over-Over-OVERCUTE REMIX)",
             "artist": "t+pazolite",
             "genre": "ORIGINAL",
-            "bpm": 236,
+            "bpm": 235,
             "from": "STAR"
         },
         "ds": [
@@ -14690,7 +14697,7 @@
             "title": "風に乗せた願い",
             "artist": "豚乙女",
             "genre": "東方Project",
-            "bpm": 100,
+            "bpm": 99,
             "from": "STAR"
         },
         "ds": [
@@ -18457,7 +18464,7 @@
             "title": "碧き孤島のアングゥィス",
             "artist": "電気式華憐音楽集団",
             "genre": "POPS & ANIME",
-            "bpm": 197,
+            "bpm": 196,
             "from": "STAR PLUS"
         },
         "ds": [
@@ -20055,7 +20062,7 @@
             "title": "ミリオン／ワンズ",
             "artist": "じん×kemu",
             "genre": "niconico",
-            "bpm": 195,
+            "bpm": 194,
             "from": "AMAZON"
         },
         "ds": [
@@ -20713,7 +20720,7 @@
             "title": "Nhelv",
             "artist": "Silentroom",
             "genre": "VARIETY",
-            "bpm": 175,
+            "bpm": 174,
             "from": "AMAZON"
         },
         "ds": [
@@ -32987,7 +32994,7 @@
             "title": "ぽかぽかの星",
             "artist": "はるまきごはん",
             "genre": "niconico",
-            "bpm": 114,
+            "bpm": 113,
             "from": "PARADISE"
         },
         "ds": [
@@ -37452,7 +37459,7 @@
             "title": "XL TECHNO -More Dance Remix-",
             "artist": "from PACA PACA PASSION Special",
             "genre": "VARIETY",
-            "bpm": 150,
+            "bpm": 149,
             "from": "NEW"
         },
         "ds": [
@@ -37734,7 +37741,7 @@
             "title": "8OROCHI",
             "artist": "REDALiCE「太鼓の達人」",
             "genre": "VARIETY",
-            "bpm": 201,
+            "bpm": 200,
             "from": "NEW PLUS"
         },
         "ds": [
@@ -39896,7 +39903,7 @@
             "title": "天空カフェテリア",
             "artist": "Petit Rabbit's「ご注文はうさぎですか？BLOOM」",
             "genre": "POPS & ANIME",
-            "bpm": 154,
+            "bpm": 153,
             "from": "NEW"
         },
         "ds": [
@@ -41061,6 +41068,288 @@
             {
                 "combo": 1413,
                 "charter": "たかなしさん"
+            }
+        ]
+    },
+    {
+        "id": 2128,
+        "title": "多重未来のカルテット -Quartet Theme-",
+        "basic_info": {
+            "title": "多重未来のカルテット -Quartet Theme-",
+            "artist": "Kusemono/SWANTONE",
+            "genre": "niconico",
+            "bpm": 150,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            5,
+            9.5,
+            13.7
+        ],
+        "level": [
+            "3",
+            "5",
+            "9+",
+            "13+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 396,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 846,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1298,
+                "charter": "ものくろっく"
+            },
+            {
+                "combo": 1749,
+                "charter": "ロシェ＠ペンギン"
+            }
+        ]
+    },
+    {
+        "id": 2129,
+        "title": "Starduster",
+        "basic_info": {
+            "title": "Starduster",
+            "artist": "ジミーサムP",
+            "genre": "niconico",
+            "bpm": 82,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            1,
+            4,
+            7.5,
+            10.8
+        ],
+        "level": [
+            "1",
+            "4",
+            "7+",
+            "10+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 382,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 647,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1012,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 1610,
+                "charter": "ミストルティン"
+            }
+        ]
+    },
+    {
+        "id": 2130,
+        "title": "崩壊歌姫 -disruptive diva-",
+        "basic_info": {
+            "title": "崩壊歌姫 -disruptive diva-",
+            "artist": "マチゲリータ",
+            "genre": "niconico",
+            "bpm": 170,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            10,
+            13.9
+        ],
+        "level": [
+            "3",
+            "6",
+            "10",
+            "13+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 440,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 873,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1413,
+                "charter": "ロシェ＠ペンギン"
+            },
+            {
+                "combo": 1923,
+                "charter": "ミストルティン"
+            }
+        ]
+    },
+    {
+        "id": 2131,
+        "title": "マージナル",
+        "basic_info": {
+            "title": "マージナル",
+            "artist": "OSTER project",
+            "genre": "niconico",
+            "bpm": 190,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            9,
+            12.8
+        ],
+        "level": [
+            "3",
+            "6",
+            "9",
+            "12+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 533,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 786,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1283,
+                "charter": "Redarrow"
+            },
+            {
+                "combo": 1946,
+                "charter": "ロシェ＠ペンギン"
+            }
+        ]
+    },
+    {
+        "id": 2132,
+        "title": "ぽっぴっぽー",
+        "basic_info": {
+            "title": "ぽっぴっぽー",
+            "artist": "ラマーズP",
+            "genre": "niconico",
+            "bpm": 150,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            5,
+            9.5,
+            13.7
+        ],
+        "level": [
+            "3",
+            "5",
+            "9+",
+            "13+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 407,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 723,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1293,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1700,
+                "charter": "【CHUNITHM】小鳥遊さん【本店だよ！！】"
+            }
+        ]
+    },
+    {
+        "id": 2133,
+        "title": "The secret garden",
+        "basic_info": {
+            "title": "The secret garden",
+            "artist": "Project DIVA Original Song feat.初音ミク",
+            "genre": "niconico",
+            "bpm": 133,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            5,
+            8.5,
+            12.4
+        ],
+        "level": [
+            "2",
+            "5",
+            "8+",
+            "12"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 426,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 651,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1056,
+                "charter": "ミストルティン"
+            },
+            {
+                "combo": 1333,
+                "charter": "いけないレモン"
             }
         ]
     },
@@ -44455,7 +44744,7 @@
             "title": "吉原ラメント",
             "artist": "亜沙",
             "genre": "niconico",
-            "bpm": 192,
+            "bpm": 191,
             "from": "NEW PLUS"
         },
         "ds": [
@@ -44727,6 +45016,523 @@
             {
                 "combo": 2112,
                 "charter": "Lemon Kingdom"
+            }
+        ]
+    },
+    {
+        "id": 2222,
+        "title": "3倍！Sun Shine！カーニバル！",
+        "basic_info": {
+            "title": "3倍！Sun Shine！カーニバル！",
+            "artist": "アンジュ・カトリーナ、戌亥とこ、リゼ・ヘルエスタ",
+            "genre": "POPS & ANIME",
+            "bpm": 142,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            5,
+            9,
+            11.9
+        ],
+        "level": [
+            "2",
+            "5",
+            "9",
+            "11+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 546,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 741,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1523,
+                "charter": "じゃこレモン"
+            },
+            {
+                "combo": 1709,
+                "charter": "そらいろカリン"
+            }
+        ]
+    },
+    {
+        "id": 2223,
+        "title": "地獄屋八丁荒らし",
+        "basic_info": {
+            "title": "地獄屋八丁荒らし",
+            "artist": "戌亥とこ",
+            "genre": "POPS & ANIME",
+            "bpm": 202,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            6,
+            8,
+            12.3
+        ],
+        "level": [
+            "2",
+            "6",
+            "8",
+            "12"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 478,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1020,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1157,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 2067,
+                "charter": "じゃこレモン"
+            }
+        ]
+    },
+    {
+        "id": 2224,
+        "title": "ハッピーエンドをはじめから",
+        "basic_info": {
+            "title": "ハッピーエンドをはじめから",
+            "artist": "リゼ・ヘルエスタ",
+            "genre": "POPS & ANIME",
+            "bpm": 206,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            10,
+            11.6
+        ],
+        "level": [
+            "3",
+            "6",
+            "10",
+            "11+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 602,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1015,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1425,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1881,
+                "charter": "うさぎランドリー"
+            }
+        ]
+    },
+    {
+        "id": 2225,
+        "title": "過去を喰らう",
+        "basic_info": {
+            "title": "過去を喰らう",
+            "artist": "花譜",
+            "genre": "POPS & ANIME",
+            "bpm": 187,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            5,
+            9.5,
+            12.9
+        ],
+        "level": [
+            "3",
+            "5",
+            "9+",
+            "12+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 592,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 966,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1361,
+                "charter": "ロシェ＠ペンギン"
+            },
+            {
+                "combo": 2034,
+                "charter": "月梟 -Moon Strix-"
+            }
+        ]
+    },
+    {
+        "id": 2227,
+        "title": "Splash Dance!!",
+        "basic_info": {
+            "title": "Splash Dance!!",
+            "artist": "曲：Q-MHz／歌：オンゲキシューターズ",
+            "genre": "ゲキマイ",
+            "bpm": 155,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            9.5,
+            12.4
+        ],
+        "level": [
+            "3",
+            "6",
+            "9+",
+            "12"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 467,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 818,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1375,
+                "charter": "Redarrow"
+            },
+            {
+                "combo": 2081,
+                "charter": "いい波きてるよ！ロシェ＠ペンギン"
+            }
+        ]
+    },
+    {
+        "id": 2228,
+        "title": "帰り道",
+        "basic_info": {
+            "title": "帰り道",
+            "artist": "イロドリミドリ",
+            "genre": "イロドリミドリ",
+            "bpm": 113,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            5,
+            8.5,
+            10.9
+        ],
+        "level": [
+            "2",
+            "5",
+            "8+",
+            "10+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 551,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1024,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1143,
+                "charter": "小鳥遊さん"
+            },
+            {
+                "combo": 1816,
+                "charter": "ミストルティン"
+            }
+        ]
+    },
+    {
+        "id": 2229,
+        "title": "QZKago Requiem",
+        "basic_info": {
+            "title": "QZKago Requiem",
+            "artist": "t+pazolite",
+            "genre": "ゲキマイ",
+            "bpm": 257,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            5,
+            8.5,
+            13.7,
+            14.9
+        ],
+        "level": [
+            "5",
+            "8+",
+            "13+",
+            "14+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 457,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 926,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1475,
+                "charter": "ロシェ＠ペンギン"
+            },
+            {
+                "combo": 1874,
+                "charter": "ミストルティン vs じゃこレモン"
+            }
+        ]
+    },
+    {
+        "id": 2230,
+        "title": "#SUP3RORBITAL",
+        "basic_info": {
+            "title": "#SUP3RORBITAL",
+            "artist": "ああ…翡翠茶漬け…",
+            "genre": "ORIGINAL",
+            "bpm": 210,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            4,
+            7.5,
+            12.4,
+            14.7
+        ],
+        "level": [
+            "4",
+            "7+",
+            "12",
+            "14+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 614,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1049,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1682,
+                "charter": "ロシェ＠ペンギン"
+            },
+            {
+                "combo": 2716,
+                "charter": "#FR33D0MP1221C4T"
+            }
+        ]
+    },
+    {
+        "id": 2231,
+        "title": "WE'RE BACK!!",
+        "basic_info": {
+            "title": "WE'RE BACK!!",
+            "artist": "Zekk",
+            "genre": "ORIGINAL",
+            "bpm": 185,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            7,
+            12.9,
+            14.6
+        ],
+        "level": [
+            "3",
+            "7",
+            "12+",
+            "14+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 483,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 799,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1413,
+                "charter": "Redarrow"
+            },
+            {
+                "combo": 2108,
+                "charter": "MOON STRIX!!"
+            }
+        ]
+    },
+    {
+        "id": 2232,
+        "title": "Brightness",
+        "basic_info": {
+            "title": "Brightness",
+            "artist": "Masayoshi Iimori",
+            "genre": "ORIGINAL",
+            "bpm": 160,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            12,
+            14.4
+        ],
+        "level": [
+            "3",
+            "6",
+            "12",
+            "14"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 430,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 788,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1279,
+                "charter": "じゃこレモン"
+            },
+            {
+                "combo": 1747,
+                "charter": "Techno Kitchen"
+            }
+        ]
+    },
+    {
+        "id": 2233,
+        "title": "Λzure Vixen",
+        "basic_info": {
+            "title": "Λzure Vixen",
+            "artist": "かめりあ",
+            "genre": "ORIGINAL",
+            "bpm": 163,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            4,
+            8.5,
+            13.8,
+            15.2
+        ],
+        "level": [
+            "4",
+            "8+",
+            "13+",
+            "15"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 583,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1022,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1875,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 2928,
+                "charter": "redarrow Vs habakiri"
             }
         ]
     },
@@ -45291,6 +46097,1722 @@
             {
                 "combo": 2143,
                 "charter": "LOVE ぴちネコ FOREVER"
+            }
+        ]
+    },
+    {
+        "id": 8000,
+        "title": "幾四音-Ixion-",
+        "basic_info": {
+            "title": "幾四音-Ixion-",
+            "artist": "M.S.S Project",
+            "genre": "ORIGINAL",
+            "bpm": 210,
+            "from": "CHUNITHM PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1244,
+                "charter": "From The Broken World's End／EXPERT"
+            }
+        ]
+    },
+    {
+        "id": 8020,
+        "title": "B.B.K.K.B.K.K.",
+        "basic_info": {
+            "title": "B.B.K.K.B.K.K.",
+            "artist": "nora2r",
+            "genre": "VARIETY",
+            "bpm": 170,
+            "from": "CHUNITHM PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1051,
+                "charter": ".K.K.B.K.K.B.B"
+            }
+        ]
+    },
+    {
+        "id": 8024,
+        "title": "Garakuta Doll Play (sasakure.UK clutter remix)",
+        "basic_info": {
+            "title": "Garakuta Doll Play (sasakure.UK clutter remix)",
+            "artist": "sasakure.UK",
+            "genre": "ORIGINAL",
+            "bpm": 256,
+            "from": "CHUNITHM PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2525,
+                "charter": "チュウニ譜面ボーイズ"
+            }
+        ]
+    },
+    {
+        "id": 8026,
+        "title": "FREEDOM DiVE",
+        "basic_info": {
+            "title": "FREEDOM DiVE",
+            "artist": "xi",
+            "genre": "VARIETY",
+            "bpm": 222,
+            "from": "CHUNITHM PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2877,
+                "charter": "CHUNI DIMENSIONS"
+            }
+        ]
+    },
+    {
+        "id": 8053,
+        "title": "Oshama Scramble!",
+        "basic_info": {
+            "title": "Oshama Scramble!",
+            "artist": "t+pazolite",
+            "genre": "ゲキマイ",
+            "bpm": 190,
+            "from": "AIR"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1945,
+                "charter": "チュウニ譜面ボーイズ"
+            }
+        ]
+    },
+    {
+        "id": 8070,
+        "title": "Paqqin",
+        "basic_info": {
+            "title": "Paqqin",
+            "artist": "owl＊tree",
+            "genre": "ORIGINAL",
+            "bpm": 110,
+            "from": "AIR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1444,
+                "charter": "Stoppin"
+            }
+        ]
+    },
+    {
+        "id": 8081,
+        "title": "檄!帝国華撃団",
+        "basic_info": {
+            "title": "檄!帝国華撃団",
+            "artist": "真宮寺さくら（横山智佐）＆帝国歌劇団「サクラ大戦」",
+            "genre": "VARIETY",
+            "bpm": 142,
+            "from": "AIR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2878,
+                "charter": "【一部語り】檄!帝国華撃団"
+            }
+        ]
+    },
+    {
+        "id": 8084,
+        "title": "だんだん早くなる",
+        "basic_info": {
+            "title": "だんだん早くなる",
+            "artist": "40mP",
+            "genre": "niconico",
+            "bpm": 94,
+            "from": "AIR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1140,
+                "charter": "全国共通リズム感テスト"
+            }
+        ]
+    },
+    {
+        "id": 8087,
+        "title": "Air",
+        "basic_info": {
+            "title": "Air",
+            "artist": "SHIKI",
+            "genre": "VARIETY",
+            "bpm": 178,
+            "from": "AIR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 3000,
+                "charter": "Air -INFINITY-"
+            }
+        ]
+    },
+    {
+        "id": 8091,
+        "title": "Oshama Scramble! (Cranky Remix)",
+        "basic_info": {
+            "title": "Oshama Scramble! (Cranky Remix)",
+            "artist": "Cranky",
+            "genre": "ORIGINAL",
+            "bpm": 190,
+            "from": "AIR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2830,
+                "charter": "『パーリナイ2(祭)』でお披露目した譜面だよ"
+            }
+        ]
+    },
+    {
+        "id": 8098,
+        "title": "今ぞ♡崇め奉れ☆オマエらよ！！～姫の秘メタル渇望～",
+        "basic_info": {
+            "title": "今ぞ♡崇め奉れ☆オマエらよ！！～姫の秘メタル渇望～",
+            "artist": "あべにゅうぷろじぇくと feat.佐倉 紗織　produced by ave;new",
+            "genre": "ORIGINAL",
+            "bpm": 214,
+            "from": "STAR"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2500,
+                "charter": "崇め♡奉れEDIT"
+            }
+        ]
+    },
+    {
+        "id": 8108,
+        "title": "G e n g a o z o",
+        "basic_info": {
+            "title": "G e n g a o z o",
+            "artist": "-45",
+            "genre": "VARIETY",
+            "bpm": 153,
+            "from": "STAR"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2766,
+                "charter": "C H U N I _ O v e r j o y"
+            }
+        ]
+    },
+    {
+        "id": 8110,
+        "title": "AMAZING MIGHTYYYY!!!!",
+        "basic_info": {
+            "title": "AMAZING MIGHTYYYY!!!!",
+            "artist": "WAiKURO",
+            "genre": "ゲキマイ",
+            "bpm": 185,
+            "from": "STAR"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1527,
+                "charter": "!!!!YYYYTHGIM"
+            }
+        ]
+    },
+    {
+        "id": 8121,
+        "title": "ウソラセラ",
+        "basic_info": {
+            "title": "ウソラセラ",
+            "artist": "ピノキオピー",
+            "genre": "ORIGINAL",
+            "bpm": 188,
+            "from": "STAR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 4644,
+                "charter": "オオカミが二倍！本当なんだよ！"
+            }
+        ]
+    },
+    {
+        "id": 8123,
+        "title": "GEMINI -M-",
+        "basic_info": {
+            "title": "GEMINI -M-",
+            "artist": "Tatsh",
+            "genre": "ゲキマイ",
+            "bpm": 180,
+            "from": "STAR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1984,
+                "charter": "(■‐■)ゞ☆"
+            }
+        ]
+    },
+    {
+        "id": 8124,
+        "title": "volcanic",
+        "basic_info": {
+            "title": "volcanic",
+            "artist": "DETRO a.k.a ルゼ",
+            "genre": "VARIETY",
+            "bpm": 191,
+            "from": "STAR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 3000,
+                "charter": "自然の脅威が君に襲い掛かる！"
+            }
+        ]
+    },
+    {
+        "id": 8127,
+        "title": "Devastating Blaster",
+        "basic_info": {
+            "title": "Devastating Blaster",
+            "artist": "INNOCENT NOIZE",
+            "genre": "ORIGINAL",
+            "bpm": 160,
+            "from": "STAR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1363,
+                "charter": "連打ー！AJして友達に自慢しよう！"
+            }
+        ]
+    },
+    {
+        "id": 8129,
+        "title": "Starlight Disco",
+        "basic_info": {
+            "title": "Starlight Disco",
+            "artist": "loos feat. Meramipop",
+            "genre": "ゲキマイ",
+            "bpm": 128,
+            "from": "STAR PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1324,
+                "charter": "Starlight Disco Festa"
+            }
+        ]
+    },
+    {
+        "id": 8135,
+        "title": "WARNING×WARNING×WARNING",
+        "basic_info": {
+            "title": "WARNING×WARNING×WARNING",
+            "artist": "暁Records",
+            "genre": "東方Project",
+            "bpm": 172,
+            "from": "AMAZON"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 6259,
+                "charter": "ほらもっともっと避けて！"
+            }
+        ]
+    },
+    {
+        "id": 8136,
+        "title": "Angel dust",
+        "basic_info": {
+            "title": "Angel dust",
+            "artist": "LV.4",
+            "genre": "VARIETY",
+            "bpm": 170,
+            "from": "AMAZON"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2194,
+                "charter": "深淵"
+            }
+        ]
+    },
+    {
+        "id": 8141,
+        "title": "End Time",
+        "basic_info": {
+            "title": "End Time",
+            "artist": "Cres.",
+            "genre": "VARIETY",
+            "bpm": 180,
+            "from": "AMAZON"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1769,
+                "charter": "CHUNI ReQuiEm"
+            }
+        ]
+    },
+    {
+        "id": 8159,
+        "title": "コーチンズカップ・クラシック",
+        "basic_info": {
+            "title": "コーチンズカップ・クラシック",
+            "artist": "POPHOLIC「龍が如く５　夢、叶えし者」",
+            "genre": "VARIETY",
+            "bpm": 162,
+            "from": "AMAZON PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1456,
+                "charter": "厨二級・亜馬森杯"
+            }
+        ]
+    },
+    {
+        "id": 8164,
+        "title": "Aragami",
+        "basic_info": {
+            "title": "Aragami",
+            "artist": "xi",
+            "genre": "VARIETY",
+            "bpm": 98,
+            "from": "AMAZON PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1501,
+                "charter": "蔵gami+"
+            }
+        ]
+    },
+    {
+        "id": 8166,
+        "title": "folern",
+        "basic_info": {
+            "title": "folern",
+            "artist": "ぬゆり",
+            "genre": "ORIGINAL",
+            "bpm": 200,
+            "from": "AMAZON PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2280,
+                "charter": "Silvius vs Astraea"
+            }
+        ]
+    },
+    {
+        "id": 8168,
+        "title": "STARTLINER",
+        "basic_info": {
+            "title": "STARTLINER",
+            "artist": "曲：kz(livetune)／歌：オンゲキシューターズ",
+            "genre": "ゲキマイ",
+            "bpm": 135,
+            "from": "CRYSTAL"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1163,
+                "charter": "STARTMINER"
+            }
+        ]
+    },
+    {
+        "id": 8176,
+        "title": "星の器～STAR OF ANDROMEDA",
+        "basic_info": {
+            "title": "星の器～STAR OF ANDROMEDA",
+            "artist": "sun3",
+            "genre": "東方Project",
+            "bpm": 155,
+            "from": "CRYSTAL"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1839,
+                "charter": "Sound Only"
+            }
+        ]
+    },
+    {
+        "id": 8182,
+        "title": "Life",
+        "basic_info": {
+            "title": "Life",
+            "artist": "Relect",
+            "genre": "ORIGINAL",
+            "bpm": 160,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1816,
+                "charter": "ADVANCED / EXPERT"
+            }
+        ]
+    },
+    {
+        "id": 8183,
+        "title": "チョウの標本",
+        "basic_info": {
+            "title": "チョウの標本",
+            "artist": "Bitplane",
+            "genre": "VARIETY",
+            "bpm": 170,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1345,
+                "charter": "チョウの蔵本"
+            }
+        ]
+    },
+    {
+        "id": 8185,
+        "title": "ロキ",
+        "basic_info": {
+            "title": "ロキ",
+            "artist": "みきとP",
+            "genre": "niconico",
+            "bpm": 150,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 4800,
+                "charter": "ワリワリのロックンロール"
+            }
+        ]
+    },
+    {
+        "id": 8186,
+        "title": "Dengeki Tube",
+        "basic_info": {
+            "title": "Dengeki Tube",
+            "artist": "BACO",
+            "genre": "VARIETY",
+            "bpm": 155,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2461,
+                "charter": "ﾋﾞﾘﾋﾞﾘﾋﾞﾘﾋﾞﾘ"
+            }
+        ]
+    },
+    {
+        "id": 8188,
+        "title": "Ai Nov",
+        "basic_info": {
+            "title": "Ai Nov",
+            "artist": "Feryquitous",
+            "genre": "ゲキマイ",
+            "bpm": 195,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1887,
+                "charter": "覚悟しなさい！！"
+            }
+        ]
+    },
+    {
+        "id": 8194,
+        "title": "エピクロスの虹はもう見えない",
+        "basic_info": {
+            "title": "エピクロスの虹はもう見えない",
+            "artist": "SYNC.ART'S feat.美里",
+            "genre": "東方Project",
+            "bpm": 155,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 5688,
+                "charter": "エピクロスの割はもう見えない"
+            }
+        ]
+    },
+    {
+        "id": 8196,
+        "title": "Gate of Fate",
+        "basic_info": {
+            "title": "Gate of Fate",
+            "artist": "Godspeed",
+            "genre": "ORIGINAL",
+            "bpm": 128,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2400,
+                "charter": "蟹からの挑戦状"
+            }
+        ]
+    },
+    {
+        "id": 8197,
+        "title": "ZEUS",
+        "basic_info": {
+            "title": "ZEUS",
+            "artist": "ルゼ",
+            "genre": "VARIETY",
+            "bpm": 170,
+            "from": "CRYSTAL PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2403,
+                "charter": "CHUNI BOX"
+            }
+        ]
+    },
+    {
+        "id": 8198,
+        "title": "巫女みこナース・愛のテーマ",
+        "basic_info": {
+            "title": "巫女みこナース・愛のテーマ",
+            "artist": "Chu☆",
+            "genre": "POPS & ANIME",
+            "bpm": 160,
+            "from": "PARADISE"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2357,
+                "charter": "巫女みcosmos"
+            }
+        ]
+    },
+    {
+        "id": 8199,
+        "title": "Taiko Drum Monster",
+        "basic_info": {
+            "title": "Taiko Drum Monster",
+            "artist": "steμ feat.siroa「太鼓の達人」より",
+            "genre": "VARIETY",
+            "bpm": 266,
+            "from": "PARADISE"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1316,
+                "charter": "おに ★★★★★★★★★★"
+            }
+        ]
+    },
+    {
+        "id": 8200,
+        "title": "Imperishable Night 2006 (2016 Refine)",
+        "basic_info": {
+            "title": "Imperishable Night 2006 (2016 Refine)",
+            "artist": "ゆうゆ / 篠螺悠那",
+            "genre": "東方Project",
+            "bpm": 161,
+            "from": "PARADISE"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2082,
+                "charter": "?TREPXE / EXPERT"
+            }
+        ]
+    },
+    {
+        "id": 8201,
+        "title": "Fidget Dancer",
+        "basic_info": {
+            "title": "Fidget Dancer",
+            "artist": "nora2r",
+            "genre": "ORIGINAL",
+            "bpm": 175,
+            "from": "PARADISE"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1197,
+                "charter": "recnaD tegdiF"
+            }
+        ]
+    },
+    {
+        "id": 8203,
+        "title": "G e n g a o z o",
+        "basic_info": {
+            "title": "G e n g a o z o",
+            "artist": "-45",
+            "genre": "VARIETY",
+            "bpm": 153,
+            "from": "PARADISE"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1132,
+                "charter": "TAP BATTLE(初級～上級)"
+            }
+        ]
+    },
+    {
+        "id": 8204,
+        "title": "Memory of Beach",
+        "basic_info": {
+            "title": "Memory of Beach",
+            "artist": "M2U",
+            "genre": "VARIETY",
+            "bpm": 130,
+            "from": "PARADISE"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1362,
+                "charter": "from EMOTIONAL SENSE"
+            }
+        ]
+    },
+    {
+        "id": 8212,
+        "title": "LINK LINK FEVER!!!",
+        "basic_info": {
+            "title": "LINK LINK FEVER!!!",
+            "artist": "リンカ (CV: 豊田萌絵)「グルーヴコースター」",
+            "genre": "VARIETY",
+            "bpm": 182,
+            "from": "PARADISE LOST"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 827,
+                "charter": "HARD"
+            }
+        ]
+    },
+    {
+        "id": 8214,
+        "title": "D✪N’T ST✪P R✪CKIN’ ～[✪_✪] MIX～",
+        "basic_info": {
+            "title": "D✪N’T ST✪P R✪CKIN’ ～[✪_✪] MIX～",
+            "artist": "EB (aka EarBreaker)",
+            "genre": "ゲキマイ",
+            "bpm": 140,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1595,
+                "charter": "長いのが2倍"
+            }
+        ]
+    },
+    {
+        "id": 8215,
+        "title": "Viyella's Tears",
+        "basic_info": {
+            "title": "Viyella's Tears",
+            "artist": "Laur",
+            "genre": "ゲキマイ",
+            "bpm": 218,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 3204,
+                "charter": "私と勝負だよ！"
+            }
+        ]
+    },
+    {
+        "id": 8216,
+        "title": "Therapeutic Hoedown",
+        "basic_info": {
+            "title": "Therapeutic Hoedown",
+            "artist": "うどんゲルゲ",
+            "genre": "ORIGINAL",
+            "bpm": 165,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2192,
+                "charter": "お薬間違えました"
+            }
+        ]
+    },
+    {
+        "id": 8218,
+        "title": "BLUE ZONE",
+        "basic_info": {
+            "title": "BLUE ZONE",
+            "artist": "Tatsh x NAOKI",
+            "genre": "VARIETY",
+            "bpm": 168,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1871,
+                "charter": "EVER BLUE ZONE"
+            }
+        ]
+    },
+    {
+        "id": 8219,
+        "title": "やらなきゃいけないことばかり",
+        "basic_info": {
+            "title": "やらなきゃいけないことばかり",
+            "artist": "小仏 凪(CV:佐倉 薫)＆月鈴 白奈(CV:高野 麻里佳)",
+            "genre": "イロドリミドリ",
+            "bpm": 140,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1880,
+                "charter": "弾かなきゃいけないとこばかり"
+            }
+        ]
+    },
+    {
+        "id": 8220,
+        "title": "Nijirate Fanatics",
+        "basic_info": {
+            "title": "Nijirate Fanatics",
+            "artist": "yukitani",
+            "genre": "ORIGINAL",
+            "bpm": 210,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 3231,
+                "charter": "○ソ譜面三銃士を連れてきたよ"
+            }
+        ]
+    },
+    {
+        "id": 8223,
+        "title": "U ARE",
+        "basic_info": {
+            "title": "U ARE",
+            "artist": "MK&Kanae Asaba",
+            "genre": "ORIGINAL",
+            "bpm": 130,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2400,
+                "charter": "W ARE"
+            }
+        ]
+    },
+    {
+        "id": 8224,
+        "title": "真千年女王",
+        "basic_info": {
+            "title": "真千年女王",
+            "artist": "しらいし",
+            "genre": "VARIETY",
+            "bpm": 160,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1932,
+                "charter": "真五百年女王"
+            }
+        ]
+    },
+    {
+        "id": 8225,
+        "title": "タテマエと本心の大乱闘",
+        "basic_info": {
+            "title": "タテマエと本心の大乱闘",
+            "artist": "曲：鯨井国家／歌：藍原 椿(CV：橋本 ちなみ)",
+            "genre": "ゲキマイ",
+            "bpm": 180,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1714,
+                "charter": "遊んであげるわ"
+            }
+        ]
+    },
+    {
+        "id": 8226,
+        "title": "砂漠のハンティングガール♡",
+        "basic_info": {
+            "title": "砂漠のハンティングガール♡",
+            "artist": "海田 明里",
+            "genre": "ORIGINAL",
+            "bpm": 139,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1543,
+                "charter": "砂漠のフリッキングガール♡"
+            }
+        ]
+    },
+    {
+        "id": 8227,
+        "title": "Trackless wilderness",
+        "basic_info": {
+            "title": "Trackless wilderness",
+            "artist": "Noah",
+            "genre": "ORIGINAL",
+            "bpm": 217,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2366,
+                "charter": "Demon's Cry"
+            }
+        ]
+    },
+    {
+        "id": 8228,
+        "title": "Trrricksters!!",
+        "basic_info": {
+            "title": "Trrricksters!!",
+            "artist": "s-don vs. 翡乃イスカ",
+            "genre": "ORIGINAL",
+            "bpm": 155,
+            "from": "NEW"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2897,
+                "charter": "eresHkigAl"
+            }
+        ]
+    },
+    {
+        "id": 8229,
+        "title": "《本能》 ～ ReCoda",
+        "basic_info": {
+            "title": "《本能》 ～ ReCoda",
+            "artist": "Spiegel vs Yukino",
+            "genre": "ORIGINAL",
+            "bpm": 156,
+            "from": "PARADISE LOST"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1733,
+                "charter": "《半能》 ～ ReSize"
+            }
+        ]
+    },
+    {
+        "id": 8230,
+        "title": "董卓討つべし",
+        "basic_info": {
+            "title": "董卓討つべし",
+            "artist": "おもしろ三国志",
+            "genre": "VARIETY",
+            "bpm": 140,
+            "from": "PARADISE LOST"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1137,
+                "charter": "｜とう｜たく｜うつ｜べし｜"
+            }
+        ]
+    },
+    {
+        "id": 8231,
+        "title": "裏表ラバーズ",
+        "basic_info": {
+            "title": "裏表ラバーズ",
+            "artist": "wowaka",
+            "genre": "niconico",
+            "bpm": 159,
+            "from": "PARADISE LOST"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1250,
+                "charter": "EXTREME"
+            }
+        ]
+    },
+    {
+        "id": 8232,
+        "title": "音弾超人ゴリライザー",
+        "basic_info": {
+            "title": "音弾超人ゴリライザー",
+            "artist": "ゴリライザー制作委員会",
+            "genre": "VARIETY",
+            "bpm": 138,
+            "from": "PARADISE LOST"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1408,
+                "charter": "現実はそんなに甘くない"
+            }
+        ]
+    },
+    {
+        "id": 8233,
+        "title": "宙の隣",
+        "basic_info": {
+            "title": "宙の隣",
+            "artist": "くるぶっこちゃん",
+            "genre": "ORIGINAL",
+            "bpm": 90,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1299,
+                "charter": "Cosmic Velocity"
+            }
+        ]
+    },
+    {
+        "id": 8234,
+        "title": "きゅうりバーにダイブ",
+        "basic_info": {
+            "title": "きゅうりバーにダイブ",
+            "artist": "ゆずひこ feat.めらみぽっぷ",
+            "genre": "東方Project",
+            "bpm": 176,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1614,
+                "charter": "【Ex】ポコらないダイブ"
+            }
+        ]
+    },
+    {
+        "id": 8235,
+        "title": "XL TECHNO -More Dance Remix-",
+        "basic_info": {
+            "title": "XL TECHNO -More Dance Remix-",
+            "artist": "from PACA PACA PASSION Special",
+            "genre": "VARIETY",
+            "bpm": 149,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2460,
+                "charter": "ワリワリパッションSP(超上級)"
+            }
+        ]
+    },
+    {
+        "id": 8236,
+        "title": "Elemental Ethnic",
+        "basic_info": {
+            "title": "Elemental Ethnic",
+            "artist": "Yooh",
+            "genre": "ORIGINAL",
+            "bpm": 163,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1302,
+                "charter": "Ethnical Stopping"
+            }
+        ]
+    },
+    {
+        "id": 8237,
+        "title": "アルストロメリア",
+        "basic_info": {
+            "title": "アルストロメリア",
+            "artist": "TAG",
+            "genre": "VARIETY",
+            "bpm": 144,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1641,
+                "charter": "Over the \"ULTIMA\""
+            }
+        ]
+    },
+    {
+        "id": 8238,
+        "title": "ラグトレイン",
+        "basic_info": {
+            "title": "ラグトレイン",
+            "artist": "稲葉曇",
+            "genre": "niconico",
+            "bpm": 147,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1820,
+                "charter": "ADVANCED / EXPERT"
+            }
+        ]
+    },
+    {
+        "id": 8239,
+        "title": "ダブルラリアット",
+        "basic_info": {
+            "title": "ダブルラリアット",
+            "artist": "アゴアニキ",
+            "genre": "niconico",
+            "bpm": 138,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 4396,
+                "charter": "ダブル割リアット"
+            }
+        ]
+    },
+    {
+        "id": 8241,
+        "title": "Aragami",
+        "basic_info": {
+            "title": "Aragami",
+            "artist": "xi",
+            "genre": "VARIETY",
+            "bpm": 98,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 1404,
+                "charter": "後光荒神+"
+            }
+        ]
+    },
+    {
+        "id": 8242,
+        "title": "Love & Justice",
+        "basic_info": {
+            "title": "Love & Justice",
+            "artist": "BACO",
+            "genre": "VARIETY",
+            "bpm": 200,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            0
+        ],
+        "level": [
+            "0"
+        ],
+        "cids": [
+            1
+        ],
+        "charts": [
+            {
+                "combo": 2354,
+                "charter": "make you unhappy"
             }
         ]
     }
