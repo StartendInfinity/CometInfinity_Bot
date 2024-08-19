@@ -2,7 +2,7 @@ from nonebot import on_command, on_regex, get_driver
 from nonebot.params import CommandArg, RegexGroup, Endswith, EventMessage
 from nonebot.adapters import Event
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
-
+import requests
 
 #内建模块
 import math
@@ -15,12 +15,15 @@ import aiofiles
 
 #加载工具组，以正确显示图片、获取曲目信息等
 from .lib.tool import get_cover_len6_id, image_to_base64, is_pro_group, computeRaB50, get_cover_len4_id
-from .lib.music import total_list, total_alias_list, plate_to_version, player_plate_data, levelList, scoreRank , comboRank, syncRank, level_process_data
+#image_to_base64函数已不再使用，请择期删除相应代码 -- XiaoYan
+from .lib.music import total_list, total_alias_list, plate_to_version, levelList, scoreRank , comboRank, syncRank, level_process_data, plate_process_xray
 from .lib.MusicPic import MusicCover, music_info_pic, MusicPic
 from .lib.score_line import score_line
-from .lib.request_client import fetch_mai_best50_lxns, fetch_single_score_lxns
+from .lib.request_client import fetch_mai_best50_lxns, get_player_records, DIVING_AUTH
 from .lib.mai_best_50 import mai_best50
-from .lib.mai_score import mai_score
+from .lib.mai_score import mai_score, generate_tool
+from .lib.mai_lv_score import song_data_filter, draw_mai_lv
+from .lib.plate_map import VERSION_DF_MAP, NOW_VERSION
 
 #依赖项
 from typing import Tuple, Optional
@@ -29,26 +32,6 @@ from io import BytesIO
 SUPERUSERS = get_driver().config.superusers
 
 mai_regex = r'/mai\s*'
-
-async def read_id(mode: str, user_id: str):
-    try:
-        async with aiofiles.open("./data/bind_data.json", "r", encoding="utf-8") as f:
-            bind_data = json.loads(await f.read())
-    except Exception as e:
-        bind_data = {}
-        print(f"{e}")
-
-    user_bind_data = bind_data.get(user_id, {})  
-
-    qqid = user_bind_data.get(mode)  
-
-    if qqid is None:
-        print("没有用户")
-    else:
-        print(f"{user_id}: {qqid}")
-
-    return qqid
-
 
 #-----s-maisong------START
 music_song = on_regex(mai_regex + r"(song)\s*(\d+)(\s*-jp)?")
@@ -60,12 +43,12 @@ async def _(event: Event, message: Message = EventMessage()):
     groups = match.groups()
     mid = groups[1]
 
+    try:
 
-    #判断乐曲数据是否在CN里，若不在则遍历JP并使国服版本一行留空
-    music = total_list.by_id(mid)
-    #music_jp = total_list_JP.by_id(mid)
-    from_text = music['basic_info']['from']
-
+        #判断乐曲数据是否在CN里，若不在则遍历JP并使国服版本一行留空
+        music = total_list.by_id(mid)
+        #music_jp = total_list_JP.by_id(mid)
+        from_text = music['basic_info']['from']
 
 
     #高级功能，是否遍历JP乐曲数据
@@ -80,8 +63,8 @@ async def _(event: Event, message: Message = EventMessage()):
     # elif match.group(3) is None:
     #     pass
 
-
-    try:
+    #try:
+    #临时移上去了，不然没法捕捉到错误 -- XiaoYan
 
         #调整封面图片以正确显示
         #file_path = rf"src/static/mai/cover/UI_Jacket_{get_cover_len6_id(mid)}.png"
@@ -89,10 +72,11 @@ async def _(event: Event, message: Message = EventMessage()):
 
         if not os.path.exists(file_path):
             raise FileNotFoundError
-        file = Image.open(file_path)
-        buffer = BytesIO()
-        file.save(buffer, format='PNG')  
-        byte_data = buffer.getvalue()
+        
+        with open(file_path, "rb") as img_f:
+            img_str = str(base64.b64encode(img_f.read()))
+        img_ba64 = img_str[2: len(img_str) - 1]
+        #由于无法正常构建图片的Base64信息，故此处代码被我重写以修复功能 -- XiaoYan
 
         #判断版本开头是否为maimai 或 maimai でらっくす
         if from_text == "maimai PLUS":
@@ -113,19 +97,19 @@ async def _(event: Event, message: Message = EventMessage()):
         #     from_text_jp = from_text_jp.split("maimai ", 1)[1]
         # else:
         #     from_text_jp = from_text_jp
-            
-        await music_song.send(Message(f"""[CQ:image,file={image_to_base64(byte_data)}]""" + 
-                                      f"\n{music['id']}. {music['title']}\n" + 
+        
+        await music_song.send(Message(f"""[CQ:image,file=base64://{img_ba64}]""" + 
+                                      f"{music['id']}. {music['title']}\n" + 
                                       f'''艺术家：{music['basic_info']['artist']}
 分类：{music['basic_info']['genre']}
 BPM：{music['basic_info']['bpm']}
 谱面类型：{music['type']}
 版本：{from_text}
 等级：{', '.join(music['level'])}
-定数：{', '.join(f'{d:.1f}' for d in music['ds'])}'''))
+定数：{', '.join(f'{d:.1f}' for d in music['ds'])}'''), reply_message = True)
     except (FileNotFoundError, Exception) as e:
         print(e)
-        await music_song.send("歌曲不存在哦！")
+        await music_song.send("歌曲不存在哦！", reply_message = True)
 #-----s-maisong------END
 
 
@@ -142,7 +126,7 @@ async def _(event: Event, message: Message = EventMessage()):
     #判断表达式第二组是否在level_labels内，若不在则终止命令
     level_labels = ['绿', '黄', '红', '紫', '白']
     if match is None or match.group(2) not in level_labels:
-        await mai_chart.finish("难度输入不对哦！")
+        await mai_chart.finish("难度输入不对哦！", reply_message = True)
 
     groups = match.groups()
     level_index = level_labels.index(groups[1])
@@ -168,12 +152,11 @@ async def _(event: Event, message: Message = EventMessage()):
 
         if not os.path.exists(file_path):
             raise FileNotFoundError
-        file = Image.open(file_path)
 
-        #调整封面图片以正确显示
-        buffer = BytesIO()
-        file.save(buffer, format='PNG')  
-        byte_data = buffer.getvalue()
+        with open(file_path, "rb") as img_f:
+            img_str = str(base64.b64encode(img_f.read()))
+        img_ba64 = img_str[2: len(img_str) - 1]
+
 
         music = total_list.by_id(mid)
         chart = music['charts'][level_index]
@@ -205,17 +188,17 @@ SLIDE：{chart['notes'][2]}
 TOUCH：{chart['notes'][3]}
 BREAK：{chart['notes'][4]}
 谱师：{chart['charter']}'''
-        await mai_chart.send(Message(f"""[CQ:image,file={image_to_base64(byte_data)}]""" +
-                                       f"\n{music['id']}. {music['title']}\n" +
+        await mai_chart.send(Message(f"""[CQ:image,file=[CQ:image,file=base64://{img_ba64}]""" +
+                                       f"{music['id']}. {music['title']}\n" +
                                        f'''谱面类型：{music['type']}
 BPM：{music['basic_info']['bpm']}
 难度：{level_name[level_index]} {level} ({ds:.1f})
 TOTAL：{combo}\n''' +
 note
-                                       ))
+                                       ), reply_message = True)
     except (FileNotFoundError, Exception) as e:
         print(e)
-        await music_song.send("歌曲不存在哦！")
+        await music_song.send("歌曲不存在哦！", reply_message = True)
 #-----s-maichart------END
 
 
@@ -254,9 +237,9 @@ async def _(event: Event, message: Message = EventMessage()):
         #     await mai_id.finish('歌曲不存在哦！')
         print(music)
         msg = await music_info_pic(music)           
-        await mai_id.send(msg)
+        await mai_id.send(msg, reply_message = True)
     else:
-        await mai_id.send('歌曲不存在哦！')
+        await mai_id.send('歌曲不存在哦！', reply_message = True)
 #-----s-id------END
 
 
@@ -266,12 +249,34 @@ async def _(event: Event, message: Message = EventMessage()):
 search_music = on_regex(mai_regex + r"(查歌|search|bpm查歌|BPM查歌|曲师查歌|定数查歌|等级查歌|物量查歌)\s*([绿黄红紫白]?)\s*(.+?)(?:\s*-p\s*(\d+))?$")
 
 #定数查歌相关
-def handle_ds_search(color, name, total_list):
+def handle_ds_search(color, name):
     level_labels = ['绿', '黄', '红', '紫', '白']
+    return_list = []
+    with open('src/plugins/maimai/music_data/maidxCN.json', 'r', encoding='utf-8') as f:
+        json_info = json.load(f)
     if color:
         level_index = level_labels.index(color)
-        return total_list.filter(ds=float(name), level_search=level_labels[level_index])
-    return total_list.filter(ds=float(name))
+        for info in json_info:
+            try:
+                if info["ds"][level_index] == float(name):
+                    return_list.append(info)
+            except:
+                continue
+        return return_list
+        #尝试查询用户指定难度，若没有跳过此首歌，有则循环(宴没DS字段所以必须要Try一下)
+    for info in json_info:
+        try:
+            for level_info in info["ds"]:
+                if level_info == float(name):
+                    return_list.append(info)
+        except:
+            continue
+    return return_list
+
+    # if color:
+    #     level_index = level_labels.index(color)
+    #     return total_list.filter(ds=float(name), level_search=level_labels[level_index])
+    # return total_list.filter(ds=float(name))
 
 #等级查歌相关
 def handle_level_search(color, name, total_list):
@@ -280,6 +285,32 @@ def handle_level_search(color, name, total_list):
         level_index = level_labels.index(color)
         return total_list.filter(level=name, level_search2=level_labels[level_index])
     return total_list.filter(level=name)
+
+def return_true_num(res:list, mode:str, user_input:float|int|str) -> int:
+    ture_num = 0
+    if mode in ["search", "查歌", "曲师查歌", "BPM查歌", "bpm查歌"]:
+        return len(res)
+    elif mode == "定数查歌":
+        for info in res:
+            for ds_info in info["ds"]:
+                if ds_info == float(user_input):
+                    ture_num = ture_num + 1
+        return ture_num
+    elif mode == "等级查歌":
+        for info in res:
+            for level_info in info["level"]:
+                if level_info == user_input:
+                    ture_num = ture_num + 1
+        return ture_num
+    elif mode == "物量查歌":
+        for info in res:
+            for charts_info in info["charts"]:
+                total_notes_temp = 0
+                for notes_info in charts_info["notes"]:
+                    total_notes_temp = total_notes_temp + notes_info
+                if total_notes_temp == int(user_input):
+                    ture_num = ture_num + 1
+        return ture_num
 
 @search_music.handle()
 async def _(event: Event, message: Message = EventMessage()):
@@ -291,8 +322,6 @@ async def _(event: Event, message: Message = EventMessage()):
     page = int(page) if page else 1
     if name.strip() == "":
         return
-    
-
 
     #高级功能，是否遍历JP乐曲数据
     # if match.group(2) is not None:
@@ -314,19 +343,22 @@ async def _(event: Event, message: Message = EventMessage()):
     elif std in ['bpm查歌', 'BPM查歌']:
         res = total_list.filter(bpm=float(name))
     elif std == '定数查歌':
-        res = handle_ds_search(color, name, total_list)
+        res = handle_ds_search(color, name)
     elif std == '等级查歌':
         res = handle_level_search(color, name, total_list)
     elif std == '物量查歌':
         res = total_list.filter(total=float(name))
         #print(res)
+    #普通：不精确， 曲师：不精确， BPM：不精确， 定数：精确， 等级：精确， 物量：精确
+    #此处的精确与否指的是是否精确到难度 -- XiaoYan
+    true_charts_num = return_true_num(res, std, name)
 
     if len(res) == 0:
-        await search_music.send("\n没有搜索到任何结果。")
+        await search_music.send("没有搜索到任何结果。", reply_message = True)
     elif len(res) == 1:
         music = total_list.by_id(res[0]['id'])
         msg = await music_info_pic(music)
-        await mai_id.send(msg)
+        await mai_id.send(msg, reply_message = True)
     elif len(res) <= 15:
         search_result = ""
         temp = None
@@ -337,7 +369,6 @@ async def _(event: Event, message: Message = EventMessage()):
                 if std == '定数查歌':
                     # ds_index = music['ds'].index(float(name))
                     # difficulty_color = list(color_to_index.keys())[list(color_to_index.values()).index(ds_index)]
-                    print(music['ds'])
                     for ds_index, ds_value in enumerate(music['ds']):
                         if ds_value == float(name):
                             # 使用 color_to_index 字典来获取难度颜色
@@ -358,15 +389,19 @@ async def _(event: Event, message: Message = EventMessage()):
                             difficulty_color = list(color_to_index.keys())[total_index]
                             search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
 
-
             else:
                 search_result += f"{music['id']}. {music['title']}\n"
-        await search_music.send(f"\n共找到 {len(res)} 条结果：\n"+ search_result.strip())
+        await search_music.send(f"共找到 {true_charts_num} 条结果：\n"+ search_result.strip(), reply_message = True)
     else:
         per_page = 15
-        total_pages = math.ceil(len(res) / per_page)
+        total_pages = (len(res) + (per_page - 1)) // per_page
         start = (page - 1) * per_page
         end = start + per_page
+
+        # per_page = 15
+        # total_pages = math.ceil(len(res) / per_page)
+        # start = (page - 1) * per_page
+        # end = start + per_page
         search_result = ""
         temp = None
         for music in sorted(res[start:end], key = lambda i: int(i['id'])):
@@ -397,7 +432,7 @@ async def _(event: Event, message: Message = EventMessage()):
             else:
                 search_result += f"{music['id']}. {music['title']}\n"
         #print(search_result)
-        await search_music.send(f"\n共找到 {len(res)} 条，第 {page}/{total_pages} 页:\n"+ search_result.strip() + f"\n使用参数 -p [页码] 来翻页")
+        await search_music.send(f"共找到 {true_charts_num} 条结果，第 {page}/{total_pages} 页:\n"+ search_result.strip() + f"\n使用参数 -p [页码] 来翻页", reply_message = True)
 #-----s-search-----END
 
 
@@ -436,12 +471,10 @@ async def _(event: Event, message: Message = EventMessage()):
 
                 if not os.path.exists(file_path):
                     raise FileNotFoundError
-                file = Image.open(file_path)
-                #调整封面图片以正确显示
-                buffer = BytesIO()
-                file.save(buffer, format='PNG')  
-                byte_data = buffer.getvalue()
-                msg = Message(f"""[CQ:image,file={image_to_base64(byte_data)}]""" + 
+                with open(file_path, "rb") as img_f:
+                    img_str = str(base64.b64encode(img_f.read()))
+                img_ba64 = img_str[2: len(img_str) - 1]
+                msg = Message(f"""[CQ:image,file=base64://{img_ba64}]""" + 
                                             f"\n{music_ds_a['id']}. {music_ds_a['title']}\n" + 
                                             f'''艺术家：{music_ds_a['basic_info']['artist']}
 分类：{music_ds_a['basic_info']['genre']}
@@ -450,8 +483,8 @@ BPM：{music_ds_a['basic_info']['bpm']}
 版本：{music_ds_a['basic_info']['from']}
 等级：{', '.join(music_ds_a['level'])}
 定数：{', '.join(f'{d:.1f}' for d in music_ds_a['ds'])}''')
-            await random_music.send(msg)
-        if set == '等级':
+            await random_music.send(msg, reply_message = True)
+        elif set == '等级':
             music_level = total_list.filter(level=ds)
             if level:
                 level_labels2 = ['绿', '黄', '红', '紫', '白']
@@ -471,12 +504,10 @@ BPM：{music_ds_a['basic_info']['bpm']}
 
                 if not os.path.exists(file_path):
                     raise FileNotFoundError
-                file = Image.open(file_path)
-                #调整封面图片以正确显示
-                buffer = BytesIO()
-                file.save(buffer, format='PNG')  
-                byte_data = buffer.getvalue()
-                msg = Message(f"""[CQ:image,file={image_to_base64(byte_data)}]""" + 
+                with open(file_path, "rb") as img_f:
+                    img_str = str(base64.b64encode(img_f.read()))
+                img_ba64 = img_str[2: len(img_str) - 1]
+                msg = Message(f"""[CQ:image,file=base64://{img_ba64}]""" + 
                                             f"\n{music_level_a['id']}. {music_level_a['title']}\n" + 
                                             f'''艺术家：{music_level_a['basic_info']['artist']}
 分类：{music_level_a['basic_info']['genre']}
@@ -485,33 +516,32 @@ BPM：{music_level_a['basic_info']['bpm']}
 版本：{music_level_a['basic_info']['from']}
 等级：{', '.join(music_level_a['level'])}
 定数：{', '.join(f'{d:.1f}' for d in music_level_a['ds'])}''')
-            await random_music.send(msg)
-        if pic:
-            msg = await music_info_pic(total_list.random())
-        else:
-            music = total_list.random()
-            mid3 = f"{music['id']}"
-            file_path = os.path.join(MusicCover, rf'UI_Jacket_{get_cover_len6_id(mid3)}.png')
+            await random_music.send(msg, reply_message = True)
+        elif set == None:
+            if pic:
+                msg = await music_info_pic(total_list.random())
+            else:
+                music = total_list.random()
+                mid3 = f"{music['id']}"
+                file_path = os.path.join(MusicCover, rf'UI_Jacket_{get_cover_len6_id(mid3)}.png')
 
-            if not os.path.exists(file_path):
-                raise FileNotFoundError
-            file = Image.open(file_path)
-            #调整封面图片以正确显示
-            buffer = BytesIO()
-            file.save(buffer, format='PNG')  
-            byte_data = buffer.getvalue()
-            msg = Message(f"""[CQ:image,file={image_to_base64(byte_data)}]""" + 
-                                        f"\n{music['id']}. {music['title']}\n" + 
-                                        f'''艺术家：{music['basic_info']['artist']}
+                if not os.path.exists(file_path):
+                    raise FileNotFoundError
+                with open(file_path, "rb") as img_f:
+                    img_str = str(base64.b64encode(img_f.read()))
+                img_ba64 = img_str[2: len(img_str) - 1]
+                msg = Message(f"""[CQ:image,file=base64://{img_ba64}]""" + 
+                                            f"\n{music['id']}. {music['title']}\n" + 
+                                            f'''艺术家：{music['basic_info']['artist']}
 分类：{music['basic_info']['genre']}
 BPM：{music['basic_info']['bpm']}
 谱面类型：{music['type']}
 版本：{music['basic_info']['from']}
 等级：{', '.join(music['level'])}
 定数：{', '.join(f'{d:.1f}' for d in music['ds'])}''')
+            await random_music.send(msg, reply_message = True)
     except Exception as e:
-        await random_music.finish(f"\n指定的条件下没有任何歌曲。\n{e}")
-    await random_music.send(msg)
+        await random_music.finish(f"指定的条件下没有任何歌曲。\n{e}", reply_message = True)
 #-----s-random-----END
 
 
@@ -520,11 +550,11 @@ mai_plate = on_regex(mai_regex + r"牌子条件")
 
 @mai_plate.handle()
 async def _(event: Event, message: Message = EventMessage()):
-    plate_path = os.path.join(MusicPic, rf'plate_rule.png')
+    plate_path = os.path.join(MusicPic, rf'plate_rule.jpg')
     with open(plate_path, 'rb') as image_file:
-            image_data = image_file.read()
-            base64_data = base64.b64encode(image_data).decode('utf-8')
-    await mai_plate.send(f'[CQ:image,file=base64://{base64_data}]')
+        image_data = image_file.read()
+        base64_data = base64.b64encode(image_data).decode('utf-8')
+    await mai_plate.send(MessageSegment.image(f"base64://{base64_data}"), reply_message = True)
 #-----s-mai_plate-----END
     
 #-----s-rating_cal-----START
@@ -536,16 +566,16 @@ async def _(event: Event, message: Message = EventMessage()):
     match = re.search(regex, str(message)).groups()
     ds, ach = match
     # if not ds and not ach:
-    #     await rating_cal.send("\n异常\n请输入正确的定数与达成率！")
+    #     await rating_cal.send("异常\n请输入正确的定数与达成率！")
     if not (1.0 <= float(ds) <= 15.0):
-        await rating_cal.finish("\n请输入正确的定数与达成率！")
+        await rating_cal.finish("请输入正确的定数与达成率！", reply_message = True)
     try:
         ra = computeRaB50(float(ds), float(ach))
-        await rating_cal.send(f"\n定数 {float(ds)} \n在 {float(ach):.4f}% 的得分是 {ra}")
+        await rating_cal.send(f"定数 {float(ds)} \n在 {float(ach):.4f}% 的得分是 {ra}", reply_message = True)
     except ValueError:
-        await rating_cal.send("\n请输入正确的定数与达成率！")
+        await rating_cal.send("请输入正确的定数与达成率！", reply_message = True)
     except TypeError:
-        await rating_cal.send("\n请输入正确的定数与达成率！")
+        await rating_cal.send("请输入正确的定数与达成率！", reply_message = True)
 #-----s-rating_cal-----END
 
 #-----s-alias-----START
@@ -561,9 +591,9 @@ async def _(event: Event, message: Message = EventMessage()):
     #data_id = total_alias_list.by_id(name)
     #music = total_list.by_id(data.song_id)
     if not data:
-        await alias_search.finish('\n没有搜索到任何结果。')
+        await alias_search.finish('没有搜索到任何结果。', reply_message = True)
     if len(data) != 1:
-        msg = f"\n共找到 {len(data)} 条结果：\n"
+        msg = f"共找到 {len(data)} 条结果：\n"
         for songs in data:
             #music = total_list.by_id(songs.song_id)
             print(songs)
@@ -575,9 +605,9 @@ async def _(event: Event, message: Message = EventMessage()):
             else:
                 msg += f'{songs.song_id}：error\n'
         # await alias_search.finish(msg.strip())
-        await alias_search.finish(msg)
+        await alias_search.finish(msg, reply_message = True)
     music = total_list.by_id(str(data[0].song_id))
-    await alias_search.finish(await music_info_pic(music))
+    await alias_search.finish(await music_info_pic(music), reply_message = True)
 #-----s-alias-----END
 
 #-----s-lookalia-----START
@@ -590,9 +620,9 @@ async def _(event: Event, message: Message = EventMessage()):
     mid = int(match_regex[0])
     data = total_alias_list.by_id(mid)
     if not data:
-        await alias_search.finish('\n这首歌现在没有别名。\n您可以前往落雪咖啡屋的曲目别名投票申请创建曲目别名。')
+        await alias_search.finish('这首歌现在没有别名。', reply_message = True)
     
-    await alias_look.finish(f"\n这首歌的别名有: \n{data}\n别名数据来自Xray Bot。")
+    await alias_look.finish(f"这首歌的别名有: \n{data}\n别名数据来自Xray Bot。", reply_message = True)
 #-----s-lookalia-----END
 
 #-----s-score_line-----START
@@ -608,31 +638,27 @@ async def _(event: Event, message: Message = EventMessage()):
     print (level_index)
     img = await score_line(mid, level_index)
 
-    await score_x.finish(img)
+    await score_x.finish(img, reply_message = True)
 
 
 #-----s-score_line-----END
 
 #-----s-plate_process-----START
-plate_process = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙])([極极将舞神者]舞?)进度\s?', priority=1, block=True)
+plate_process = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭])([極极将舞神者]舞?)进度\s?', priority=1, block=True)
 
 @plate_process.handle()
 async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
-    user_id = str(event.user_id)
-    mode = "lm"
-    qqid = await read_id(mode, user_id)
-
+    qqid = event.get_user_id()
     if f'{match[0]}{match[1]}' == '真将':
         await plate_process.finish()
-
-    #payload = {'username': qqid}
     
+    version_name = match[0]
+    plate_type = match[1]
 
-    try:
-        data = await player_plate_data(qqid, match)
-    except Exception as e:
-        await plate_process.finish(f"\n您没有绑定信息。\n请使用 /bind 命令进行绑定。\n{e}")
-    await plate_process.finish(data)
+    data = plate_process_xray(version_name, qqid, plate_type, version_name)
+    
+    # data = await player_plate_data({'qq': qqid, 'version': ['maimai ORANGE PLUS']}, match)
+    await plate_process.finish(data, reply_message = True)
 #-----s-plate_process-----END
 
 #-----s-level_process-----START
@@ -663,72 +689,165 @@ async def _(event: Event, message: Message = EventMessage(), match: Tuple = Rege
     # payload['version'] = list(set(version for version in plate_to_version.values()))
 
     # data = await level_process_data(payload, match, nickname)
-    await level_process.finish("暂未支持")
+    await level_process.finish("暂未支持", reply_message = True)
 #-----s-level_process-----END
 
 #-----b50-----START
+
+type_map = {
+    "SD":"standard",
+    "DX":"dx"
+}
+
+def translate_df_to_lx(player_data):
+    best = []
+    for score in player_data:
+        id = score['song_id']
+        music_type = type_map.get(score['type'])
+        if music_type == 'dx':
+            id-=10000
+        song_name = score['title']
+        level = score['level']
+        level_index = score['level_index']
+        achievements = score['achievements']
+        fc = score['fc'] if score['fc'] != "" else None
+        fs = score['fs'] if score['fs'] != "" else None
+        dx_score = score['dxScore']
+        dx_rating = score['ra']
+        rate = score['rate']
+        best.append({
+            "id": id,
+            "song_name": song_name,
+            "level": level,
+            "level_index": level_index,
+            "achievements": achievements,
+            "fc": fc,
+            "fs": fs,
+            "dx_score": dx_score,
+            "dx_rating": dx_rating,
+            "rate": rate,
+            "type": music_type
+        })
+    return best
+
+def image_to_base64(img, format='PNG'):
+    output_buffer = BytesIO()
+    img.save(output_buffer, format)
+    byte_data = output_buffer.getvalue()
+    base64_str = base64.b64encode(byte_data)
+    return base64_str
+
+
 mai_b50 = on_command("/b50", priority=2, block=True)
 
 
 @mai_b50.handle() 
 async def _(event: Event, message: Message = CommandArg()):
-    user_id = str(event.user_id)
-    mode = "lm"
-    qqid = await read_id(mode, user_id)
     username = str(message).strip()
-
-    if username == "理论值":
-        username = "888888888888888"
-        status, b50_data, other_data = await fetch_mai_best50_lxns(username)
-        b64data = mai_best50.lxns(b50_data["data"], other_data, ap=False)
-        await mai_b50.send(MessageSegment.image(f"base64://{b64data}"))
-        #理论值账号应该不会不让抓,就不写判断了
+    if username == "":
+        payload = {'qq': str(event.user_id), 'b50': 1}
     else:
-        if qqid:
-            status, b50_data, other_data = await fetch_mai_best50_lxns(qqid, ap=False)
-            match status:
-                case "Not Allow Thirdparty Dev Fetch Score":
-                    await mai_b50.send("\n该用户禁止了其他人获取游戏数据。")
-                case "User Not Found":
-                    await mai_b50.send("\n没有在落雪咖啡屋找到用户信息。\n请确认是否已正确绑定落雪咖啡屋，并且已允许第三方开发者获取游戏数据。")
-                case "Score Not Uploaded":
-                    await mai_b50.send("\n成绩存在错误。\n请尝试重新上传成绩。")
-                case "Success":
-                    b64Data = mai_best50.lxns(b50_data["data"], other_data)
-                    await mai_b50.send(MessageSegment.image(f"base64://{b64Data}"))
-                case _:
-                    await mai_b50.send("\n发生了预期外的错误。\n请联系管理员。")
-        else:
-            await mai_b50.send(f"\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+        payload = {'username': username.strip(), 'b50': 1}
+
+    lx_data_v = {
+        "data":{}
+    }
+
+    req = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/player",json=payload)
+    player_data = req.json()
+    standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
+    dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
+
+    lx_data_v['data']['standard_total'] = standard_total
+    lx_data_v['data']['dx_total'] = dx_total
+    lx_data_v['data']['standard'] = translate_df_to_lx(player_data['charts']['sd'])
+    lx_data_v['data']['dx'] = translate_df_to_lx(player_data['charts']['dx'])
+    course_rank  = player_data["additional_rating"]
+    if course_rank >= 11:
+        course_rank  = player_data["additional_rating"] + 1
+    other_data = [player_data["nickname"], {'name': 'maimai DX Rating Information', 'color': 'Normal'}, course_rank, 0, {'name': player_data["plate"]}, None, None]
+
+    b64Data = mai_best50.lxns(lx_data_v['data'], other_data)
+    best50_message_list = [MessageSegment.reply(event.message_id),
+                                    MessageSegment.image(f"base64://{str(image_to_base64(b64Data), encoding='utf-8')}")]
+    await mai_b50.send(best50_message_list)
 #-----b50-----END
 
 #-----AP50------START
+def filter_all_perfect_records(records):
+    b15_all_perfect_records = []
+    b35_all_perfect_records = []
+    for item in records:
+      if item['fc'] in ['ap', 'app']:
+        if total_list.by_id(str(item['song_id'])).version == NOW_VERSION:
+            b15_all_perfect_records.append(item)
+        else:
+            b35_all_perfect_records.append(item)
+
+    b35_sorted_data = sorted(b35_all_perfect_records,
+                             key=lambda x: x['ra'], reverse=True)
+    b15_sorted_data = sorted(b15_all_perfect_records,
+                             key=lambda x: x['ra'], reverse=True)
+    return b35_sorted_data[:35], b15_sorted_data[:15]
+
 mai_ap_50 = on_command("/ap50", priority=2, block=True)
 
 
 @mai_ap_50.handle()
-async def _(event: Event):
-    user_id = str(event.user_id)
-    mode = "lm"
-    qqid = await read_id(mode, user_id)
-    #username = str(message).strip()
+async def _(event: Event, message: Message = CommandArg()):
+    username = str(message).strip()
+    if username == "":
+        payload = {'qq': str(event.user_id), 'b50': 1}
+        payload_rec = {"qq": str(event.user_id)}
+    else:
+        payload = {'username': username.strip(), 'b50': 1}
+        payload_rec = {'username': username.strip()}
 
-    try:
-        status, b50_data, other_data = await fetch_mai_best50_lxns(qqid, ap=True)
-        match status:
-            case "Not Allow Thirdparty Dev Fetch Score":
-                await mai_b50.send("\n该用户禁止了其他人获取游戏数据。")
-            case "User Not Found":
-                await mai_b50.send("\n没有在落雪咖啡屋找到用户信息。\n请确认是否已正确绑定落雪咖啡屋，并且已允许第三方开发者获取游戏数据。")
-            case "Score Not Uploaded":
-                await mai_b50.send("\n成绩存在错误。\n请尝试重新上传成绩。")
-            case "Success":
-                b64Data = mai_best50.lxns(b50_data["data"], other_data)
-                await mai_b50.send(MessageSegment.image(f"base64://{b64Data}"))
-            case _:
-                await mai_b50.send("\n发生了预期外的错误。\n请联系管理员。")
-    except:
-        await mai_b50.send("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+
+    lx_data_v = {
+        "data":{}
+    }
+
+    b50_req = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/player",json=payload)
+    player_b50_data = b50_req.json()
+    #获取玩家B50信息以获取基础信息
+    player_records_data = await get_player_records(payload_rec)
+    match player_records_data:
+        case "Player Not Found":
+            await mai_ap_50.finish("未找到该玩家。", reply_message = True)
+        case "Private Setting":
+            await mai_ap_50.finish("隐私设置。", reply_message = True)
+        case "Data Lost":
+            await mai_ap_50.finish("数据意外丢失，请联系管理员。", reply_message = True)
+        case _:
+            pass
+    #获取玩家所有成绩信息准备过滤
+
+    ap_b35_data, ap_b15_data = filter_all_perfect_records(player_records_data["records"])
+    if len(ap_b35_data) == 0 and len(ap_b15_data) == 0:
+        await mai_ap_50.finish("您还没有AP的成绩哦，请继续加油！", reply_message = True)
+
+    player_data = {"additional_rating":player_b50_data["additional_rating"], "charts":{"dx":ap_b15_data, "sd":ap_b35_data},
+                   "nickname":player_b50_data["nickname"],"plate":player_b50_data["plate"],"rating":player_b50_data["rating"],
+                   "user_general_data":player_b50_data["user_general_data"],"username":player_b50_data["username"]}
+    #手动构建一下关键信息
+    
+    standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
+    dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
+
+    lx_data_v['data']['standard_total'] = standard_total
+    lx_data_v['data']['dx_total'] = dx_total
+    lx_data_v['data']['standard'] = translate_df_to_lx(player_data['charts']['sd'])
+    lx_data_v['data']['dx'] = translate_df_to_lx(player_data['charts']['dx'])
+    course_rank  = player_data["additional_rating"]
+    if course_rank >= 11:
+        course_rank  = player_data["additional_rating"] + 1
+    other_data = [player_data["nickname"], {'name': 'maimai DX Rating Information', 'color': 'Normal'}, course_rank, 0, {'name': player_data["plate"]}, None, None]
+
+    b64Data = mai_best50.lxns(lx_data_v['data'], other_data)
+    ap50_message_list = [MessageSegment.reply(event.message_id),
+                                    MessageSegment.image(f"base64://{str(image_to_base64(b64Data), encoding='utf-8')}")]
+    await mai_ap_50.send(ap50_message_list)
 #-----AP50------END
 
 #-----Single_Score-----START
@@ -737,37 +856,97 @@ mai_single_score = on_regex(r"^/mai score (.+)$", priority=1, block=True)
 
 @mai_single_score.handle()
 async def _(event: Event):
-    user_id = str(event.user_id)
-    mode = "lm"
-    qqid = await read_id(mode, user_id)
-    # if str(event.user_id) not in maibind_data.keys():
-    #     await mai_single_score.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
-    #判断用户是否绑定
-    try:
-        match = re.match(r"^/mai score (.+)$", event.get_plaintext())
-        if match:
-            mid = int(match.group(1))
-        else:
-            await mai_single_score.finish("\nID不存在。\n请尝试重新查询。")
-        song_info = total_list.by_id(str(mid))
-        song_type = song_info["type"].lower()
-        if song_type == "标准":
-            song_type = "standard"
-        else:
-            song_type = "dx"
-            mid = mid % 10000
-        status, resp = await fetch_single_score_lxns(qqid, mid, song_type)
-        match status:
-            case "Song Type Not Found":
-                await mai_single_score.finish("\n谱面类型不存在。\n请尝试重新查询。")
-            case "Score Not Found":
-                await mai_single_score.finish("\n未游玩过该歌曲。")
-            case "Success":
-                b64Data = mai_score.lxns(resp, song_info)
-                await mai_single_score.send(MessageSegment.image(f"base64://{b64Data}"))
-            case _:
-                await mai_single_score.finish("\n发生了预期外的错误。\n请联系管理员。")
-    except:
-        await mai_single_score.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
+    user_qqid = str(event.get_user_id())
+    with open("./src/plugins/maimai/music_data/maidxCN-Today.json", "r", encoding = "utf-8") as f:
+        music_data = json.load(f)
+    match = re.match(r"^/mai score (.+)$", event.get_plaintext())
+    user_song_id = match.group(1)
+    if user_song_id not in music_data.keys():
+        await mai_single_score.finish("ID错误或不存在。", reply_message = True)
+    elif int(user_song_id) >= 100000:
+        await mai_single_score.finish("宴会场请通过分数列表查询。", reply_message = True) 
+    #ID筛选完毕
 
+    get_status = await get_player_records({"qq": user_qqid})
+    match get_status:
+        case "Player Not Found":
+            await mai_single_score.finish("未找到该玩家。", reply_message = True)
+        case "Private Setting":
+            await mai_single_score.finish("隐私设置。", reply_message = True)
+        case "Data Lost":
+            await mai_single_score.finish("数据意外丢失，请联系管理员。", reply_message = True)
+        case _:
+            pass
+    #获取用户数据
+
+    filter_song_data = []
+    for single_song_data in get_status["records"]:
+        if str(single_song_data["song_id"]) == user_song_id:
+            filter_song_data.append(single_song_data)
+    if len(filter_song_data) == 0:
+        await mai_single_score.finish("您没有此曲目的成绩。", reply_message = True)
+    #过滤用户成绩
+    
+    translate_data = generate_tool.translate_fish2lx(filter_song_data)
+    b64Data = mai_score.lxns(translate_data, music_data)
+    await mai_single_score.send(MessageSegment.image(f"base64://{b64Data}"), reply_message = True)
 #-----Single_Score-----END
+
+#-----lv_score-----START
+mai_lv_score = on_regex(r"^/mai 分数列表 (.+?)(?: -p (\d+))?$", priority=1, block=True)
+
+
+@mai_lv_score.handle()
+async def _(event: Event):
+    plain_text = event.get_plaintext()
+    matchs = re.match(r"^/mai 分数列表 (.+?)(?: -p (\d+))?$", plain_text)
+    user_level = matchs.group(1)
+    user_page = matchs.group(2) if matchs.group(2) else 1
+    if user_page == None:
+        user_page == 1
+    user_qqid = str(event.get_user_id())
+
+    with open("./src/plugins/maimai/music_data/maidxCN-Today.json", "r", encoding = "utf-8") as f:
+        music_data = json.load(f)
+
+    get_status = await get_player_records({"qq": user_qqid})
+    match get_status:
+        case "Player Not Found":
+            await mai_lv_score.finish("未找到该玩家。", reply_message = True)
+        case "Private Setting":
+            await mai_lv_score.finish("隐私设置。", reply_message = True)
+        case "Data Lost":
+            await mai_lv_score.finish("数据意外丢失，请联系管理员。", reply_message = True)
+        case _:
+            pass
+    
+    draw_data = song_data_filter(get_status, user_level, user_page, music_data, user_level)
+    match draw_data:
+        case "Data is Empty":
+            await mai_lv_score.finish("您查询的等级没有成绩。", reply_message = True)
+        case "Page Error":
+            await mai_lv_score.finish("页码错误。", reply_message = True)
+        case _:
+            pass
+
+    b64Data = draw_mai_lv(draw_data, music_data)
+    await mai_lv_score.send(MessageSegment.image(f"base64://{b64Data}"), reply_message = True)
+#-----lv_score-----END
+
+#-----course-----START
+mai_course = on_command("/mai 段位认定", priority=5)
+@mai_course.handle()
+async def _():
+        with open("./src/static/mai/pic/mai-course.png", 'rb') as image_file:
+            image_data = image_file.read()
+            base64_data = base64.b64encode(image_data).decode('utf-8')
+        await mai_course.send(MessageSegment.image(f"base64://{base64_data}"), reply_message = True)
+    
+mai_shincourse = on_command("/mai 真段位认定", priority=5)
+@mai_shincourse.handle()
+async def _():
+        with open("./src/static/mai/pic/mai-shincourse.png", 'rb') as image_file:
+            image_data = image_file.read()
+            base64_data = base64.b64encode(image_data).decode('utf-8')
+        await mai_shincourse.send(MessageSegment.image(f"base64://{base64_data}"), reply_message = True)
+#-----course-----END

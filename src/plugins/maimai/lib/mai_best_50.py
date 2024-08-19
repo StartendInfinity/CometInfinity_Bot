@@ -206,7 +206,7 @@ class generate_tool():
                 draw_info.text([105 + index * 280, pic_y + 11], song_name, text_color, HanSans35_16)
                 draw_info.text([106 + index * 280, pic_y + 41], "ID " + str(song_id), text_color, FotB_12)
                 draw_info.text([35 + index * 280, pic_y + 92], "#" + str(song_no), (0, 0, 0), FotEB_14)
-                song_max_dx_score = total_list.by_id(str(song_id))["charts"][song_level]["dxscore"]
+                song_max_dx_score = sum(total_list.by_id(str(song_id)).charts[song_level]['notes'])*3
                 font_left = generate_tool.right_font(284 + index * 280, draw_info, str(song_dx_score) + " / " + str(song_max_dx_score), FotB_12)
                 draw_info.text([font_left, pic_y + 41], str(song_dx_score) + " / " + str(song_max_dx_score), text_color, FotB_12)
                 draw_info.text([105 + index * 280, pic_y + 59], str(song_achi) + "%", text_color, FotB_20)
@@ -250,17 +250,19 @@ class mai_best50():
         player_trophy_name = player_data[1]["name"]
         player_trophy_color = player_data[1]["color"]
         player_course_rank = '{:02d}'.format(player_data[2])
+
         player_class_rank = '{:02d}'.format(player_data[3])
+
         #不足2位补0
         player_plate_id = "000001"
         player_icon_id =  "000001"
         player_frame_id = None
         if player_data[4] != None:  #playerPlate
             player_plate_name = player_data[4]["name"]
-            player_plate_id = generate_tool.get_rank_plate_id(player_plate_name)
-            #plate_name仅用于获取正确的将牌ID, 无其他用途
-            if player_plate_id == None:
-                player_plate_id = str('{:06d}'.format(player_data[4]["id"]))
+            if player_plate_name == "":
+                player_plate_id = "000001"
+            else:
+                player_plate_id = generate_tool.get_rank_plate_id(player_plate_name)                
         if player_data[5] != None: #playerIcon
             player_icon_id = str('{:06d}'.format(player_data[5]["id"]))
         if player_data[6] != None: #playerFrame
@@ -272,13 +274,16 @@ class mai_best50():
         FotB_24 = ImageFont.truetype("./src/static/mai/pic/font/FOT-RodinNTLGPro-B.otf", size=24)
         if player_frame_id != None:
             b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/frame/UI_Frame_{player_frame_id}.png", [1440, 603], [0, 0])
-        b50_image = generate_tool.simple_draw(b50_image, "./src/static/mai/b50/LXNS.png", [174, 24], [1188, 110])
+        b50_image = generate_tool.simple_draw(b50_image, "./src/static/mai/b50/Diving-Fish.png", [174, 24], [1188, 110])
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/plate/UI_Plate_{player_plate_id}.png", [960, 155], [40, 40])
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/icon/UI_Icon_{player_icon_id}.png", [131, 131], [52, 52])
         ra_bg_index = generate_tool.return_ra_bg(dxRating)
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/rating/UI_CMN_DXRating_{ra_bg_index}.png", [225, 44], [190, 50])
         b50_image = generate_tool.draw_number(dxRating, b50_image)
-        b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/class/UI_CMN_Class_S_{player_class_rank}.png", [120, 72], [430, 24])
+
+        #b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/class/UI_CMN_Class_S_{player_class_rank}.png", [120, 72], [430, 24])
+        #由于水鱼不抓取收藏品的原因，该段代码暂时注释
+
         b50_image = generate_tool.simple_draw(b50_image, "./src/static/mai/b50/playername.png", [386, 78], [178, 87])
         draw_nickname = ImageDraw.Draw(b50_image)
         draw_nickname.text((203, 100), player_name, (0,0,0), HanSans37_28)
@@ -319,8 +324,9 @@ class mai_best50():
             index_y+=1
         generate_tool.draw_bests(b50_image, best_15_info, 15)
         generate_tool.draw_bests(b50_image, best_35_info, 35)
+        return b50_image
+
         n_b50_image =  b50_image.convert("RGB")
-        
         out_buffer = BytesIO()
         n_b50_image.save(out_buffer, "JPEG")
         bytes_data = out_buffer.getvalue()

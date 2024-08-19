@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 #对于json相关，第一个为CN，第二个为JP
 import json
-with open('src/plugins/maimai/music_data/maidxCN.json', 'r', encoding='utf-8') as f:
+with open('src/plugins/maimai/music_data/maidxCN-Today.json', 'r', encoding='utf-8') as f:
     obj = json.load(f)
 
 # with open('src/plugins/maimai/music_data/maidxJP-135B.json', 'r', encoding='utf-8') as f:

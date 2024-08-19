@@ -79,16 +79,16 @@ async def score_line(chart_id: str, level_index: int):
     text_y_len = shs15_28.getsize(music.artist)[1]
     for i, text_part in enumerate(split_text(shs15_28, 840, music.artist)):
         ImageDraw.Draw(bg).text((460, i * text_y_len + 265), text_part, "#1E3663", font=shs15_28)  # 作曲家
-    no17.draw(460, 395, 28, f'ID {music.id}          {music.genre}          BPM:{music.bpm} ',
+    no17.draw(460, 395, 28, f'ID {music.id}          {music.genre}          BPM: {music.bpm} ',
               color=sd_color)
 
     level_value = music["level"][level_index]
     ds_value = music["ds"][level_index]
     if level_index != 4:
-        font_b.draw(181, 668, 32, f"{level_value}({ds_value:.1f})", (255, 255, 255, 255), anchor='ma')
+        font_b.draw(181, 668, 32, f"{level_value} ({ds_value:.1f})", (255, 255, 255, 255), anchor='ma')
     else:
-        font_b.draw(181, 668, 32, f"{level_value}({ds_value:.1f})", (195, 70, 231, 255), anchor='ma')
-    if music.type == "SD":
+        font_b.draw(181, 668, 32, f"{level_value} ({ds_value:.1f})", (195, 70, 231, 255), anchor='ma')
+    if music.type == "标准":
         font_eb.draw(370, 655, 32, f"{total_note}", color=sd_color, anchor='ma')
         font_b.draw(550, 655, 32, f"{tap}", color=sd_color, anchor='ma')
         font_b.draw(730, 655, 32, f"{hold}", color=sd_color, anchor='ma')
@@ -115,7 +115,7 @@ async def score_line(chart_id: str, level_index: int):
     font_b.draw(625, 998, 24, f"-{each_tap_g_minus * 2.5 * 3:.5f}%", color=sd_color, anchor='ma')
     font_b.draw(875, 998, 24, f"-{each_tap_g_minus * 5 * 3:.5f}%", color=sd_color, anchor='ma')
 
-    if music.type == "SD":
+    if music.type == "标准":
         font_b.draw(375, 1058, 24, f"-", color=sd_color, anchor='ma')
         font_b.draw(625, 1058, 24, f"-", color=sd_color, anchor='ma')
         font_b.draw(875, 1058, 24, f"-", color=sd_color, anchor='ma')
@@ -127,10 +127,12 @@ async def score_line(chart_id: str, level_index: int):
     font_b.draw(414, 1118, 24, f"-{each_tap_g_minus * 5 + each_brk_50_minus * 2.4:.5f}%", color=sd_color,
                 # 4.0
                 anchor='ma')
-    font_b.draw(414, 1148, 24, f"-{each_tap_g_minus * 10 + each_brk_50_minus * 2.4:.5f}%", color=sd_color,
+    font_b.draw(414, 1178, 24, f"-{each_tap_g_minus * 10 + each_brk_50_minus * 2.4:.5f}%", color=sd_color,
+    #1148
                 # 3.0
                 anchor='ma')
-    font_b.draw(414, 1178, 24, f"-{each_tap_g_minus * 12.5 + each_brk_50_minus * 2.4:.5f}%", color=sd_color,
+    font_b.draw(414, 1238, 24, f"-{each_tap_g_minus * 12.5 + each_brk_50_minus * 2.4:.5f}%", color=sd_color,
+    #1178
                 # 2.5
                 anchor='ma')
     font_b.draw(625, 1148, 24, f"-{each_tap_g_minus * 15 + each_brk_50_minus * 2.8:.5f}%", color=sd_color,
@@ -145,8 +147,9 @@ async def score_line(chart_id: str, level_index: int):
 
     max_dx_score = total_note * 3
 
-    font_b.draw(1260, 878, 32,
-                f"{max_dx_score})",
+    font_b.draw(1260, 875, 32,
+    #878
+                f"{max_dx_score}",
                 color=sd_color, anchor='ma')
     font_b.draw(1260, 938, 24,
                 f"{math.ceil(max_dx_score * 0.98)} (-{max_dx_score - math.ceil(max_dx_score * 0.98)})",

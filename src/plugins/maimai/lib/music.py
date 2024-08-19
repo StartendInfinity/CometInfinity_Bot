@@ -5,6 +5,7 @@ from copy import deepcopy
 from collections import namedtuple
 from pydantic import BaseModel, Field
 
+from .plate_map import VERSION_DF_MAP, VERSION_MAP, DELETED_MUSIC, MAI_DELETED_MUSIC_REM,MAI_DELETED_MUSIC_Normal
 from .request_client import HEADERS
 
 #对于json相关，第一个为CN，第二个为JP
@@ -177,127 +178,164 @@ async def get_player_data_lx(project: str, payload: str, plate_name: str) -> Uni
         data = f'获取玩家数据时发生错误: {type(e)}'
     return data
 
+def findsong_byid(id,index,list):
+    for item in list:
+        if item["id"] == id and item['level_index'] == index:
+            return item
+    return None
 
-
-async def player_plate_data(payload: str, match: str):
-    from nonebot.adapters.onebot.v11 import Message, MessageSegment
-
-    song_played = []
-    song_remain_basic = []
-    song_remain_advanced = []
-    song_remain_expert = []
-    song_remain_master = []
-    total_re_master = []
-    song_remain_re_master = []
-    song_remain_difficult = []
-    total_basic = []
-    total_advanced = []
-    total_expert = []
-    total_master = []
-    
-
-    #data = await get_player_data('plate', payload)
-    match_str = "".join(match)
-    data = await get_player_data_lx('plate', payload, match_str)
-
-    #除了白谱
-      
-    diff = data['data']['required'][0]
-    songs = diff['songs']
-
-    if len(data['data']['required']) > 1: #判断有无白谱，遍历第二个diff
-
-        diff_rem = data['data']['required'][1]
-        songs_rem = diff_rem['songs'] #白谱歌曲数据
-
-        #统计
-        rem_total = len(songs_rem)
-        total = len(songs)
-        c_total = total * 4 + rem_total
-
-        for song in songs: #遍历第一个diff               
-            if 4 in song['completed_difficulties']:
-                total_re_master.append(song)
-            if 3 in song['completed_difficulties']:
-                total_master.append(song)
-            if 2 in song['completed_difficulties']:
-                total_expert.append(song)
-            if 1 in song['completed_difficulties']:
-                total_advanced.append(song)
-            if 0 in song['completed_difficulties']:
-                total_basic.append(song)
-
-            if 0 not in song['completed_difficulties']:
-                song_remain_basic.append(song)
-            if 1 not in song['completed_difficulties']:
-                song_remain_advanced.append(song)
-            if 2 not in song['completed_difficulties']:
-                song_remain_expert.append(song)
-            if 3 not in song['completed_difficulties']:
-                song_remain_master.append(song)
-
-        for song_rem in songs_rem: #遍历第二个diff
-            if 4 in song_rem['completed_difficulties']:
-                total_re_master.append(song_rem)
-            if 4 not in song_rem['completed_difficulties']:
-                song_remain_re_master.append(song_rem)
-
-        #song_remain_re_master = rem_total - len(total_re_master)
-        completed_songs = len(total_basic) + len(total_advanced) + len(total_expert) + len(total_master) + len(total_re_master)
-        total_songs_noRe = len(song_remain_basic) + len(song_remain_advanced) + len(song_remain_expert) +len(song_remain_master) + len(song_remain_re_master)
-        msg = f'''\n您的 {match_str} 完成情况如下：
-已完成 {completed_songs}/{c_total}，剩余 {total_songs_noRe}
-绿：{len(total_basic)}/{total}，剩余 {len(song_remain_basic)}
-黄：{len(total_advanced)}/{total}，剩余 {len(song_remain_advanced)}
-红：{len(total_expert)}/{total}，剩余 {len(song_remain_expert)}
-紫：{len(total_master)}/{total}，剩余 {len(song_remain_master)}
-白：{len(total_re_master)}/{rem_total}，剩余 {len(song_remain_re_master)}
-'''
+def plate_process_xray(version, qq: str, plateType: str, vername: str):
+    if version[0] in ["舞", "霸"]:
+        version_list, version_list_rem = total_list.by_versions_for_cn(VERSION_MAP[version], True)
     else:
-        for song in songs:
-            total = len(songs)
-            c_total = total * 4
-            # 检查每个难度是否完成，并只将歌曲添加到最高完成的难度列表
-            if 3 in song['completed_difficulties']:
-                total_master.append(song)
-            if 2 in song['completed_difficulties']:
-                total_expert.append(song)
-            if 1 in song['completed_difficulties']:
-                total_advanced.append(song)
-            if 0 in song['completed_difficulties']:
-                total_basic.append(song)
-            # 如果没有完成任何难度
-            if 0 not in song['completed_difficulties']:
-                song_remain_basic.append(song)
-            if 1 not in song['completed_difficulties']:
-                song_remain_advanced.append(song)
-            if 2 not in song['completed_difficulties']:
-                song_remain_expert.append(song)
-            if 3 not in song['completed_difficulties']:
-                song_remain_master.append(song)
-        completed_songs = len(total_basic) + len(total_advanced) + len(total_expert) + len(total_master)
-        total_songs_noRe = len(song_remain_basic) + len(song_remain_advanced) + len(song_remain_expert) +len(song_remain_master)
-        msg = f'''\n您的 {match_str} 完成情况如下：
-已完成 {completed_songs}/{c_total}，剩余 {total_songs_noRe}
-绿：{len(total_basic)}/{total}，剩余 {len(song_remain_basic)}
-黄：{len(total_advanced)}/{total}，剩余 {len(song_remain_advanced)}
-红：{len(total_expert)}/{total}，剩余 {len(song_remain_expert)}
-紫：{len(total_master)}/{total}，剩余 {len(song_remain_master)}
-'''
+        version_list, version_list_rem = total_list.by_versions_for_cn(VERSION_MAP[version], False)
+
+    version_chart_list = [0, 0, 0, 0, 0]
+    version_all_chart = 0
+    for song in version_list:
+        # if len(song["charts"]) == 4:
+        for count in range(4):
+            version_chart_list[count] = version_chart_list[count] + 1
+
+
+    if version[0] in ["舞", "霸"]:
+        for song in version_list_rem:
+            version_chart_list[4] = version_chart_list[4] + 1
+
+
+    for count in version_chart_list:
+        version_all_chart += count
         
 
-    # if isinstance(data, str):
-    #     return data
-    #print(data)
-    # 遍历歌曲，根据完成的难度分配到相应的列表
-    # 总歌曲数和完成数
-    
-    
+    payload = {'qq': qq, 'version': VERSION_DF_MAP[version]}
+    r = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/plate", json=payload)
+    finishs = r.json()
+    unfinishList = {0: [], 1: [], 2: [], 3: [], 4: []}
 
-    
+    for song in version_list:
+        songid = int(song['id'])
+        for index in range(len(song['level'])):
+            if index in [0, 1, 2, 3]:
+                song_result = findsong_byid(songid, index, finishs['verlist'])
+                if song_result:
+                    if plateType == '将':
+                        if song_result['achievements'] < 100:
+                            unfinishList[index].append(song_result)
+                    elif plateType == '极':
+                        if song_result['fc'] not in ['fc', 'ap', 'fcp', 'app']:
+                            unfinishList[index].append(song_result)
+                    elif plateType == '神':
+                        if song_result['fc'] not in ['ap', 'app']:
+                            unfinishList[index].append(song_result)
+                    elif plateType == '舞舞':
+                        if song_result['fs'] not in ['fsd', 'fsdp']:
+                            unfinishList[index].append(song_result)
+                    elif plateType == '者':
+                        if song_result['achievements'] < 80:
+                            unfinishList[index].append(song_result)
+                else:
+                    unfinishList[index].append(song)
 
-    return msg
-
+    if version[0] in ["舞", "霸"]:
+        for song in version_list_rem:
+            songid = int(song['id'])
+            for index in range(len(song['level'])):
+                if index in [4]:
+                    song_result = findsong_byid(songid, index, finishs['verlist'])
+                    if song_result:
+                        if plateType == '将':
+                            if song_result['achievements'] < 100:
+                                unfinishList[index].append(song_result)
+                        elif plateType == '极':
+                            if song_result['fc'] not in ['fc', 'ap', 'fcp', 'app']:
+                                unfinishList[index].append(song_result)
+                        elif plateType == '神':
+                            if song_result['fc'] not in ['ap', 'app']:
+                                unfinishList[index].append(song_result)
+                        elif plateType == '舞舞':
+                            if song_result['fs'] not in ['fsd', 'fsdp']:
+                                unfinishList[index].append(song_result)
+                        elif plateType == '者':
+                            if song_result['achievements'] < 80:
+                                unfinishList[index].append(song_result)
+                    else:
+                        unfinishList[index].append(song)
+    # 高难度铺面
+    HardSong = ''
+    for item in unfinishList[3]:
+        if len(unfinishList[3]) > 5:
+            break
+        if item.get('achievements', -1) >= 0:
+            # print(item['level'],1,type(item['level']))
+            if item['level'] in ["15", "14+", "14", "13+"]:
+                HardSong += str(item['id']) + '. ' + item['title'] + '\n'
+        else:
+            # print(item['level'],2)
+            if item['level'][3] in ["15", "14+", "14", "13+"]:
+                HardSong += str(item['id']) + '. ' + item['title'] + '\n'
+    if vername in ['舞', '霸']:
+        for item in unfinishList[4]:
+            if len(unfinishList[4]) > 5:
+                break
+            if item.get('achievements', -1) >= 0:
+                # print(item['level'],1,type(item['level']))
+                if item['level'] in ["15", "14+", "14", "13+"]:
+                    HardSong += str(item['id']) + '. ' + item['title'] + '\n'
+            else:
+                # print(item['level'],2)
+                if item['level'][3] in ["15", "14+", "14", "13+"]:
+                    HardSong += str(item['id']) + '. ' + item['title'] + '\n'
+    t = vername + plateType
+    SendMsg = f'您的 {t} 完成进度如下：\n'
+    unfinishSongCount = len(unfinishList[0]) + len(unfinishList[1]) + len(unfinishList[2]) + len(
+        unfinishList[3]) if vername not in ['舞', '者'] else len(unfinishList[0]) + len(unfinishList[1]) + len(
+        unfinishList[2]) + len(unfinishList[3]) + len(unfinishList[4])
+    unfinishGCount = len(unfinishList[0])
+    unfinishYCount = len(unfinishList[1])
+    unfinishRCount = len(unfinishList[2])
+    unfinishPCount = len(unfinishList[3])
+    unfinishREPCount = len(unfinishList[4])
+    if unfinishSongCount == 0:
+        return f'您已经获得了 {t}。'
+    SendMsg += f"已完成 {str(version_all_chart - unfinishSongCount)}/{str(version_all_chart)}， 剩余 {str(unfinishSongCount)}\n"
+    if unfinishGCount == 0:
+        SendMsg += '绿谱已全部完成\n'
+    else:
+        SendMsg += f'绿：{str(version_chart_list[0] - unfinishGCount)}/{str(version_chart_list[0])}， 剩余 {str(unfinishGCount)}\n'
+    if unfinishYCount == 0:
+        SendMsg += '黄谱已全部完成\n'
+    else:
+        SendMsg += f'黄：{str(version_chart_list[1] - unfinishYCount)}/{str(version_chart_list[1])}， 剩余 {str(unfinishYCount)}\n'
+    if unfinishRCount == 0:
+        SendMsg += '红谱已全部完成\n'
+    else:
+        SendMsg += f'红：{str(version_chart_list[2] - unfinishRCount)}/{str(version_chart_list[2])}， 剩余 {str(unfinishRCount)}\n'
+    if unfinishPCount == 0:
+        SendMsg += f'您已经 {t} 确认了！\n'
+    else:
+        SendMsg += f'紫：{str(version_chart_list[3] - unfinishPCount)}/{str(version_chart_list[3])}， 剩余 {str(unfinishPCount)}\n'
+    if vername in ['舞', '霸']:
+        if unfinishREPCount == 0:
+            SendMsg += f'白谱已全部完成\n您已经 {t} 确认了！\n'
+        else:
+            SendMsg += f'白：{str(version_chart_list[4] - unfinishREPCount)}/{str(version_chart_list[4])}， 剩余 {str(unfinishREPCount)}\n'
+    # print(unfinishRCount,unfinishPCount)
+    if (unfinishRCount != 0 or unfinishPCount != 0) and vername not in ["舞", "霸"]:
+        # print('Join')
+        if len(unfinishList[3]) <= 5 and len(unfinishList[3]) != 0:
+            SendMsg += '\n未完成高难度谱面还剩下：\n'
+        SendMsg += HardSong[0:-1]
+    if vername in ["舞", "霸"]:
+        if len(unfinishList[4]) <= 5 and len(unfinishList[3]) != 0:
+            SendMsg += '\n\n请继续加油！'
+        else:
+            SendMsg += '\n请继续加油！'
+    else:
+        if len(unfinishList[3]) <= 5 and len(unfinishList[3]) != 0:
+            SendMsg += '\n\n请继续加油！'
+        else:
+            SendMsg += '\n请继续加油！'
+    return SendMsg
 
 async def level_process_data(payload: str, match: Tuple):
     song_played = []
@@ -502,6 +540,24 @@ class Music(Dict):
 
 
 class MusicList(List[Music]):
+    def by_versions_for_cn(self,music_version,is_mai_version:bool = False) -> Optional[Music]:
+        musiclist = []
+        musiclist_rem = []
+        if is_mai_version:
+            for music in self:
+                if int(music.id) in MAI_DELETED_MUSIC_REM:
+                    musiclist_rem.append(music)
+            for music in self:
+                if int(music.id) in MAI_DELETED_MUSIC_Normal:
+                    musiclist.append(music)
+        else:
+            for music in self:
+                if int(music.id) in DELETED_MUSIC:
+                    continue
+                if music.version in music_version:
+                    musiclist.append(music)
+        return musiclist, musiclist_rem
+
     def by_id(self, music_id: str) -> Optional[Music]:
         for music in self:
             if music.id == music_id:
@@ -632,7 +688,7 @@ except Exception as e:
 total_list = MusicList()
 total_list_JP = MusicList()
 
-for music_data in obj.values():
+for music_data in obj:
     music = Music(music_data)
     for i, chart_data in enumerate(music['charts']):
         music.charts[i] = Chart(chart_data)

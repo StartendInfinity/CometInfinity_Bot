@@ -35,8 +35,28 @@ class generate_tool():
 
     def center_font(font_x, img, text, font):
         return font_x - int(img.textlength(text, font) / 2)
+    
+    def translate_fish2lx(input:list) -> list:
+        return_list = []
+        fc_translate = {"": None, "fc": "fc", "fcp": "fcp", "ap": "ap", "app": "app"}
+        fs_translate = {"": None, "fs": "fs", "fsp": "fsp", "fsd": "fsd", "fsdp": "fsdp", "sync":"sp"}
+        for single_data in input:
+            temp_dict = {}
+            temp_dict["id"] = single_data["song_id"]
+            temp_dict["song_name"] = single_data["title"]
+            temp_dict["level"] = single_data["level"]
+            temp_dict["level_index"] = single_data["level_index"]
+            temp_dict["achievements"] = single_data["achievements"]
+            temp_dict["fc"] = fc_translate[single_data["fc"]]
+            temp_dict["fs"] = fs_translate[single_data["fs"]]
+            temp_dict["dx_score"] = single_data["dxScore"]
+            temp_dict["dx_rating"] = single_data["ra"]
+            temp_dict["rate"] = single_data["rate"]
+            temp_dict["type"] = single_data["type"]
+            return_list.append(temp_dict)
+        return return_list
 
-    def generate_charts(base, draw, score_data, music_data, mas: bool):
+    def generate_charts(base, draw, score_data, music_data, mas: bool, song_id:str):
         index = 4
         if mas:
             index = 5
@@ -64,20 +84,19 @@ class generate_tool():
                 colors = (195, 70, 231)
             if len(chart) == 0:
                 draw.text([110, base_y[element]], "NO DATA", colors, FotB_48)
-                draw.text([1255, base_y[element] - 12], str('{:.01f}'.format(music_data["ds"][element])), colors, FotB_28)
+                draw.text([1255, base_y[element] - 12], str('{:.01f}'.format(music_data[song_id]["ds"][element])), colors, FotB_28)
                 draw.text([1255, base_y[element] + 25], "-", colors, FotB_28)
                 #字形有点问题 正常显示的话为+29 横线好像会偏下
             else:
                 song_fc = chart["fc"]
                 song_fs = chart["fs"]
                 song_dx_score = chart["dx_score"]
-                song_max_dx_score = music_data["charts"][element]["dxscore"]
-                draw.text([1255, base_y[element] - 12], str('{:.01f}'.format(music_data["ds"][element])), colors, FotB_28)
+                song_max_dx_score = music_data[song_id]["charts"][element]["dxscore"]
+                draw.text([1255, base_y[element] - 12], str('{:.01f}'.format(music_data[song_id]["ds"][element])), colors, FotB_28)
                 draw.text([1255, base_y[element] + 29], str(int(chart["dx_rating"])), colors, FotB_28)
                 draw.text([110, base_y[element]], '{:.04f}'.format(chart["achievements"]) + "%", colors, FotB_48)
                 generate_tool.simple_draw(base, f"./src/static/mai/score/achi/UI_TTR_Rank_{chart['rate']}.png", [160, 60], [415, base_y[element] - 7])
                 if song_fc != None:
-                    
                     base = generate_tool.simple_draw(base, f"./src/static/mai/score/sync/UI_RSL_{song_fc.upper()}_Text_01.png", [126, 64], [575, base_y[element] - 9])
                 if song_fs != None:
                     base = generate_tool.simple_draw(base, f"./src/static/mai/score/sync/UI_RSL_{song_fs.upper()}_Text_01.png", [126, 64], [705, base_y[element] - 9])
@@ -90,16 +109,14 @@ class generate_tool():
 
 class mai_score():
 
-    def lxns(chart_data, music_data):
-        score_data = chart_data['data']
-        song_id = score_data[0]["id"]
-        song_id2 = music_data["id"]
-        song_name = music_data["title"]
-        song_artist = music_data["basic_info"]["artist"]
-        song_genre = music_data["basic_info"]["genre"]
-        song_bpm = music_data["basic_info"]["bpm"]
-        song_ds = music_data["ds"]
-        song_type = music_data["type"]
+    def lxns(score_data, music_data):
+        song_id = str(score_data[0]["id"])
+        song_name = music_data[song_id]["title"]
+        song_artist = music_data[song_id]["basic_info"]["artist"]
+        song_genre = music_data[song_id]["basic_info"]["genre"]
+        song_bpm = music_data[song_id]["basic_info"]["bpm"]
+        song_ds = music_data[song_id]["ds"]
+        song_type = music_data[song_id]["type"]
         mas = False
         song_id_6 = generate_tool.get_cover_len6_id(str(song_id))
         #版本和是否有成绩之前已经判断过了,应该不会出事
@@ -138,14 +155,11 @@ class mai_score():
                 count+=1
         draw_image.text([460, 265], song_artist, default_color, HanSans15_24)
         #艺术家
-        draw_image.text([460, 395], f'ID {song_id2}          {song_genre}          BPM: {song_bpm}', default_color, HanSans17_28)
-        generate_tool.generate_charts(score_image, draw_image, score_data, music_data ,mas)
+        draw_image.text([460, 395], f'ID {song_id}          {song_genre}          BPM: {song_bpm}', default_color, HanSans17_28)
+        generate_tool.generate_charts(score_image, draw_image, score_data, music_data ,mas, song_id)
         n_score_image =  score_image.convert("RGB")
 
         out_buffer = BytesIO()
         n_score_image.save(out_buffer, "JPEG")
         bytes_data = out_buffer.getvalue()
         return base64.b64encode(bytes_data).decode()
-
-    def fish():
-        print("fish")

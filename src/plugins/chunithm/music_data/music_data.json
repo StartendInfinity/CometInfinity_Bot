@@ -638,19 +638,22 @@
             4,
             6,
             9.5,
-            13.6
+            13.6,
+            14.8
         ],
         "level": [
             "4",
             "6",
             "9+",
-            "13+"
+            "13+",
+            "14+"
         ],
         "cids": [
             1,
             2,
             3,
-            4
+            4,
+            5
         ],
         "charts": [
             {
@@ -668,6 +671,10 @@
             {
                 "combo": 1103,
                 "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 1741,
+                "charter": "ぴちネコ@taterenda lovers"
             }
         ]
     },
@@ -36419,6 +36426,53 @@
         ]
     },
     {
+        "id": 1107,
+        "title": "AstrøNotes.",
+        "basic_info": {
+            "title": "AstrøNotes.",
+            "artist": "MisoilePunch♪",
+            "genre": "ゲキマイ",
+            "bpm": 210,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            4,
+            8,
+            13.6,
+            14.8
+        ],
+        "level": [
+            "4",
+            "8",
+            "13+",
+            "14+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 623,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 995,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1859,
+                "charter": "Moon Strix"
+            },
+            {
+                "combo": 2231,
+                "charter": "Mistilteinn -starry-"
+            }
+        ]
+    },
+    {
         "id": 2007,
         "title": "猫 ～THE FIRST TAKE ver.～",
         "basic_info": {
@@ -45533,6 +45587,523 @@
             {
                 "combo": 2928,
                 "charter": "redarrow Vs habakiri"
+            }
+        ]
+    },
+    {
+        "id": 2234,
+        "title": "僕の戦争",
+        "basic_info": {
+            "title": "僕の戦争",
+            "artist": "神聖かまってちゃん「進撃の巨人」",
+            "genre": "POPS & ANIME",
+            "bpm": 144,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            5,
+            9,
+            12.5
+        ],
+        "level": [
+            "2",
+            "5",
+            "9",
+            "12+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 414,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 608,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1054,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 2224,
+                "charter": "Redarrow last war"
+            }
+        ]
+    },
+    {
+        "id": 2235,
+        "title": "ポケットからぬりつぶせ！",
+        "basic_info": {
+            "title": "ポケットからぬりつぶせ！",
+            "artist": "曲：中山真斗／歌：マーチングポケッツ [日向 千夏(CV：岡咲 美保)、柏木 美亜(CV：和氣 あず未)、東雲 つむぎ(CV：和泉 風花)]",
+            "genre": "ゲキマイ",
+            "bpm": 126,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            5,
+            10,
+            11.9
+        ],
+        "level": [
+            "2",
+            "5",
+            "10",
+            "11+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 430,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 630,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1005,
+                "charter": "小鳥遊さん"
+            },
+            {
+                "combo": 1451,
+                "charter": "Techno Kitchen"
+            }
+        ]
+    },
+    {
+        "id": 2236,
+        "title": "Y.Y.Y.計画!!!!",
+        "basic_info": {
+            "title": "Y.Y.Y.計画!!!!",
+            "artist": "曲：烏屋茶房／歌：R.B.P. [九條 楓(CV：佳村 はるか)、逢坂 茜(CV：大空 直美)、珠洲島 有栖(CV：長縄 まりあ)]",
+            "genre": "ゲキマイ",
+            "bpm": 186,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            9.5,
+            12.6
+        ],
+        "level": [
+            "3",
+            "6",
+            "9+",
+            "12+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 525,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 889,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1738,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 2598,
+                "charter": "R.@.P."
+            }
+        ]
+    },
+    {
+        "id": 2237,
+        "title": "最っ高のエンタメだ!!",
+        "basic_info": {
+            "title": "最っ高のエンタメだ!!",
+            "artist": "曲：本田正樹(Dream Monster)／歌：7EVENDAYS⇔HOLIDAYS [井之原 小星(CV：ももの はるな)、柏木 咲姫(CV：石見 舞菜香)]",
+            "genre": "ゲキマイ",
+            "bpm": 276,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            10.7,
+            13
+        ],
+        "level": [
+            "3",
+            "6",
+            "10+",
+            "13"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 474,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 721,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1451,
+                "charter": "ロシェ＠ペンギン"
+            },
+            {
+                "combo": 1853,
+                "charter": "夢中になりたい！レッドアロー"
+            }
+        ]
+    },
+    {
+        "id": 2238,
+        "title": "GODLINESS",
+        "basic_info": {
+            "title": "GODLINESS",
+            "artist": "曲：椿山日南子／歌：皇城 セツナ(CV：八巻 アンナ)",
+            "genre": "ゲキマイ",
+            "bpm": 183,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            7,
+            10.9,
+            14.1
+        ],
+        "level": [
+            "3",
+            "7",
+            "10+",
+            "14"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 609,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1056,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1721,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 2610,
+                "charter": "GODLEMONESS"
+            }
+        ]
+    },
+    {
+        "id": 2239,
+        "title": "ホーリーサンバランド",
+        "basic_info": {
+            "title": "ホーリーサンバランド",
+            "artist": "SAMBA MASTER 佐藤",
+            "genre": "VARIETY",
+            "bpm": 150,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            3,
+            6,
+            13.1,
+            14.7
+        ],
+        "level": [
+            "3",
+            "6",
+            "13",
+            "14+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 444,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 713,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1200,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1822,
+                "charter": "SAMBA MASTER 小鳥遊"
+            }
+        ]
+    },
+    {
+        "id": 2240,
+        "title": "MALKUTH -The Last Ruler of Terrestrials-",
+        "basic_info": {
+            "title": "MALKUTH -The Last Ruler of Terrestrials-",
+            "artist": "穴山大輔 VS 光吉猛修",
+            "genre": "ORIGINAL",
+            "bpm": 197,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            5,
+            12.3,
+            14.5,
+            15.4
+        ],
+        "level": [
+            "5",
+            "12",
+            "14+",
+            "15"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 552,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1730,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 2624,
+                "charter": "ミストルティン"
+            },
+            {
+                "combo": 3234,
+                "charter": "譜面ボーイズからの挑戦状 -Legends-"
+            }
+        ]
+    },
+    {
+        "id": 2241,
+        "title": "DA'AT -The First Seeker of Souls-",
+        "basic_info": {
+            "title": "DA'AT -The First Seeker of Souls-",
+            "artist": "水野健治 VS 大国奏音",
+            "genre": "ORIGINAL",
+            "bpm": 111,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            5,
+            12,
+            14.6,
+            15.3
+        ],
+        "level": [
+            "5",
+            "12",
+            "14+",
+            "15"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 787,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 2424,
+                "charter": "Techno Kitchen"
+            },
+            {
+                "combo": 2560,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 3898,
+                "charter": "譜面ボーイズからの挑戦状 -Revolutions-"
+            }
+        ]
+    },
+    {
+        "id": 2244,
+        "title": "非実在系女子達はどうすりゃいいですか？",
+        "basic_info": {
+            "title": "非実在系女子達はどうすりゃいいですか？",
+            "artist": "綾瀬理恵",
+            "genre": "POPS & ANIME",
+            "bpm": 158,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            6,
+            9,
+            13
+        ],
+        "level": [
+            "2",
+            "6",
+            "9",
+            "13"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 422,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 652,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1265,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 1728,
+                "charter": "音ゲーみたいなウニに住んでる小鳥遊"
+            }
+        ]
+    },
+    {
+        "id": 2245,
+        "title": "恋ひ恋ふ縁",
+        "basic_info": {
+            "title": "恋ひ恋ふ縁",
+            "artist": "KOTOKO",
+            "genre": "POPS & ANIME",
+            "bpm": 144,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            2,
+            5,
+            8,
+            11.9
+        ],
+        "level": [
+            "2",
+            "5",
+            "8",
+            "11+"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 417,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 666,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1114,
+                "charter": "ミストルティン"
+            },
+            {
+                "combo": 1362,
+                "charter": "Redarrow"
+            }
+        ]
+    },
+    {
+        "id": 2246,
+        "title": "Transcend Lights",
+        "basic_info": {
+            "title": "Transcend Lights",
+            "artist": "曲：小高光太郎／歌：オンゲキシューターズ",
+            "genre": "ゲキマイ",
+            "bpm": 105,
+            "from": "NEW PLUS"
+        },
+        "ds": [
+            1,
+            6,
+            9.5,
+            12.2
+        ],
+        "level": [
+            "1",
+            "6",
+            "9+",
+            "12"
+        ],
+        "cids": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "charts": [
+            {
+                "combo": 560,
+                "charter": "アミノハバキリ"
+            },
+            {
+                "combo": 983,
+                "charter": "rioN"
+            },
+            {
+                "combo": 1673,
+                "charter": "じゃこレモン"
+            },
+            {
+                "combo": 2369,
+                "charter": "Techno Kitchen"
             }
         ]
     },

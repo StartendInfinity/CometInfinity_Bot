@@ -28,7 +28,7 @@ version_mapping = {
 
 # upload
 try:
-    response = requests.get("https://maimai.lxns.net/api/v0/chunithm/song/list")
+    response = requests.get("https://maimai.lxns.net/api/v0/chunithm/song/list?notes=true")
     old_json = response.json()
 
     # 读取from.json文件

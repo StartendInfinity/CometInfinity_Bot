@@ -1,9 +1,12 @@
-#重要!! 由于晓炎与团队内各位的编程风格有很大不同,故此处使用了aiohttp
-#请在合并进master前安装aiohttp或统一代码风格,拜托了
 import aiohttp
 
+DIVING_AUTH = "Ol3pAoaD9NFuUMxdsAg1dwtT1zjGH2Jy"
 LXNSAUTH = "pCx9K3Sta3034GljtbR6ykfQfbR12uZbnbYdePcQKGM="
 HEADERS = {"Authorization": LXNSAUTH}
+
+
+# async def getch_mai_best50_df(payload):
+
 
 async def fetch_mai_best50_lxns(friend_code, ap):
     """
@@ -98,14 +101,15 @@ async def fetch_mai_best50_lxns(friend_code, ap):
 #         return "Success", await resp.json(), [playerName, playerTrophy, playerCourseRank, playerClassRank, playerPlate, playerIcon, playerFrame]
 # #以上为QQ号获取
 
-async def fetch_single_score_lxns(friend_code, song_id, song_type):
-    #song_type std:标准 dx:DX
-    async with aiohttp.request("GET", f"https://maimai.lxns.net/api/v0/maimai/player/{friend_code}/bests?song_id={song_id}&song_type={song_type}", headers = HEADERS) as resp:
-        score = await resp.json()
-        if resp.status == 404:
-            return "Song Type Not Found", None
-        #未找到指定歌曲类型
-        if score["data"] == None:
-            return "Score Not Found", None
-        return "Success", score
-        #没有玩过该乐曲
+async def get_player_records(post_data):
+    async with aiohttp.request("GET","https://www.diving-fish.com/api/maimaidxprober/dev/player/records",headers={'developer-token':DIVING_AUTH},params=post_data) as resp_record:
+        user_data=await resp_record.json()
+        if resp_record.status==200:
+            return user_data
+        elif resp_record.status==400:
+            return "Player Not Found"
+        elif resp_record.status==403:
+            return "Private Setting"
+        else:
+            return "Data Lost"
+        

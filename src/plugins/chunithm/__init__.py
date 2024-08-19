@@ -24,27 +24,7 @@ from .json_update import *
 
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
-from .lib.chunithm_best_30 import generate_by_lx
-
-async def read_id(mode: str, user_id: str):
-    try:
-        async with aiofiles.open("./data/bind_data.json", "r", encoding="utf-8") as f:
-            bind_data = json.loads(await f.read())
-    except Exception as e:
-        bind_data = {}
-        print(f"{e}")
-
-    user_bind_data = bind_data.get(user_id, {})  
-
-    qqid = user_bind_data.get(mode)  
-
-    if qqid is None:
-        print("没有用户")
-    else:
-        print(f"{user_id}: {qqid}")
-
-    return qqid
-
+from .lib.chunithm_best_30 import generate_by_lx, generate_by_df
 
 chu_regex = r'/chu\s*'
 
@@ -52,43 +32,17 @@ best_30_pic = on_command('/b30' , aliases={'chub30','chu b30','cb30'}, priority=
 
 @best_30_pic.handle()
 async def _(event: Event, message: Message = CommandArg()):
-    user_id = str(event.user_id)
-    mode = "lc"
-    friend_code = await read_id(mode, user_id)
-    username = str(message).strip()
-
-    if username == "理论值":
-        username = "888888888888888"
-        img, success = await generate_by_lx("None",username if username != "" else None)
-        if success != 0:
-            await best_30_pic.send(img)
-        else:
-            await best_30_pic.send(Message([
+    user_id = str(event.get_user_id())
+    img, success = await generate_by_df({"qq": user_id})
+    await best_30_pic.send(Message([
                 MessageSegment("image", {
                     "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
-                })
-            ]))
-    else:
-        # try:
-        img, success = await generate_by_lx(None,friend_code)
-        if success != 0:
-            await best_30_pic.send(img)
-        else:
-            await best_30_pic.send(Message([
-                MessageSegment("image", {
-                    "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"
-                })
-            ]))
-        # except:
-        #     await best_30_pic.finish("\n您没有绑定信息。\n请使用 /bind 命令进行绑定。")
-
-
-
+        })
+    ]), reply_message = True)
 
 def getSongCover(songId):
     cover = Image.open(rf"src\static\chu\cover\CHU_UI_Jacket_{get_cover_len4_id(songId)}.png")
     cover_rgb = cover.convert('RGB')
-    print(cover_rgb)
     return cover_rgb
 
 #-----s-chusong------START
@@ -127,10 +81,10 @@ async def _(event: Event, message: Message = EventMessage()):
 BPM：{music['basic_info']['bpm']}
 版本：{from_text}
 等级：{', '.join(music['level'])}
-定数：{', '.join(f'{d:.1f}' for d in music['ds'])}'''))
+定数：{', '.join(f'{d:.1f}' for d in music['ds'])}'''), reply_message = True)
     except (FileNotFoundError, Exception) as e:
         print(e)
-        await music_song.send("歌曲不存在哦！")
+        await music_song.send("歌曲不存在哦！", reply_message = True)
 #-----s-chusong------END
 
 
@@ -145,7 +99,7 @@ async def _(event: Event, message: Message = EventMessage()):
     #判断表达式第二组是否在level_labels内，若不在则终止命令
     level_labels = ['绿', '黄', '红', '紫', '黑']
     if match is None or match.group(2) not in level_labels:
-        await chu_chart.finish("难度输入不对哦！")
+        await chu_chart.finish("难度输入不对哦！", reply_message = True)
 
     groups = match.groups()
     level_index = level_labels.index(groups[1])
@@ -201,10 +155,10 @@ FLICK：{chart.flick}
                                        f'''BPM：{music.bpm}
 难度：{level_name[level_index]} {level} ({ds})\n''' +
 note
-                                       ))
+                                       ), reply_message = True)
     except (FileNotFoundError, Exception) as e:
         print(e)
-        await chu_chart.send("\n歌曲不存在哦！")
+        await chu_chart.send("歌曲不存在哦！", reply_message = True)
 #-----s-chuchart------END
 
 
@@ -254,7 +208,7 @@ async def _(event: Event, message: Message = EventMessage()):
         #print(res)
 
     if len(res) == 0:
-        await search_music.send("没有搜索到任何结果。")
+        await search_music.send("没有搜索到任何结果。", reply_message = True)
     elif len(res) == 1:
         #music = total_list.by_id(res[0]['id'])
         from_ver = total_list.by_id(res[0]['id'])
@@ -262,7 +216,7 @@ async def _(event: Event, message: Message = EventMessage()):
         music = song_get(res[0]['id'])
         print(music)
         msg = await music_info_pic(music, from_ver)
-        await chu_id.send(msg)
+        await chu_id.send(msg, reply_message = True)
     elif len(res) <= 15:
         search_result = ""
         temp = None
@@ -294,7 +248,7 @@ async def _(event: Event, message: Message = EventMessage()):
 
             else:
                 search_result += f"{music['id']}. {music['title']}\n"
-        await search_music.send(f"\n共找到 {len(res)} 条结果：\n"+ search_result.strip())
+        await search_music.send(f"共找到 {len(res)} 条结果：\n"+ search_result.strip(), reply_message = True)
     else:
         per_page = 15
         total_pages = math.ceil(len(res) / per_page)
@@ -330,7 +284,7 @@ async def _(event: Event, message: Message = EventMessage()):
             else:
                 search_result += f"{music['id']}. {music['title']}\n"
         #print(search_result)
-        await search_music.send(f"\n共找到 {len(res)} 条，第 {page}/{total_pages} 页:\n"+ search_result.strip() + f"\n使用参数 -p [页码] 来翻页")
+        await search_music.send(f"共找到 {len(res)} 条，第 {page}/{total_pages} 页:\n"+ search_result.strip() + f"\n使用参数 -p [页码] 来翻页", reply_message = True)
 #-----s-search-----END
         
 
@@ -354,9 +308,9 @@ async def _(event: Event, message: Message = EventMessage()):
         except Exception :
             msg = f"\n出错了，请稍后重试或联系管理员。\n{error_log}"
 
-        await chu_id.send(msg)
+        await chu_id.send(msg, reply_message = True)
     else:
-        await chu_id.send('\n歌曲不存在哦！')
+        await chu_id.send('歌曲不存在哦！', reply_message = True)
 #-----s-id------END
 
 #-----s-random-----START
@@ -411,8 +365,8 @@ BPM：{music_ds_a['basic_info']['bpm']}
 版本：{music_ds_a['basic_info']['from']}
 等级：{', '.join(music_ds_a['level'])}
 定数：{', '.join(f'{d:.1f}' for d in music_ds_a['ds'])}''')
-            await random_music.send(msg)
-        if set == '等级':
+            await random_music.send(msg, reply_message = True)
+        elif set == '等级':
             music_level = total_list.filter(level=ds)
             if level:
                 level_labels2 = ['绿', '黄', '红', '紫', '黑']
@@ -442,32 +396,33 @@ BPM：{music_level_a['basic_info']['bpm']}
 版本：{music_level_a['basic_info']['from']}
 等级：{', '.join(music_level_a['level'])}
 定数：{', '.join(f'{d:.1f}' for d in music_level_a['ds'])}''')
-            await random_music.send(msg)
-        music = total_list.random()
-        print(music)
-        mid3 = f"{music['id']}"
-        print(mid3)
-        if pic:
-            music_none = song_get(music['id'])
-            mid3_int = int(mid3)
-            from_ver = total_list.by_id(mid3_int)
-            msg = await music_info_pic(music_none,from_ver)
-        else:
-            
-            img3 = getSongCover(mid3)
-            #file_path = os.path.join(MusicCover, rf'UI_Jacket_{get_cover_len4_id(mid3)}.png')
+            await random_music.send(msg, reply_message = True)
+        elif set == None:
+            music = total_list.random()
+            print(music)
+            mid3 = f"{music['id']}"
+            print(mid3)
+            if pic:
+                music_none = song_get(music['id'])
+                mid3_int = int(mid3)
+                from_ver = total_list.by_id(mid3_int)
+                msg = await music_info_pic(music_none,from_ver)
+            else:
+                
+                img3 = getSongCover(mid3)
+                #file_path = os.path.join(MusicCover, rf'UI_Jacket_{get_cover_len4_id(mid3)}.png')
 
-            msg = Message(f"""[CQ:image,file=base64://{str(image_to_base64(img3), encoding='utf-8')}]""" + 
-                                        f"\n{music['id']}. {music['title']}\n" + 
-                                        f'''艺术家：{music['basic_info']['artist']}
+                msg = Message(f"""[CQ:image,file=base64://{str(image_to_base64(img3), encoding='utf-8')}]""" + 
+                                            f"\n{music['id']}. {music['title']}\n" + 
+                                            f'''艺术家：{music['basic_info']['artist']}
 分类：{music['basic_info']['genre']}
 BPM：{music['basic_info']['bpm']}
 版本：{music['basic_info']['from']}
 等级：{', '.join(music['level'])}
 定数：{', '.join(f'{d:.1f}' for d in music['ds'])}''')
+            await random_music.send(msg, reply_message = True)    
     except Exception as e:
-        await random_music.finish(f"\n没有搜索到任何结果。\n{e}")
-    await random_music.send(msg)
+        await random_music.finish(f"没有搜索到任何结果。\n{e}", reply_message = True)
 #-----s-random-----END
 
 #-----s-alias-----START
@@ -482,9 +437,9 @@ async def _(event: Event, message: Message = EventMessage()):
     #data_id = total_alias_list.by_id(name)
     #music = total_list.by_id(data.song_id)
     if not data:
-        await alias_search.finish('\n没有搜索到任何结果。')
+        await alias_search.finish('没有搜索到任何结果。', reply_message = True)
     if len(data) != 1:
-        msg = f"\n共找到 {len(data)} 条结果：\n"
+        msg = f"共找到 {len(data)} 条结果：\n"
         for songs in data:
             #music = total_list.by_id(songs.song_id)
             print(songs)
@@ -496,10 +451,10 @@ async def _(event: Event, message: Message = EventMessage()):
             else:
                 msg += f'{songs.song_id}：error\n'
         # await alias_search.finish(msg.strip())
-        await alias_search.finish(msg)
+        await alias_search.finish(msg, reply_message = True)
     music = song_get(str(data[0].song_id))
     from_ver = total_list.by_id(int(data[0].song_id))
-    await alias_search.finish(await music_info_pic(music, from_ver))
+    await alias_search.finish(await music_info_pic(music, from_ver), reply_message = True)
 #-----s-alias-----END
 
 #-----s-lookalia-----START
@@ -512,9 +467,9 @@ async def _(event: Event, message: Message = EventMessage()):
     mid = int(match_regex[0])
     data = total_alias_list.by_id(mid)
     if not data:
-        await alias_search.finish('\n这首歌现在没有别名。\n您可以前往落雪咖啡屋的曲目别名投票申请创建曲目别名。')
+        await alias_search.finish('这首歌现在没有别名。\n您可以前往落雪咖啡屋的曲目别名投票申请创建曲目别名。', reply_message = True)
     
-    await alias_look.finish(f"\n这首歌的别名有: \n{data}\n别名数据来自落雪咖啡屋。")
+    await alias_look.finish(f"这首歌的别名有: \n{data}\n别名数据来自落雪咖啡屋。", reply_message = True)
 #-----s-lookalia-----END
 
 #-----s-rating_cal-----START
@@ -528,15 +483,15 @@ async def _(event: Event, message: Message = EventMessage()):
     # if not ds and not ach:
     #     await rating_cal.send("\n异常\n请输入正确的定数与达成率！")
     if not (1.0 <= float(ds) <= 15.4):
-        await rating_cal.finish("\n请输入正确的定数与达成率！")
+        await rating_cal.finish("请输入正确的定数与达成率！", reply_message = True)
     try:
         ra = computeRaB30(float(ds), int(ach))
         f_ra = truncate_f(ra,2)
-        await rating_cal.send(f"\n定数 {float(ds)} \n在 {int(ach)} 的得分是 {f_ra}")
+        await rating_cal.send(f"定数 {float(ds)} \n在 {int(ach)} 的得分是 {f_ra}", reply_message = True)
     except ValueError:
-        await rating_cal.send("\n请输入正确的定数与达成率！")
+        await rating_cal.send("请输入正确的定数与达成率！", reply_message = True)
     except TypeError:
-        await rating_cal.send("\n请输入正确的定数与达成率！")
+        await rating_cal.send("请输入正确的定数与达成率！", reply_message = True)
 #-----s-rating_cal-----END
 
 # searchChartInfo = on_regex(r"^(中二|c|chu)\s*c?查谱([0-9]+)", permission=GROUP, priority=1, block=False)
