@@ -233,8 +233,8 @@ async def _(event: Event, message: Message = EventMessage()):
         # elif match.group(2) is None:
         #     pass
         #     music_jp = total_list.by_id(id)
-        # if music is None and music_jp is None:
-        #     await mai_id.finish('歌曲不存在哦！')
+        if music is None:
+            await mai_id.finish('歌曲不存在哦！')
         print(music)
         msg = await music_info_pic(music)           
         await mai_id.send(msg, reply_message = True)
