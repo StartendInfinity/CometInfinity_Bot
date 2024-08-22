@@ -1,9 +1,24 @@
 import nonebot
 from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
+
 import io
 from src.plugins.maimai.lib.mai_best_50 import mai_best50
 import requests
 app: FastAPI = nonebot.get_app()
+
+# 配置允许的源
+origins = ["*"]
+
+# 添加 CORS 中间件
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # 允许的源列表
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许的请求方法，如 GET、POST 等
+    allow_headers=["*"],  # 允许的请求头
+)
+
 
 
 type_map = {
