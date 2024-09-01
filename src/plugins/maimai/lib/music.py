@@ -594,6 +594,12 @@ class MusicList(List[Music]):
             ret, diff2 = cross(music.level, level, diff2)
             if not ret:
                 continue
+
+            if music.ds == None:
+                continue
+            #由于宴会场暂时不在考虑范围内，因此先跳过对宴会场的随机
+            #宴会场无定数数据返回 None
+
             ret, diff2 = cross(music.ds, ds, diff2)
             if not ret:
                 continue
