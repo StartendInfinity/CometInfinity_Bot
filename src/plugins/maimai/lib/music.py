@@ -595,7 +595,7 @@ class MusicList(List[Music]):
             if not ret:
                 continue
 
-            if music.ds == None:
+            if music.ds == None or int(music.id) > 100000:
                 continue
             #由于宴会场暂时不在考虑范围内，因此先跳过对宴会场的随机
             #宴会场无定数数据返回 None
