@@ -360,7 +360,8 @@ async def _(event: Event, message: Message = EventMessage()):
         msg = await music_info_pic(music)
         await mai_id.send(msg, reply_message = True)
     elif true_charts_num <= 15:
-        search_result = []
+        search_result_list = []
+        search_result = ""
         for music in sorted(res, key = lambda i: int(i['id'])):
             color_to_index = {'绿': 0, '黄': 1, '红': 2, '紫': 3, '白': 4}
             if not color and (std == '定数查歌' or std == '等级查歌' or std== '物量查歌'):
@@ -369,12 +370,12 @@ async def _(event: Event, message: Message = EventMessage()):
                     for ds_index, ds_value in enumerate(music['ds']):
                         if ds_value == float(name):
                             difficulty_color = list(color_to_index.keys())[ds_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
                 elif std == '等级查歌':
                     for level_index, level_value in enumerate(music['level']):
                         if level_value == name:
                             difficulty_color = list(color_to_index.keys())[level_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
                 elif std == '物量查歌':
                     total_notes = []
                     for chart in music['charts']:
@@ -383,9 +384,11 @@ async def _(event: Event, message: Message = EventMessage()):
                     for total_index, total_value in enumerate(music["total_notes"]):
                         if total_value == float(name):
                             difficulty_color = list(color_to_index.keys())[total_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
             else:
-                search_result += f"{music['id']}. {music['title']}\n"
+                search_result_list.append(f"{music['id']} {music['title']}\n")
+        for single_song_info in search_result_list:
+            search_result += single_song_info
         await search_music.send(f"共找到 {true_charts_num} 条结果：\n"+ search_result.strip(), reply_message = True)
     #理论上在前面计算真实谱面数量函数 return_true_num 的限制下应该是不会出现多算的情况的
     #直接沿用老代码试试 -- XiaoYan
@@ -423,7 +426,7 @@ async def _(event: Event, message: Message = EventMessage()):
                             difficulty_color = list(color_to_index.keys())[total_index]
                             search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
             else:
-                search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
+                search_result_list.append(f"{music['id']} {music['title']}\n")
         for single_song_info in search_result_list[start:end]:
             #在这里对已经过滤过一遍的列表截断在正确的页面并将数据输出
             search_result += single_song_info
