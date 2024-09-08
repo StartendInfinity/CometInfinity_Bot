@@ -34,6 +34,8 @@ best_30_pic = on_command('/b30' , aliases={'chub30','chu b30','cb30'}, priority=
 async def _(event: Event, message: Message = CommandArg()):
     user_id = str(event.get_user_id())
     img, success = await generate_by_df({"qq": user_id})
+    if int(success) == 400:
+        await best_30_pic.send("您还未绑定水鱼，请先绑定后再获取。", reply_message = True)
     await best_30_pic.send(Message([
                 MessageSegment("image", {
                     "file": f"base64://{str(image_to_base64(img), encoding='utf-8')}"

@@ -755,9 +755,11 @@ async def _(event: Event, message: Message = CommandArg()):
 
     req = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/player",json=payload)
     player_data = req.json()
-    standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
-    dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
-
+    try:
+        standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
+        dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
+    except:
+        await mai_b50.send("您还未绑定水鱼，请先绑定后再获取。", reply_message = True)
     lx_data_v['data']['standard_total'] = standard_total
     lx_data_v['data']['dx_total'] = dx_total
     lx_data_v['data']['standard'] = translate_df_to_lx(player_data['charts']['sd'])

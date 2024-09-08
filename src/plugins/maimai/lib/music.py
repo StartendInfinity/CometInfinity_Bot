@@ -210,6 +210,8 @@ def plate_process_xray(version, qq: str, plateType: str, vername: str):
     payload = {'qq': qq, 'version': VERSION_DF_MAP[version]}
     r = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/plate", json=payload)
     finishs = r.json()
+    if r.status_code == 400:
+        return "未找到该玩家。"
     unfinishList = {0: [], 1: [], 2: [], 3: [], 4: []}
 
     for song in version_list:
