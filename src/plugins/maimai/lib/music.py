@@ -562,19 +562,19 @@ class MusicList(List[Music]):
             for music in self:
                 if int(music.id) in DELETED_MUSIC:
                     continue
-                if music.version in music_version.replace("&amp;", ""):
+                if music.version in music_version:
                     musiclist.append(music)
         return musiclist, musiclist_rem
 
     def by_id(self, music_id: str) -> Optional[Music]:
         for music in self:
-            if music.id == music_id.replace("&amp;", ""):
+            if music.id == music_id:
                 return music
         return None
 
     def by_title(self, music_title: str) -> Optional[Music]:
         for music in self:
-            if music.title == music_title.replace("&amp;", ""):
+            if music.title == music_title:
                 return music
         return None
 
@@ -627,7 +627,7 @@ class MusicList(List[Music]):
                 combo = music["total_notes"]
                 if not any(t == total for t in total_notes):
                     continue
-            if title_search.replace("&amp;", "") is not Ellipsis and title_search.lower().replace("&amp;", "") not in music.title.lower():
+            if title_search.replace("&amp;", "") is not Ellipsis and title_search.lower().replace("&amp;", "") not in music.title.lower().replace("&", ""):
                 continue
             if artist is not Ellipsis and artist.lower() not in music.artist.lower():
                 continue
@@ -666,7 +666,7 @@ class AliasList(List[Alias]):
     def by_id(self, music_id: int) -> Optional[List[Alias]]:
         alias_music = []
         for music in self:
-            if music_id.replace("&amp;", "") == music.song_id:
+            if music_id == music.song_id:
                 alias_music.extend(music.aliases)
         return "\n".join(alias_music) if alias_music else None
     
@@ -674,7 +674,7 @@ class AliasList(List[Alias]):
         alias_music = []
         for music in self:
             for alias in music.aliases:
-                if music_alias.replace("&amp;", "") == alias:
+                if music_alias == alias:
                     alias_music.append(music)
                     break  # 如果找到匹配的别名，就不需要再检查这个音乐的其他别名了
         print(alias_music)
