@@ -2605,7 +2605,7 @@
     },
     "76": {
         "id": "76",
-        "title": "きみのためなら死ねる",
+        "title": "きみのためなら死��る",
         "type": "标准",
         "ds": [
             4,
@@ -2667,7 +2667,7 @@
         ],
         "bpm": 160,
         "basic_info": {
-            "title": "きみのためなら死ねる",
+            "title": "きみのためなら死��る",
             "artist": "スーパーラバーズ「きみのためなら死ねる」",
             "genre": "其他游戏",
             "bpm": 160,
@@ -9918,7 +9918,7 @@
                     0,
                     29
                 ],
-                "charter": "小鳥遊さん",
+                "charter": "�鳥遊さん",
                 "dxscore": 3030
             }
         ],
@@ -17012,7 +17012,7 @@
         "bpm": 146,
         "basic_info": {
             "title": "リッジでリッジでGO!GO!GO! -GMT mashup-",
-            "artist": "Hiro(SEGA)「RIDGE RACER」「電車でGO!」",
+            "artist": "Hiro(SEGA)「RIDGE RACER」「電��でGO!」",
             "genre": "其他游戏",
             "bpm": 146,
             "from": "GreeN PLUS",
@@ -29486,7 +29486,7 @@
                     0,
                     33
                 ],
-                "charter": "ぴちネコ",
+                "charter": "ぴち��コ",
                 "dxscore": 2997
             }
         ],
@@ -54375,7 +54375,7 @@
                     117,
                     100
                 ],
-                "charter": "ﾚよ†ょ／∪ヽ”┠  (十,3､了ﾅﾆ",
+                "charter": "ﾚよ†ょ／∪ヽ”┠  (十,3､了�ﾆ",
                 "dxscore": 3333
             }
         ],
@@ -56707,7 +56707,7 @@
                     12,
                     43
                 ],
-                "charter": "はっぴー",
+                "charter": "はっ��ー",
                 "dxscore": 1326
             },
             {
@@ -71903,7 +71903,7 @@
         "bpm": 190,
         "basic_info": {
             "title": "マーシャル・マキシマイザー",
-            "artist": "柊マグネタイト　feat.音楽的同位体　可不（KAFU）",
+            "artist": "柊マグネタイト　feat.音楽的同位体　可不（KAFU�",
             "genre": "niconico＆VOCALOID™",
             "bpm": 190,
             "from": "舞萌DX 2023",
@@ -74642,78 +74642,6 @@
             "artist": "s-don vs. 翡乃イスカ",
             "genre": "音击/中二节奏",
             "bpm": 155,
-            "from": "舞萌DX 2024",
-            "ReGenerate-By": "FoxXiaoYan"
-        }
-    },
-    "11550": {
-        "id": "11550",
-        "title": "FLUFFY FLASH",
-        "type": "DX",
-        "ds": [
-            6,
-            8.5,
-            12.8,
-            14.3
-        ],
-        "level": [
-            "6",
-            "8",
-            "12+",
-            "14"
-        ],
-        "charts": [
-            {
-                "notes": [
-                    184,
-                    12,
-                    9,
-                    15,
-                    8
-                ],
-                "charter": "",
-                "dxscore": 684
-            },
-            {
-                "notes": [
-                    318,
-                    33,
-                    16,
-                    35,
-                    6
-                ],
-                "charter": "",
-                "dxscore": 1224
-            },
-            {
-                "notes": [
-                    463,
-                    103,
-                    39,
-                    34,
-                    20
-                ],
-                "charter": "ロシェ@ペンギン",
-                "dxscore": 1977
-            },
-            {
-                "notes": [
-                    646,
-                    102,
-                    111,
-                    104,
-                    25
-                ],
-                "charter": "はっぴー",
-                "dxscore": 2964
-            }
-        ],
-        "bpm": 252,
-        "basic_info": {
-            "title": "FLUFFY FLASH",
-            "artist": "Kobaryo",
-            "genre": "音击/中二节奏",
-            "bpm": 252,
             "from": "舞萌DX 2024",
             "ReGenerate-By": "FoxXiaoYan"
         }

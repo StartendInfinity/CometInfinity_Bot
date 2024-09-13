@@ -353,32 +353,29 @@ async def _(event: Event, message: Message = EventMessage()):
     #此处的精确与否指的是是否精确到难度 -- XiaoYan
     true_charts_num = return_true_num(res, std, name)
 
-    if len(res) == 0:
+    if true_charts_num == 0:
         await search_music.send("没有搜索到任何结果。", reply_message = True)
-    elif len(res) == 1:
+    elif true_charts_num == 1:
         music = total_list.by_id(res[0]['id'])
         msg = await music_info_pic(music)
         await mai_id.send(msg, reply_message = True)
-    elif len(res) <= 15:
+    elif true_charts_num <= 15:
         search_result = ""
-        temp = None
+        search_result_list = []
         for music in sorted(res, key = lambda i: int(i['id'])):
             color_to_index = {'绿': 0, '黄': 1, '红': 2, '紫': 3, '白': 4}
             if not color and (std == '定数查歌' or std == '等级查歌' or std== '物量查歌'):
                 difficulty_color = ''
                 if std == '定数查歌':
-                    # ds_index = music['ds'].index(float(name))
-                    # difficulty_color = list(color_to_index.keys())[list(color_to_index.values()).index(ds_index)]
                     for ds_index, ds_value in enumerate(music['ds']):
                         if ds_value == float(name):
-                            # 使用 color_to_index 字典来获取难度颜色
                             difficulty_color = list(color_to_index.keys())[ds_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
                 elif std == '等级查歌':
                     for level_index, level_value in enumerate(music['level']):
                         if level_value == name:
                             difficulty_color = list(color_to_index.keys())[level_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
                 elif std == '物量查歌':
                     total_notes = []
                     for chart in music['charts']:
@@ -387,39 +384,40 @@ async def _(event: Event, message: Message = EventMessage()):
                     for total_index, total_value in enumerate(music["total_notes"]):
                         if total_value == float(name):
                             difficulty_color = list(color_to_index.keys())[total_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
-
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
             else:
-                search_result += f"{music['id']}. {music['title']}\n"
+                search_result_list.append(f"{music['id']}  {music['title']}\n")
+        for single_song_info in search_result_list:
+            search_result += single_song_info
         await search_music.send(f"共找到 {true_charts_num} 条结果：\n"+ search_result.strip(), reply_message = True)
+    #理论上在前面计算真实谱面数量函数 return_true_num 的限制下应该是不会出现多算的情况的
+    #直接沿用老代码试试 -- XiaoYan
+
+    #后记：忘了DX谱的情况了，这下成澄闪了 -- XiaoYan
     else:
         per_page = 15
-        total_pages = (len(res) + (per_page - 1)) // per_page
+        total_pages = (true_charts_num + (per_page - 1)) // per_page
+        #这里换成真实谱面数量来计算页面数量以免出错
         start = (page - 1) * per_page
         end = start + per_page
-
-        # per_page = 15
-        # total_pages = math.ceil(len(res) / per_page)
-        # start = (page - 1) * per_page
-        # end = start + per_page
+        search_result_list = []
         search_result = ""
-        temp = None
-        for music in sorted(res[start:end], key = lambda i: int(i['id'])):
+        for music in sorted(res, key = lambda i: int(i['id'])):
+            #这边相当于是先按顺序排序把所有的谱面全筛选出来,放进 search_result_list 这个列表里
+            #把上面的res[start:end] 改为 -> res(整个列表)
             color_to_index = {'绿': 0, '黄': 1, '红': 2, '紫': 3, '白': 4}
-            #indexToLevel = {'0': "绿", '1': "黄", '2': "红", '3': "紫", '4': "白"}
             if not color and (std == '定数查歌' or std == '等级查歌' or std== '物量查歌'):
                 difficulty_color = ''
                 if std == '定数查歌':
                     for ds_index, ds_value in enumerate(music['ds']):
                         if ds_value == float(name):
-                            # 使用 color_to_index 字典来获取难度颜色
                             difficulty_color = list(color_to_index.keys())[ds_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
                 elif std == '等级查歌':
                     for level_index, level_value in enumerate(music['level']):
                         if level_value == name:
                             difficulty_color = list(color_to_index.keys())[level_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
                 elif std == '物量查歌':
                     total_notes = []
                     for chart in music['charts']:
@@ -428,10 +426,12 @@ async def _(event: Event, message: Message = EventMessage()):
                     for total_index, total_value in enumerate(music["total_notes"]):
                         if total_value == float(name):
                             difficulty_color = list(color_to_index.keys())[total_index]
-                            search_result += f"{music['id']}  {difficulty_color}  {music['title']}\n"
+                            search_result_list.append(f"{music['id']}  {difficulty_color}  {music['title']}\n")
             else:
-                search_result += f"{music['id']}. {music['title']}\n"
-        #print(search_result)
+                search_result_list.append(f"{music['id']}  {music['title']}\n")
+        for single_song_info in search_result_list[start:end]:
+            #在这里对已经过滤过一遍的列表截断在正确的页面并将数据输出
+            search_result += single_song_info
         await search_music.send(f"共找到 {true_charts_num} 条结果，第 {page}/{total_pages} 页:\n"+ search_result.strip() + f"\n使用参数 -p [页码] 来翻页", reply_message = True)
 #-----s-search-----END
 
@@ -755,9 +755,11 @@ async def _(event: Event, message: Message = CommandArg()):
 
     req = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/player",json=payload)
     player_data = req.json()
-    standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
-    dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
-
+    try:
+        standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
+        dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
+    except:
+        await mai_b50.send("您还未绑定水鱼，请先绑定后再获取。", reply_message = True)
     lx_data_v['data']['standard_total'] = standard_total
     lx_data_v['data']['dx_total'] = dx_total
     lx_data_v['data']['standard'] = translate_df_to_lx(player_data['charts']['sd'])
