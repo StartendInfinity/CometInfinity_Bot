@@ -27,12 +27,12 @@ async def _(event: GroupMessageEvent, matcher: Matcher, arg: Message = CommandAr
 mai_help = on_command("/mai", priority=5)
 @mai_help.handle()
 async def _(event: GroupMessageEvent, matcher: Matcher, arg: Message = CommandArg()):
-      await mai_help.send(f'此指令可以查询「舞萌DX」相关信息。\n具体的使用说明请查看使用文档。', reply_message = True)
+      await mai_help.send(f'此指令可以查询「舞萌DX」相关信息。\n具体的使用说明请查看使用文档。\nhttps://docs.qq.com/aio/p/scm9oh4ypvgb8cq?p=GTjZy8z9ljU8DTngs7AY3wc', reply_message = True)
 
 
 chu_help = on_command("/chu", priority=5)
 @chu_help.handle()
 async def _(event: GroupMessageEvent, matcher: Matcher, arg: Message = CommandArg()):
-      await chu_help.send(f'此指令可以查询「中二节奏」相关信息。\n具体的使用说明请查看使用文档。', reply_message = True)
+      await chu_help.send(f'此指令可以查询「中二节奏」相关信息。\n具体的使用说明请查看使用文档。\nhttps://docs.qq.com/aio/p/scm9oh4ypvgb8cq?p=GTjZy8z9ljU8DTngs7AY3wc', reply_message = True)
 
 #由于确认短时间内不会再次兼容落雪，故此处代码被删除 -- XiaoYan

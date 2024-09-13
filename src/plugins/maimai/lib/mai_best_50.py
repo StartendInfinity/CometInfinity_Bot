@@ -196,7 +196,7 @@ class generate_tool():
                     base = generate_tool.simple_draw(base, "./src/static/mai/b50/UI_RSL_MBase_mode_SD.png", [19, 9], [38 + index * 280 ,pic_y + 66])
                 song_name = song_info["song_name"]
                 draw_info = ImageDraw.Draw(base)
-                if draw_info.textlength(song_name, HanSans35_16) > 178.0:
+                if draw_info.textlength(song_name, HanSans35_16) > 172.0:
                     for _count_ in range(len(song_name)):
                         text_len = draw_info.textlength(song_name[0:_count_], HanSans35_16)
                         if text_len > 178.0:
@@ -278,7 +278,7 @@ class mai_best50():
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/plate/UI_Plate_{player_plate_id}.png", [960, 155], [40, 40])
         b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/icon/UI_Icon_{player_icon_id}.png", [131, 131], [52, 52])
         ra_bg_index = generate_tool.return_ra_bg(dxRating)
-        b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/rating/UI_CMN_DXRating_{ra_bg_index}.png", [225, 44], [190, 50])
+        b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/rating/UI_CMN_DXRating_{ra_bg_index}.png", [226, 44], [190, 50])
         b50_image = generate_tool.draw_number(dxRating, b50_image)
 
         #b50_image = generate_tool.simple_draw(b50_image, f"./src/static/mai/b50/class/UI_CMN_Class_S_{player_class_rank}.png", [120, 72], [430, 24])

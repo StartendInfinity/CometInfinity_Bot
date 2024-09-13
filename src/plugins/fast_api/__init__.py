@@ -1,7 +1,8 @@
 import nonebot
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response,HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-
+import requests
+import io
 import io
 from src.plugins.maimai.lib.mai_best_50 import mai_best50
 import requests
@@ -13,7 +14,7 @@ origins = ["*"]
 # 添加 CORS 中间件
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # 允许的源列表
+    allow_origins=["*"],  # 允许的源列表
     allow_credentials=True,
     allow_methods=["*"],  # 允许的请求方法，如 GET、POST 等
     allow_headers=["*"],  # 允许的请求头
@@ -59,10 +60,23 @@ def translate_df_to_lx(player_data):
 
 
 @app.get("/user-best-50")
-async def custom_api(username:str):
+async def custom_api(
+    username: str = Query(default=None, title="Username", description="玩家用户名"),
+    qq_id: str = Query(default=None, title="QQ ID", description="QQ号"),
+    game_id: str = Query(default=None, title="Game ID", description="游戏 ID")
+):
 
+    # 检查至少提供一个参数
+    if not (username or qq_id or game_id):
+        raise HTTPException(status_code=400, detail="必须提供一个 username、qq_id 或 game_id 参数")
 
-    payload = {'username': username.strip(), 'b50': 1}
+    if username:
+        payload = {'username': username.strip(), 'b50': 1}
+    elif qq_id:
+        payload = {'qq': qq_id, 'b50': 1}
+    else:
+        raise HTTPException(status_code=400, detail="其他参数暂未支持")
+
 
     lx_data_v = {
         "data":{}
@@ -70,6 +84,7 @@ async def custom_api(username:str):
 
     req = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/player",json=payload)
     player_data = req.json()
+    print(player_data)
     standard_total = sum([score['ra'] for score in player_data['charts']['sd']])
     dx_total = sum([score['ra'] for score in player_data['charts']['dx']])
 
@@ -85,6 +100,10 @@ async def custom_api(username:str):
     b64Data = mai_best50.lxns(lx_data_v['data'], other_data)
     img_byte_arr = io.BytesIO()
     # 假设图片是 PNG 格式，你可以根据实际格式进行调整
-    b64Data.save(img_byte_arr, format='JPEG')
+    b64Data.save(img_byte_arr, format='PNG')
     img_byte_arr = img_byte_arr.getvalue()
     return Response(content=img_byte_arr, media_type="image/png")
+
+@app.get("/ping")
+async def ping():
+    return {"message":"pong"}
