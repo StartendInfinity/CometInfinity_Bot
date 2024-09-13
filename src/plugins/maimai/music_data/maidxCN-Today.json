@@ -2605,7 +2605,7 @@
     },
     "76": {
         "id": "76",
-        "title": "きみのためなら死ねる",
+        "title": "きみのためなら死��る",
         "type": "标准",
         "ds": [
             4,
@@ -2667,7 +2667,7 @@
         ],
         "bpm": 160,
         "basic_info": {
-            "title": "きみのためなら死ねる",
+            "title": "きみのためなら死��る",
             "artist": "スーパーラバーズ「きみのためなら死ねる」",
             "genre": "其他游戏",
             "bpm": 160,
@@ -9918,7 +9918,7 @@
                     0,
                     29
                 ],
-                "charter": "小鳥遊さん",
+                "charter": "�鳥遊さん",
                 "dxscore": 3030
             }
         ],
@@ -11493,6 +11493,78 @@
             "genre": "舞萌",
             "bpm": 182,
             "from": "GreeN PLUS",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "10251": {
+        "id": "10251",
+        "title": "Monochrome Rainbow",
+        "type": "DX",
+        "ds": [
+            4,
+            8,
+            11.2,
+            13.3
+        ],
+        "level": [
+            "4",
+            "8",
+            "11",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    121,
+                    7,
+                    6,
+                    7,
+                    4
+                ],
+                "charter": "",
+                "dxscore": 435
+            },
+            {
+                "notes": [
+                    220,
+                    24,
+                    6,
+                    28,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 852
+            },
+            {
+                "notes": [
+                    306,
+                    61,
+                    25,
+                    14,
+                    15
+                ],
+                "charter": "サファ太",
+                "dxscore": 1263
+            },
+            {
+                "notes": [
+                    455,
+                    44,
+                    77,
+                    66,
+                    16
+                ],
+                "charter": "Jack",
+                "dxscore": 1974
+            }
+        ],
+        "bpm": 182,
+        "basic_info": {
+            "title": "Monochrome Rainbow",
+            "artist": "Sta",
+            "genre": "舞萌",
+            "bpm": 182,
+            "from": "舞萌DX 2024",
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
@@ -16364,7 +16436,7 @@
         "bpm": 128,
         "basic_info": {
             "title": "キズナの物語",
-            "artist": "Trefle「チェインクロニクル��",
+            "artist": "Trefle「チェインクロニクル」",
             "genre": "其他游戏",
             "bpm": 128,
             "from": "GreeN PLUS",
@@ -16940,7 +17012,7 @@
         "bpm": 146,
         "basic_info": {
             "title": "リッジでリッジでGO!GO!GO! -GMT mashup-",
-            "artist": "Hiro(SEGA)「RIDGE RACER」「電車でGO!」",
+            "artist": "Hiro(SEGA)「RIDGE RACER」「電��でGO!」",
             "genre": "其他游戏",
             "bpm": 146,
             "from": "GreeN PLUS",
@@ -19729,10 +19801,10 @@
             {
                 "notes": [
                     547,
-                    45,
+                    44,
                     88,
                     12,
-                    15
+                    16
                 ],
                 "charter": "Jack",
                 "dxscore": 2121
@@ -19817,6 +19889,78 @@
             "genre": "niconico＆VOCALOID™",
             "bpm": 240,
             "from": "PiNK",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "10411": {
+        "id": "10411",
+        "title": "初音ミクの消失",
+        "type": "DX",
+        "ds": [
+            6,
+            8,
+            12,
+            14.5
+        ],
+        "level": [
+            "6",
+            "8",
+            "12",
+            "14"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    232,
+                    8,
+                    3,
+                    7,
+                    7
+                ],
+                "charter": "",
+                "dxscore": 771
+            },
+            {
+                "notes": [
+                    324,
+                    13,
+                    10,
+                    26,
+                    2
+                ],
+                "charter": "",
+                "dxscore": 1125
+            },
+            {
+                "notes": [
+                    506,
+                    56,
+                    33,
+                    32,
+                    13
+                ],
+                "charter": "Luxizhel",
+                "dxscore": 1920
+            },
+            {
+                "notes": [
+                    828,
+                    50,
+                    102,
+                    20,
+                    39
+                ],
+                "charter": "はっぴー",
+                "dxscore": 3117
+            }
+        ],
+        "bpm": 240,
+        "basic_info": {
+            "title": "初音ミクの消失",
+            "artist": "cosMo＠暴走P",
+            "genre": "niconico＆VOCALOID™",
+            "bpm": 240,
+            "from": "舞萌DX 2024",
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
@@ -29342,7 +29486,7 @@
                     0,
                     33
                 ],
-                "charter": "ぴちネコ",
+                "charter": "ぴち��コ",
                 "dxscore": 2997
             }
         ],
@@ -43454,7 +43598,7 @@
     },
     "11025": {
         "id": "11025",
-        "title": "管弦楽組曲 第3番 ニ長調「第2曲（G線上のアリ��）」BWV.1068-2",
+        "title": "管弦楽組曲 第3番 ニ長調「第2曲（G線上のアリア）」BWV.1068-2",
         "type": "DX",
         "ds": [
             5,
@@ -43516,7 +43660,7 @@
         ],
         "bpm": 180,
         "basic_info": {
-            "title": "管弦楽組曲 第3番 ニ長調「第2曲（G線上のアリ��）」BWV.1068-2",
+            "title": "管弦楽組曲 第3番 ニ長調「第2曲（G線上のアリア）」BWV.1068-2",
             "artist": "月鈴 那知（ヴァイオリン） 伴奏：イロドリミドリ",
             "genre": "音击/中二节奏",
             "bpm": 180,
@@ -49015,7 +49159,7 @@
         "bpm": 190,
         "basic_info": {
             "title": "すーぱーぬこになれんかった",
-            "artist": "ま��まふ",
+            "artist": "まふまふ",
             "genre": "niconico＆VOCALOID™",
             "bpm": 190,
             "from": "舞萌DX 2021",
@@ -54231,7 +54375,7 @@
                     117,
                     100
                 ],
-                "charter": "ﾚよ†ょ／∪ヽ”┠  (十,3､了ﾅﾆ",
+                "charter": "ﾚよ†ょ／∪ヽ”┠  (十,3､了�ﾆ",
                 "dxscore": 3333
             }
         ],
@@ -54742,11 +54886,11 @@
             },
             {
                 "notes": [
-                    644,
-                    35,
-                    95,
+                    640,
+                    32,
+                    94,
                     58,
-                    10
+                    18
                 ],
                 "charter": "Jack",
                 "dxscore": 2526
@@ -56563,7 +56707,7 @@
                     12,
                     43
                 ],
-                "charter": "はっぴー",
+                "charter": "はっ��ー",
                 "dxscore": 1326
             },
             {
@@ -62184,6 +62328,78 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "11347": {
+        "id": "11347",
+        "title": "泥の分際で私だけの大切を奪おうだなんて",
+        "type": "DX",
+        "ds": [
+            2,
+            7.8,
+            10.7,
+            13.7
+        ],
+        "level": [
+            "2",
+            "7+",
+            "10+",
+            "13+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    101,
+                    7,
+                    2,
+                    6,
+                    5
+                ],
+                "charter": "",
+                "dxscore": 363
+            },
+            {
+                "notes": [
+                    279,
+                    37,
+                    19,
+                    13,
+                    7
+                ],
+                "charter": "",
+                "dxscore": 1065
+            },
+            {
+                "notes": [
+                    482,
+                    32,
+                    36,
+                    3,
+                    37
+                ],
+                "charter": "翠楼屋",
+                "dxscore": 1770
+            },
+            {
+                "notes": [
+                    522,
+                    76,
+                    137,
+                    52,
+                    37
+                ],
+                "charter": "はっぴー",
+                "dxscore": 2472
+            }
+        ],
+        "bpm": 225,
+        "basic_info": {
+            "title": "泥の分際で私だけの大切を奪おうだなんて",
+            "artist": "ツユ",
+            "genre": "流行&动漫",
+            "bpm": 225,
+            "from": "舞萌DX 2022",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "11348": {
         "id": "11348",
         "title": "VOLTAGE",
@@ -65149,6 +65365,78 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "11396": {
+        "id": "11396",
+        "title": "テリトリーバトル",
+        "type": "DX",
+        "ds": [
+            4,
+            6.2,
+            10,
+            13.5
+        ],
+        "level": [
+            "4",
+            "6",
+            "10",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    170,
+                    5,
+                    3,
+                    16,
+                    15
+                ],
+                "charter": "",
+                "dxscore": 627
+            },
+            {
+                "notes": [
+                    258,
+                    21,
+                    16,
+                    11,
+                    10
+                ],
+                "charter": "",
+                "dxscore": 948
+            },
+            {
+                "notes": [
+                    427,
+                    50,
+                    43,
+                    10,
+                    12
+                ],
+                "charter": "Jack",
+                "dxscore": 1626
+            },
+            {
+                "notes": [
+                    671,
+                    36,
+                    98,
+                    37,
+                    26
+                ],
+                "charter": "アミノハバキリ",
+                "dxscore": 2604
+            }
+        ],
+        "bpm": 140,
+        "basic_info": {
+            "title": "テリトリーバトル",
+            "artist": "ツユ",
+            "genre": "音击/中二节奏",
+            "bpm": 140,
+            "from": "舞萌DX 2023",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "11398": {
         "id": "11398",
         "title": "Good bye, Merry-Go-Round.",
@@ -65649,6 +65937,163 @@
             "artist": "ルゼ",
             "genre": "音击/中二节奏",
             "bpm": 186,
+            "from": "舞萌DX 2023",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11407": {
+        "id": "11407",
+        "title": "くらべられっ子",
+        "type": "DX",
+        "ds": [
+            2,
+            7,
+            9.8,
+            11.5,
+            13
+        ],
+        "level": [
+            "2",
+            "7",
+            "9+",
+            "11",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    81,
+                    18,
+                    3,
+                    6,
+                    2
+                ],
+                "charter": "",
+                "dxscore": 330
+            },
+            {
+                "notes": [
+                    241,
+                    27,
+                    20,
+                    16,
+                    3
+                ],
+                "charter": "",
+                "dxscore": 921
+            },
+            {
+                "notes": [
+                    269,
+                    53,
+                    20,
+                    16,
+                    21
+                ],
+                "charter": "翠楼屋",
+                "dxscore": 1137
+            },
+            {
+                "notes": [
+                    376,
+                    43,
+                    85,
+                    12,
+                    11
+                ],
+                "charter": "緑風 犬三郎",
+                "dxscore": 1581
+            },
+            {
+                "notes": [
+                    416,
+                    64,
+                    116,
+                    17,
+                    15
+                ],
+                "charter": "はっぴー",
+                "dxscore": 1884
+            }
+        ],
+        "bpm": 194,
+        "basic_info": {
+            "title": "くらべられっ子",
+            "artist": "ツユ",
+            "genre": "流行&动漫",
+            "bpm": 194,
+            "from": "舞萌DX 2023",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11408": {
+        "id": "11408",
+        "title": "あの世行きのバスに乗ってさらば。",
+        "type": "DX",
+        "ds": [
+            3,
+            7.7,
+            11.7,
+            13.2
+        ],
+        "level": [
+            "3",
+            "7+",
+            "11+",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    84,
+                    16,
+                    7,
+                    8,
+                    5
+                ],
+                "charter": "",
+                "dxscore": 360
+            },
+            {
+                "notes": [
+                    240,
+                    37,
+                    12,
+                    32,
+                    11
+                ],
+                "charter": "",
+                "dxscore": 996
+            },
+            {
+                "notes": [
+                    380,
+                    41,
+                    24,
+                    13,
+                    28
+                ],
+                "charter": "翠楼屋",
+                "dxscore": 1458
+            },
+            {
+                "notes": [
+                    462,
+                    63,
+                    71,
+                    38,
+                    64
+                ],
+                "charter": "すきやき奉行",
+                "dxscore": 2094
+            }
+        ],
+        "bpm": 240,
+        "basic_info": {
+            "title": "あの世行きのバスに乗ってさらば。",
+            "artist": "ツユ",
+            "genre": "流行&动漫",
+            "bpm": 240,
             "from": "舞萌DX 2023",
             "ReGenerate-By": "FoxXiaoYan"
         }
@@ -68360,22 +68805,22 @@
             },
             {
                 "notes": [
-                    351,
+                    349,
                     18,
                     15,
                     18,
-                    10
+                    12
                 ],
                 "charter": "",
                 "dxscore": 1236
             },
             {
                 "notes": [
-                    507,
-                    43,
-                    26,
+                    500,
+                    41,
+                    24,
                     81,
-                    10
+                    21
                 ],
                 "charter": "Jack",
                 "dxscore": 2001
@@ -68432,11 +68877,11 @@
             },
             {
                 "notes": [
-                    304,
+                    303,
                     23,
                     12,
                     9,
-                    14
+                    15
                 ],
                 "charter": "",
                 "dxscore": 1086
@@ -68504,11 +68949,11 @@
             },
             {
                 "notes": [
-                    221,
+                    219,
                     27,
                     12,
                     33,
-                    5
+                    7
                 ],
                 "charter": "",
                 "dxscore": 894
@@ -68516,10 +68961,10 @@
             {
                 "notes": [
                     355,
-                    58,
+                    54,
                     31,
                     37,
-                    5
+                    9
                 ],
                 "charter": "Jack",
                 "dxscore": 1458
@@ -68576,11 +69021,11 @@
             },
             {
                 "notes": [
-                    268,
+                    267,
                     48,
                     18,
                     23,
-                    7
+                    8
                 ],
                 "charter": "",
                 "dxscore": 1092
@@ -68648,11 +69093,11 @@
             },
             {
                 "notes": [
-                    304,
+                    300,
                     46,
                     9,
                     23,
-                    12
+                    16
                 ],
                 "charter": "",
                 "dxscore": 1182
@@ -68720,11 +69165,11 @@
             },
             {
                 "notes": [
-                    376,
+                    374,
                     38,
                     6,
                     38,
-                    5
+                    7
                 ],
                 "charter": "",
                 "dxscore": 1389
@@ -68742,11 +69187,11 @@
             },
             {
                 "notes": [
-                    833,
-                    89,
+                    829,
+                    88,
                     75,
                     113,
-                    57
+                    62
                 ],
                 "charter": "red phoenix",
                 "dxscore": 3501
@@ -68948,10 +69393,10 @@
             {
                 "notes": [
                     326,
-                    85,
+                    83,
                     54,
                     23,
-                    12
+                    14
                 ],
                 "charter": "Jack",
                 "dxscore": 1500
@@ -69667,11 +70112,11 @@
             },
             {
                 "notes": [
-                    513,
-                    88,
-                    54,
+                    509,
+                    78,
+                    51,
                     55,
-                    25
+                    42
                 ],
                 "charter": "Jack",
                 "dxscore": 2205
@@ -70027,11 +70472,11 @@
             },
             {
                 "notes": [
-                    450,
+                    448,
                     66,
                     57,
                     64,
-                    11
+                    13
                 ],
                 "charter": "Jack",
                 "dxscore": 1944
@@ -70110,11 +70555,11 @@
             },
             {
                 "notes": [
-                    664,
+                    662,
                     71,
-                    90,
+                    80,
                     18,
-                    16
+                    28
                 ],
                 "charter": "Jack",
                 "dxscore": 2577
@@ -70243,11 +70688,11 @@
             },
             {
                 "notes": [
-                    503,
+                    501,
                     82,
-                    44,
+                    42,
                     32,
-                    13
+                    17
                 ],
                 "charter": "Jack",
                 "dxscore": 2022
@@ -70556,10 +71001,10 @@
             {
                 "notes": [
                     657,
-                    44,
+                    38,
                     199,
                     22,
-                    17
+                    23
                 ],
                 "charter": "Jack",
                 "dxscore": 2817
@@ -70787,10 +71232,10 @@
             {
                 "notes": [
                     386,
-                    59,
+                    57,
                     22,
                     3,
-                    11
+                    13
                 ],
                 "charter": "Jack",
                 "dxscore": 1443
@@ -71458,7 +71903,7 @@
         "bpm": 190,
         "basic_info": {
             "title": "マーシャル・マキシマイザー",
-            "artist": "柊マグネタイト　feat.音楽的同位体　可不（KAFU）",
+            "artist": "柊マグネタイト　feat.音楽的同位体　可不（KAFU�",
             "genre": "niconico＆VOCALOID™",
             "bpm": 190,
             "from": "舞萌DX 2023",
@@ -71723,10 +72168,10 @@
             {
                 "notes": [
                     153,
-                    29,
-                    15,
+                    28,
+                    14,
                     13,
-                    5
+                    7
                 ],
                 "charter": "Jack",
                 "dxscore": 645
@@ -72021,11 +72466,11 @@
             },
             {
                 "notes": [
-                    632,
-                    29,
+                    631,
+                    28,
                     58,
                     43,
-                    13
+                    15
                 ],
                 "charter": "Jack",
                 "dxscore": 2325
@@ -72587,10 +73032,10 @@
             {
                 "notes": [
                     540,
-                    122,
-                    75,
+                    120,
+                    71,
                     28,
-                    24
+                    30
                 ],
                 "charter": "Jack",
                 "dxscore": 2367
@@ -72946,11 +73391,11 @@
             },
             {
                 "notes": [
-                    489,
+                    487,
                     89,
                     38,
                     63,
-                    34
+                    36
                 ],
                 "charter": "Jack",
                 "dxscore": 2139
@@ -72958,10 +73403,10 @@
             {
                 "notes": [
                     774,
-                    41,
-                    161,
+                    39,
+                    136,
                     49,
-                    38
+                    65
                 ],
                 "charter": "jacK on Phoenix & -ZONE- SaFaRi",
                 "dxscore": 3189
@@ -73030,10 +73475,10 @@
             {
                 "notes": [
                     516,
-                    69,
-                    101,
+                    67,
+                    97,
                     79,
-                    21
+                    27
                 ],
                 "charter": "Jack vs あまくちジンジャー",
                 "dxscore": 2358
@@ -73317,11 +73762,11 @@
             },
             {
                 "notes": [
-                    630,
-                    73,
-                    99,
+                    629,
+                    71,
+                    95,
                     85,
-                    25
+                    32
                 ],
                 "charter": "Jack",
                 "dxscore": 2736
@@ -73378,11 +73823,11 @@
             },
             {
                 "notes": [
-                    427,
-                    76,
-                    47,
+                    425,
+                    72,
+                    38,
                     68,
-                    8
+                    23
                 ],
                 "charter": "Jack",
                 "dxscore": 1878
@@ -73477,6 +73922,150 @@
             "artist": "orangentle",
             "genre": "舞萌",
             "bpm": 190,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11532": {
+        "id": "11532",
+        "title": "ヱデン",
+        "type": "DX",
+        "ds": [
+            3,
+            6.5,
+            9,
+            12.8
+        ],
+        "level": [
+            "3",
+            "6",
+            "9",
+            "12+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    111,
+                    18,
+                    4,
+                    10,
+                    5
+                ],
+                "charter": "",
+                "dxscore": 444
+            },
+            {
+                "notes": [
+                    230,
+                    19,
+                    10,
+                    25,
+                    8
+                ],
+                "charter": "",
+                "dxscore": 876
+            },
+            {
+                "notes": [
+                    342,
+                    46,
+                    42,
+                    13,
+                    18
+                ],
+                "charter": "アマリリス",
+                "dxscore": 1383
+            },
+            {
+                "notes": [
+                    474,
+                    52,
+                    91,
+                    21,
+                    17
+                ],
+                "charter": "はっぴー",
+                "dxscore": 1965
+            }
+        ],
+        "bpm": 137,
+        "basic_info": {
+            "title": "ヱデン",
+            "artist": "koyori（電ポルP）",
+            "genre": "舞萌",
+            "bpm": 137,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11533": {
+        "id": "11533",
+        "title": "にゃーにゃー冒険譚",
+        "type": "DX",
+        "ds": [
+            5,
+            8.2,
+            11,
+            13.7
+        ],
+        "level": [
+            "5",
+            "8",
+            "11",
+            "13+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    154,
+                    20,
+                    7,
+                    21,
+                    2
+                ],
+                "charter": "",
+                "dxscore": 612
+            },
+            {
+                "notes": [
+                    308,
+                    40,
+                    17,
+                    24,
+                    14
+                ],
+                "charter": "",
+                "dxscore": 1209
+            },
+            {
+                "notes": [
+                    482,
+                    44,
+                    22,
+                    24,
+                    69
+                ],
+                "charter": "翠楼屋",
+                "dxscore": 1923
+            },
+            {
+                "notes": [
+                    802,
+                    49,
+                    82,
+                    68,
+                    84
+                ],
+                "charter": "みそかつ侍",
+                "dxscore": 3255
+            }
+        ],
+        "bpm": 188,
+        "basic_info": {
+            "title": "にゃーにゃー冒険譚",
+            "artist": "黒魔",
+            "genre": "舞萌",
+            "bpm": 188,
             "from": "舞萌DX 2024",
             "ReGenerate-By": "FoxXiaoYan"
         }
@@ -73769,6 +74358,222 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "11542": {
+        "id": "11542",
+        "title": "ここからはじまるプロローグ。 (Kanon Remix)",
+        "type": "DX",
+        "ds": [
+            4,
+            7,
+            11.8,
+            13.8
+        ],
+        "level": [
+            "4",
+            "7",
+            "11+",
+            "13+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    178,
+                    20,
+                    4,
+                    11,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 657
+            },
+            {
+                "notes": [
+                    266,
+                    43,
+                    8,
+                    27,
+                    3
+                ],
+                "charter": "",
+                "dxscore": 1041
+            },
+            {
+                "notes": [
+                    461,
+                    46,
+                    43,
+                    13,
+                    30
+                ],
+                "charter": "アマリリス",
+                "dxscore": 1779
+            },
+            {
+                "notes": [
+                    695,
+                    105,
+                    71,
+                    39,
+                    23
+                ],
+                "charter": "Jack",
+                "dxscore": 2799
+            }
+        ],
+        "bpm": 190,
+        "basic_info": {
+            "title": "ここからはじまるプロローグ。 (Kanon Remix)",
+            "artist": "ああああ／大国奏音",
+            "genre": "舞萌",
+            "bpm": 190,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11543": {
+        "id": "11543",
+        "title": "モ°ルモ°ル (MZK Skippin' Remix)",
+        "type": "DX",
+        "ds": [
+            3,
+            6,
+            10.9,
+            13.7
+        ],
+        "level": [
+            "3",
+            "6",
+            "10+",
+            "13+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    123,
+                    11,
+                    6,
+                    8,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 462
+            },
+            {
+                "notes": [
+                    211,
+                    21,
+                    10,
+                    21,
+                    2
+                ],
+                "charter": "",
+                "dxscore": 795
+            },
+            {
+                "notes": [
+                    224,
+                    103,
+                    26,
+                    18,
+                    56
+                ],
+                "charter": "サファ太",
+                "dxscore": 1281
+            },
+            {
+                "notes": [
+                    506,
+                    47,
+                    36,
+                    70,
+                    37
+                ],
+                "charter": "アマリリス",
+                "dxscore": 2088
+            }
+        ],
+        "bpm": 136,
+        "basic_info": {
+            "title": "モ°ルモ°ル (MZK Skippin' Remix)",
+            "artist": "sasakure.UK／水野健治",
+            "genre": "舞萌",
+            "bpm": 136,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11544": {
+        "id": "11544",
+        "title": "VERTeX (rintaro soma deconstructed remix)",
+        "type": "DX",
+        "ds": [
+            5,
+            7.8,
+            12.8,
+            14.7
+        ],
+        "level": [
+            "5",
+            "7+",
+            "12+",
+            "14+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    200,
+                    5,
+                    4,
+                    17,
+                    10
+                ],
+                "charter": "",
+                "dxscore": 708
+            },
+            {
+                "notes": [
+                    255,
+                    42,
+                    6,
+                    27,
+                    4
+                ],
+                "charter": "",
+                "dxscore": 1002
+            },
+            {
+                "notes": [
+                    436,
+                    56,
+                    42,
+                    47,
+                    37
+                ],
+                "charter": "Jack",
+                "dxscore": 1854
+            },
+            {
+                "notes": [
+                    659,
+                    32,
+                    89,
+                    85,
+                    71
+                ],
+                "charter": "rintaro soma",
+                "dxscore": 2808
+            }
+        ],
+        "bpm": 158,
+        "basic_info": {
+            "title": "VERTeX (rintaro soma deconstructed remix)",
+            "artist": "Hiro／rintaro soma",
+            "genre": "舞萌",
+            "bpm": 158,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "11549": {
         "id": "11549",
         "title": "Trrricksters!!",
@@ -73841,6 +74646,78 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "11550": {
+        "id": "11550",
+        "title": "FLUFFY FLASH",
+        "type": "DX",
+        "ds": [
+            6,
+            8.5,
+            12.8,
+            14.3
+        ],
+        "level": [
+            "6",
+            "8",
+            "12+",
+            "14"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    184,
+                    12,
+                    9,
+                    15,
+                    8
+                ],
+                "charter": "",
+                "dxscore": 684
+            },
+            {
+                "notes": [
+                    318,
+                    33,
+                    16,
+                    35,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 1224
+            },
+            {
+                "notes": [
+                    463,
+                    103,
+                    39,
+                    34,
+                    20
+                ],
+                "charter": "ロシ�@ペンギン",
+                "dxscore": 1977
+            },
+            {
+                "notes": [
+                    646,
+                    102,
+                    111,
+                    104,
+                    25
+                ],
+                "charter": "はっぴー",
+                "dxscore": 2964
+            }
+        ],
+        "bpm": 252,
+        "basic_info": {
+            "title": "FLUFFY FLASH",
+            "artist": "Kobaryo",
+            "genre": "音击/中二节奏",
+            "bpm": 252,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "11555": {
         "id": "11555",
         "title": "ヒバリ",
@@ -73882,11 +74759,11 @@
             },
             {
                 "notes": [
-                    302,
+                    299,
                     52,
-                    23,
+                    20,
                     10,
-                    11
+                    17
                 ],
                 "charter": "Jack",
                 "dxscore": 1194
@@ -74351,11 +75228,11 @@
             },
             {
                 "notes": [
-                    756,
+                    754,
                     29,
-                    123,
+                    120,
                     44,
-                    24
+                    29
                 ],
                 "charter": "Jack",
                 "dxscore": 2928
@@ -74580,11 +75457,11 @@
             },
             {
                 "notes": [
-                    612,
-                    51,
-                    66,
+                    611,
+                    45,
+                    59,
                     87,
-                    39
+                    53
                 ],
                 "charter": "Jack",
                 "dxscore": 2565
@@ -75145,11 +76022,11 @@
             },
             {
                 "notes": [
-                    431,
+                    422,
                     68,
-                    53,
+                    51,
                     16,
-                    8
+                    19
                 ],
                 "charter": "Jack",
                 "dxscore": 1728
@@ -75389,6 +76266,78 @@
             "genre": "其他游戏",
             "bpm": 213,
             "from": "舞萌DX 2023",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11577": {
+        "id": "11577",
+        "title": "はんぶんこ",
+        "type": "DX",
+        "ds": [
+            1,
+            6,
+            8.7,
+            12.8
+        ],
+        "level": [
+            "1",
+            "6",
+            "8+",
+            "12+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    99,
+                    9,
+                    6,
+                    6,
+                    5
+                ],
+                "charter": "",
+                "dxscore": 375
+            },
+            {
+                "notes": [
+                    197,
+                    25,
+                    6,
+                    13,
+                    5
+                ],
+                "charter": "",
+                "dxscore": 738
+            },
+            {
+                "notes": [
+                    192,
+                    21,
+                    38,
+                    20,
+                    10
+                ],
+                "charter": "アマリリス",
+                "dxscore": 843
+            },
+            {
+                "notes": [
+                    197,
+                    15,
+                    77,
+                    28,
+                    60
+                ],
+                "charter": "Luxizhel",
+                "dxscore": 1131
+            }
+        ],
+        "bpm": 124,
+        "basic_info": {
+            "title": "はんぶんこ",
+            "artist": "三枝明那",
+            "genre": "流行&动漫",
+            "bpm": 124,
+            "from": "舞萌DX 2024",
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
@@ -76184,6 +77133,510 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "11598": {
+        "id": "11598",
+        "title": "テオ",
+        "type": "DX",
+        "ds": [
+            5,
+            7.8,
+            10.8,
+            13.2
+        ],
+        "level": [
+            "5",
+            "7+",
+            "10+",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    200,
+                    10,
+                    6,
+                    8,
+                    8
+                ],
+                "charter": "",
+                "dxscore": 696
+            },
+            {
+                "notes": [
+                    294,
+                    23,
+                    11,
+                    15,
+                    21
+                ],
+                "charter": "",
+                "dxscore": 1092
+            },
+            {
+                "notes": [
+                    361,
+                    85,
+                    64,
+                    37,
+                    35
+                ],
+                "charter": "きょむりん",
+                "dxscore": 1746
+            },
+            {
+                "notes": [
+                    657,
+                    54,
+                    96,
+                    49,
+                    109
+                ],
+                "charter": "鳩ホルダー",
+                "dxscore": 2895
+            }
+        ],
+        "bpm": 185,
+        "basic_info": {
+            "title": "テオ",
+            "artist": "Omoi",
+            "genre": "niconico＆VOCALOID™",
+            "bpm": 185,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11601": {
+        "id": "11601",
+        "title": "ド屑",
+        "type": "DX",
+        "ds": [
+            2,
+            6.5,
+            9.5,
+            13
+        ],
+        "level": [
+            "2",
+            "6",
+            "9",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    77,
+                    16,
+                    4,
+                    15,
+                    12
+                ],
+                "charter": "",
+                "dxscore": 372
+            },
+            {
+                "notes": [
+                    198,
+                    14,
+                    8,
+                    14,
+                    4
+                ],
+                "charter": "",
+                "dxscore": 714
+            },
+            {
+                "notes": [
+                    82,
+                    60,
+                    19,
+                    51,
+                    12
+                ],
+                "charter": "Luxizhel",
+                "dxscore": 672
+            },
+            {
+                "notes": [
+                    390,
+                    42,
+                    114,
+                    33,
+                    33
+                ],
+                "charter": "じゃこレモン",
+                "dxscore": 1836
+            }
+        ],
+        "bpm": 115,
+        "basic_info": {
+            "title": "ド屑",
+            "artist": "なきそ",
+            "genre": "niconico＆VOCALOID™",
+            "bpm": 115,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11602": {
+        "id": "11602",
+        "title": "絶対敵対メチャキライヤー",
+        "type": "DX",
+        "ds": [
+            3,
+            7.7,
+            9.8,
+            12.9
+        ],
+        "level": [
+            "3",
+            "7+",
+            "9+",
+            "12+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    128,
+                    10,
+                    8,
+                    8,
+                    9
+                ],
+                "charter": "",
+                "dxscore": 489
+            },
+            {
+                "notes": [
+                    199,
+                    27,
+                    10,
+                    60,
+                    10
+                ],
+                "charter": "",
+                "dxscore": 918
+            },
+            {
+                "notes": [
+                    356,
+                    49,
+                    15,
+                    24,
+                    29
+                ],
+                "charter": "サファ太",
+                "dxscore": 1419
+            },
+            {
+                "notes": [
+                    431,
+                    74,
+                    127,
+                    34,
+                    69
+                ],
+                "charter": "はっぴー",
+                "dxscore": 2205
+            }
+        ],
+        "bpm": 190,
+        "basic_info": {
+            "title": "絶対敵対メチャキライヤー",
+            "artist": "メドミア",
+            "genre": "niconico＆VOCALOID™",
+            "bpm": 190,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11603": {
+        "id": "11603",
+        "title": "つるぺったん",
+        "type": "DX",
+        "ds": [
+            4,
+            7.7,
+            10,
+            12.7
+        ],
+        "level": [
+            "4",
+            "7+",
+            "10",
+            "12+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    154,
+                    9,
+                    8,
+                    13,
+                    4
+                ],
+                "charter": "",
+                "dxscore": 564
+            },
+            {
+                "notes": [
+                    285,
+                    18,
+                    12,
+                    15,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 1008
+            },
+            {
+                "notes": [
+                    300,
+                    132,
+                    40,
+                    19,
+                    20
+                ],
+                "charter": "カマボコ君",
+                "dxscore": 1533
+            },
+            {
+                "notes": [
+                    374,
+                    98,
+                    106,
+                    54,
+                    34
+                ],
+                "charter": "鳩ホルダー",
+                "dxscore": 1998
+            }
+        ],
+        "bpm": 180,
+        "basic_info": {
+            "title": "つるぺったん",
+            "artist": "Silver Forest",
+            "genre": "东方Project",
+            "bpm": 180,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11604": {
+        "id": "11604",
+        "title": "『ウソテイ』 ～一回戦せりなvsしろなvsなずな～",
+        "type": "DX",
+        "ds": [
+            4,
+            7.8,
+            10.5,
+            13.7
+        ],
+        "level": [
+            "4",
+            "7+",
+            "10",
+            "13+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    175,
+                    9,
+                    4,
+                    15,
+                    17
+                ],
+                "charter": "",
+                "dxscore": 660
+            },
+            {
+                "notes": [
+                    283,
+                    33,
+                    13,
+                    23,
+                    8
+                ],
+                "charter": "",
+                "dxscore": 1080
+            },
+            {
+                "notes": [
+                    338,
+                    135,
+                    15,
+                    28,
+                    42
+                ],
+                "charter": "はっぴー",
+                "dxscore": 1674
+            },
+            {
+                "notes": [
+                    628,
+                    52,
+                    133,
+                    15,
+                    65
+                ],
+                "charter": "サファ太",
+                "dxscore": 2679
+            }
+        ],
+        "bpm": 190,
+        "basic_info": {
+            "title": "『ウソテイ』 ～一回戦せりなvsしろなvsなずな～",
+            "artist": "イロドリミドリ「CHUNITHM」",
+            "genre": "音击/中二节奏",
+            "bpm": 190,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11605": {
+        "id": "11605",
+        "title": "Bad Apple!! feat.nomico ～五十嵐 撫子 Ver.～",
+        "type": "DX",
+        "ds": [
+            3,
+            6.5,
+            10.7,
+            13.3
+        ],
+        "level": [
+            "3",
+            "6",
+            "10+",
+            "13"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    146,
+                    8,
+                    3,
+                    8,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 513
+            },
+            {
+                "notes": [
+                    244,
+                    12,
+                    13,
+                    27,
+                    8
+                ],
+                "charter": "",
+                "dxscore": 912
+            },
+            {
+                "notes": [
+                    402,
+                    35,
+                    14,
+                    37,
+                    20
+                ],
+                "charter": "鳩ホルダー",
+                "dxscore": 1524
+            },
+            {
+                "notes": [
+                    631,
+                    44,
+                    82,
+                    39,
+                    27
+                ],
+                "charter": "はっぴー",
+                "dxscore": 2469
+            }
+        ],
+        "bpm": 141,
+        "basic_info": {
+            "title": "Bad Apple!! feat.nomico ～五十嵐 撫子 Ver.～",
+            "artist": "Masayoshi Minoshima [covered by 五十嵐 撫子(CV:花井 美春)]",
+            "genre": "音击/中二节奏",
+            "bpm": 141,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "11606": {
+        "id": "11606",
+        "title": "Snow Colored Score",
+        "type": "DX",
+        "ds": [
+            2,
+            6.5,
+            9.9,
+            12.9
+        ],
+        "level": [
+            "2",
+            "6",
+            "9+",
+            "12+"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    124,
+                    13,
+                    7,
+                    7,
+                    7
+                ],
+                "charter": "",
+                "dxscore": 474
+            },
+            {
+                "notes": [
+                    280,
+                    22,
+                    17,
+                    23,
+                    14
+                ],
+                "charter": "",
+                "dxscore": 1068
+            },
+            {
+                "notes": [
+                    434,
+                    65,
+                    39,
+                    10,
+                    14
+                ],
+                "charter": "Jack",
+                "dxscore": 1686
+            },
+            {
+                "notes": [
+                    436,
+                    53,
+                    102,
+                    70,
+                    53
+                ],
+                "charter": "アマリリス",
+                "dxscore": 2142
+            }
+        ],
+        "bpm": 164,
+        "basic_info": {
+            "title": "Snow Colored Score",
+            "artist": "イロドリミドリ「CHUNITHM」",
+            "genre": "音击/中二节奏",
+            "bpm": 164,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "11607": {
         "id": "11607",
         "title": "MAGENTA POTION",
@@ -76460,6 +77913,36 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "100363": {
+        "id": "100363",
+        "title": "[宴]Oshama Scramble!",
+        "type": "宴会场",
+        "level": "13?",
+        "is_buddy": false,
+        "charts": [
+            {
+                "notes": [
+                    87,
+                    36,
+                    132,
+                    0,
+                    35
+                ],
+                "charter": "-",
+                "dxscore": 870
+            }
+        ],
+        "basic_info": {
+            "title": "[宴]Oshama Scramble!",
+            "artist": "t+pazolite",
+            "genre": "宴会场",
+            "bpm": 190,
+            "from": "舞萌DX 2024",
+            "kanji": "宴",
+            "description": "Let's Party Night !",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "100508": {
         "id": "100508",
         "title": "[協]恋愛裁判",
@@ -76580,6 +78063,36 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "111222": {
+        "id": "111222",
+        "title": "[光]BREaK! BREaK! BREaK!",
+        "type": "宴会场",
+        "level": "14+?",
+        "is_buddy": false,
+        "charts": [
+            {
+                "notes": [
+                    0,
+                    5,
+                    0,
+                    60,
+                    1039
+                ],
+                "charter": "-",
+                "dxscore": 3312
+            }
+        ],
+        "basic_info": {
+            "title": "[光]BREaK! BREaK! BREaK!",
+            "artist": "HiTECH NINJA vs Cranky",
+            "genre": "宴会场",
+            "bpm": 165,
+            "from": "舞萌DX 2024",
+            "kanji": "光",
+            "description": "LET'S PARTY!",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "111355": {
         "id": "111355",
         "title": "[協]ラグトレイン",
@@ -76659,6 +78172,36 @@
             "from": "舞萌DX 2024",
             "kanji": "協",
             "description": "LET'S PARTY!!",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
+    "111516": {
+        "id": "111516",
+        "title": "[蔵]Aegleseeker",
+        "type": "宴会场",
+        "level": "14+?",
+        "is_buddy": false,
+        "charts": [
+            {
+                "notes": [
+                    987,
+                    106,
+                    42,
+                    61,
+                    73
+                ],
+                "charter": "-",
+                "dxscore": 3807
+            }
+        ],
+        "basic_info": {
+            "title": "[蔵]Aegleseeker",
+            "artist": "Silentroom vs Frums",
+            "genre": "宴会场",
+            "bpm": 234,
+            "from": "舞萌DX 2024",
+            "kanji": "蔵",
+            "description": "LET'S PARTY!",
             "ReGenerate-By": "FoxXiaoYan"
         }
     }

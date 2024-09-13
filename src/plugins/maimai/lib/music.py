@@ -210,6 +210,8 @@ def plate_process_xray(version, qq: str, plateType: str, vername: str):
     payload = {'qq': qq, 'version': VERSION_DF_MAP[version]}
     r = requests.post("https://www.diving-fish.com/api/maimaidxprober/query/plate", json=payload)
     finishs = r.json()
+    if r.status_code == 400:
+        return "未找到该玩家。"
     unfinishList = {0: [], 1: [], 2: [], 3: [], 4: []}
 
     for song in version_list:
@@ -311,12 +313,12 @@ def plate_process_xray(version, qq: str, plateType: str, vername: str):
     else:
         SendMsg += f'红：{str(version_chart_list[2] - unfinishRCount)}/{str(version_chart_list[2])}， 剩余 {str(unfinishRCount)}\n'
     if unfinishPCount == 0:
-        SendMsg += f'您已经 {t} 确认了！\n'
+        SendMsg += f'紫谱已全部完成\n'
     else:
         SendMsg += f'紫：{str(version_chart_list[3] - unfinishPCount)}/{str(version_chart_list[3])}， 剩余 {str(unfinishPCount)}\n'
     if vername in ['舞', '霸']:
         if unfinishREPCount == 0:
-            SendMsg += f'白谱已全部完成\n您已经 {t} 确认了！\n'
+            SendMsg += f'白谱已全部完成\n'
         else:
             SendMsg += f'白：{str(version_chart_list[4] - unfinishREPCount)}/{str(version_chart_list[4])}， 剩余 {str(unfinishREPCount)}\n'
     # print(unfinishRCount,unfinishPCount)
@@ -326,15 +328,23 @@ def plate_process_xray(version, qq: str, plateType: str, vername: str):
             SendMsg += '\n未完成高难度谱面还剩下：\n'
         SendMsg += HardSong[0:-1]
     if vername in ["舞", "霸"]:
-        if len(unfinishList[4]) <= 5 and len(unfinishList[3]) != 0:
-            SendMsg += '\n\n请继续加油！'
-        else:
+        if unfinishREPCount == 0:
+            SendMsg += f"\n您已经 {t} 确认了"
             SendMsg += '\n请继续加油！'
+        else:
+            if len(unfinishList[3]) <= 5 and len(unfinishList[3]) != 0:
+                SendMsg += '\n\n请继续加油！'
+            else:
+                SendMsg += '\n请继续加油！'
     else:
-        if len(unfinishList[3]) <= 5 and len(unfinishList[3]) != 0:
-            SendMsg += '\n\n请继续加油！'
-        else:
+        if unfinishPCount == 0:
+            SendMsg += f"\n您已经 {t} 确认了" 
             SendMsg += '\n请继续加油！'
+        else:
+            if len(unfinishList[3]) <= 5 and len(unfinishList[3]) != 0:
+                SendMsg += '\n\n请继续加油！'
+            else:
+                SendMsg += '\n请继续加油！'
     return SendMsg
 
 async def level_process_data(payload: str, match: Tuple):
@@ -619,7 +629,7 @@ class MusicList(List[Music]):
                 combo = music["total_notes"]
                 if not any(t == total for t in total_notes):
                     continue
-            if title_search is not Ellipsis and title_search.lower() not in music.title.lower():
+            if title_search.replace("&amp;", "") is not Ellipsis and title_search.lower().replace("&amp;", "") not in music.title.lower().replace("&", ""):
                 continue
             if artist is not Ellipsis and artist.lower() not in music.artist.lower():
                 continue
