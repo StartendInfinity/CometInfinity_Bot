@@ -74646,6 +74646,78 @@
             "ReGenerate-By": "FoxXiaoYan"
         }
     },
+    "11550": {
+        "id": "11550",
+        "title": "FLUFFY FLASH",
+        "type": "DX",
+        "ds": [
+            6,
+            8.5,
+            12.8,
+            14.3
+        ],
+        "level": [
+            "6",
+            "8",
+            "12+",
+            "14"
+        ],
+        "charts": [
+            {
+                "notes": [
+                    184,
+                    12,
+                    9,
+                    15,
+                    8
+                ],
+                "charter": "",
+                "dxscore": 684
+            },
+            {
+                "notes": [
+                    318,
+                    33,
+                    16,
+                    35,
+                    6
+                ],
+                "charter": "",
+                "dxscore": 1224
+            },
+            {
+                "notes": [
+                    463,
+                    103,
+                    39,
+                    34,
+                    20
+                ],
+                "charter": "ロシ�@ペンギン",
+                "dxscore": 1977
+            },
+            {
+                "notes": [
+                    646,
+                    102,
+                    111,
+                    104,
+                    25
+                ],
+                "charter": "はっぴー",
+                "dxscore": 2964
+            }
+        ],
+        "bpm": 252,
+        "basic_info": {
+            "title": "FLUFFY FLASH",
+            "artist": "Kobaryo",
+            "genre": "音击/中二节奏",
+            "bpm": 252,
+            "from": "舞萌DX 2024",
+            "ReGenerate-By": "FoxXiaoYan"
+        }
+    },
     "11555": {
         "id": "11555",
         "title": "ヒバリ",
