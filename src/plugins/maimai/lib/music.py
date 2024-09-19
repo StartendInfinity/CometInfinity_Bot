@@ -605,10 +605,9 @@ class MusicList(List[Music]):
             if not ret:
                 continue
 
-            if music.ds == None or int(music.id) > 100000:
+            if int(music.id) > 100000:
                 continue
             #由于宴会场暂时不在考虑范围内，因此先跳过对宴会场的随机
-            #宴会场无定数数据返回 None
 
             ret, diff2 = cross(music.ds, ds, diff2)
             if not ret:
@@ -629,7 +628,7 @@ class MusicList(List[Music]):
                 combo = music["total_notes"]
                 if not any(t == total for t in total_notes):
                     continue
-            if title_search.replace("&amp;", "") is not Ellipsis and title_search.lower().replace("&amp;", "") not in music.title.lower().replace("&", ""):
+            if title_search is not Ellipsis and title_search.lower() not in music.title.lower():
                 continue
             if artist is not Ellipsis and artist.lower() not in music.artist.lower():
                 continue

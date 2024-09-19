@@ -3,6 +3,8 @@ from nonebot.params import CommandArg, RegexGroup, Endswith, EventMessage
 from nonebot.adapters import Event
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 import requests
+from nonebot.adapters.onebot.utils import rich_unescape
+
 
 #内建模块
 import math
@@ -323,6 +325,8 @@ async def _(event: Event, message: Message = EventMessage()):
     if name.strip() == "":
         return
 
+    name = rich_unescape(name)
+    print(std, color, name, page)
     #高级功能，是否遍历JP乐曲数据
     # if match.group(2) is not None:
     #     if is_pro_group(event.group_id):
