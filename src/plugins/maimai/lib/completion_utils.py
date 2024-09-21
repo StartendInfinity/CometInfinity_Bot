@@ -3,6 +3,7 @@ import requests
 from PIL import Image
 from io import BytesIO
 from .music import total_list
+from src.plugins.maimai.lib.plate_map import VERSION_DF_MAP, VERSION_MAP, DELETED_MUSIC, MAI_DELETED_MUSIC_REM,TRADITIONAL2SIMPLIFIED
 
 def generate_level_ds_data():
     level_list = {
@@ -101,6 +102,10 @@ def exec_star_num(music_id,level_index,dx_scroe):
     star_index = get_dxscore_type(start_mun)
     return star_index
 
+def tran_plate_name(plate_name:str):
+    for k,v in TRADITIONAL2SIMPLIFIED.items():
+        plate_name = plate_name.replace(k,v)
+    return plate_name
 
 # LEVEL_DS_DICT = generate_level_ds_data()
 
