@@ -2,7 +2,7 @@
 from PIL import Image, ImageDraw,ImageFont
 from src.plugins.maimai.lib.music import total_list
 from src.lib.client.diving_fish_client import df_client
-from pathlib import Path
+from src.plugins.maimai.lib.music_data_counter import MusicDataCounter
 import os
 
 from src.plugins.maimai.lib.plate_map import MAIPLATE_FILE_ID_MAP, VERSION_MAP, VERSION_DF_MAP, MAI_DELETED_MUSIC_REM,MAI_DELETED_MUSIC_Normal
@@ -10,7 +10,7 @@ from src.plugins.maimai.lib import completion_utils as utils
 import asyncio
 
 PLATE_BASE_PATH = "src/static/mai/b50/plate"
-FONT_PATH = "src/static/font"
+FONT_PATH = "src/static/mai/pic/font"
 NEW_LEVEL_STATUS_TABLE_PATH = "src/static/mai/plate_completion"
 
 fc_enum = ['', 'fc', 'fcp', 'ap', 'app']
@@ -255,6 +255,125 @@ def draw_user_music_image(base_image:Image.Image,default_song_list:dict,user_mus
                 y_point += cover_height + ds_vertical_spacing
     return base_image
 
+
+def music_count(user_plate_music_data:dict):
+    basic_counter = MusicDataCounter()
+    advanced_counter = MusicDataCounter()
+    expert_counter = MusicDataCounter()
+    master_counter = MusicDataCounter()
+    rem_master_counter = MusicDataCounter()
+    counter_map = {
+        0:basic_counter,
+        1:advanced_counter,
+        2:expert_counter,
+        3:master_counter,
+        4:rem_master_counter,
+    }
+    for user_music in user_plate_music_data.values():
+        print(user_music)
+        counter = counter_map[user_music['level_index']]
+        counter.append_music(user_music,user_music['is_played'])
+    return basic_counter,advanced_counter,expert_counter,master_counter,rem_master_counter
+
+
+def draw_user_total_counter(base_image:Image.Image,plate_mode,is_mai_version:bool,basic_counter,advanced_counter,expert_counter,master_counter,rem_master_counter):
+    max_level = 5 if is_mai_version else 4
+    counter_map = {
+        0:basic_counter,
+        1:advanced_counter,
+        2:expert_counter,
+        3:master_counter,
+        4:rem_master_counter,
+    }
+    if is_mai_version:
+        level_config = {
+            0:{'y':35,"color":"#6fd43d"},
+            1:{'y':62,"color":"#f8b709"},
+            2:{'y':89,"color":"#ff78a1"},
+            3:{'y':116,"color":"#9f51dc"},
+            4:{'y':143,"color":"#e4c5ff"},
+        }
+    else:
+        level_config = {
+            0:{'y':43,"color":"#6fd43d"},
+            1:{'y':70,"color":"#f8b709"},
+            2:{'y':97,"color":"#ff78a1"},
+            3:{'y':124,"color":"#9f51dc"},
+        }
+
+    status_image_map = {
+        '0-0': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/basic-total.png").convert('RGBA').resize((20,20)),
+        '0-1': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/basic-total-finished.png").convert('RGBA').resize((20,20)),
+        '1-0': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/advanced-total.png").convert('RGBA').resize((20,20)),
+        '1-1': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/advanced-total-finished.png").convert('RGBA').resize((20,20)),
+        '2-0': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/expert-total.png").convert('RGBA').resize((20,20)),
+        '2-1': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/expert-total-finished.png").convert('RGBA').resize((20,20)),
+        '3-0': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/master-total.png").convert('RGBA').resize((20,20)),
+        '3-1': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/master-total-finished.png").convert('RGBA').resize((20,20)),
+        '4-0': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/remaster-total.png").convert('RGBA').resize((20,20)),
+        '4-1': Image.open(NEW_LEVEL_STATUS_TABLE_PATH + f"/remaster-total-finished.png").convert('RGBA').resize((20,20))
+    }
+
+    base_draw = ImageDraw.Draw(base_image)
+
+    for level_index in range(max_level):
+        counter:MusicDataCounter = counter_map[level_index]
+        total_count = counter.total
+        if plate_mode == '极':
+            ok_count = counter.fc
+        if plate_mode == '将':
+            ok_count = counter.sss
+        if plate_mode == '神':
+            ok_count = counter.ap
+        if plate_mode == '舞舞':
+            ok_count = counter.fdx
+        if plate_mode == '者':
+            ok_count = counter.clear
+        
+        i = '1' if ok_count==total_count else '0'
+        status_key = f'{level_index}-{i}'
+        status_image = status_image_map[status_key]
+
+        y_point = level_config[level_index]['y']
+        base_image.paste(status_image,(1000,y_point),status_image)
+
+        outline_color = "white"
+        tempFont = ImageFont.truetype(FONT_PATH + "/FOT-RodinNTLGPro-B.otf", 21, encoding='utf-8')
+        content = str(ok_count)
+        fx,fy = tempFont.getsize(content)
+        font_color = level_config[level_index]['color']
+        x = 1055-(fx/2)
+        base_draw.text((x-2, y_point-2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x+2, y_point-2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x-2, y_point+2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x+2, y_point+2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x,y_point), content, font=tempFont, fill=font_color)
+
+
+        content = '/'
+        fx,fy = tempFont.getsize(content)
+        font_color = level_config[level_index]['color']
+        x = 1090-(fx/2)
+        base_draw.text((x-2, y_point-2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x+2, y_point-2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x-2, y_point+2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x+2, y_point+2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x,y_point), content, font=tempFont, fill=font_color)
+
+
+        content = str(total_count)
+        fx,fy = tempFont.getsize(content)
+        font_color = level_config[level_index]['color']
+        x = 1125-(fx/2)
+        base_draw.text((x-2, y_point-2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x+2, y_point-2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x-2, y_point+2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x+2, y_point+2), content, font=tempFont, fill=outline_color)
+        base_draw.text((x,y_point), content, font=tempFont, fill=font_color)
+
+    return base_image
+
+
 async def draw_user_music_info(version:str,plate_mode:str,qq:int = None,user_name:str = None):
     is_mai_version = version in '舞霸'
 
@@ -275,16 +394,25 @@ async def draw_user_music_info(version:str,plate_mode:str,qq:int = None,user_nam
 
     user_music_data = await query_user_plate_data(generate_t_music_data(version,is_mai_version),VERSION_DF_MAP[version],qq=qq,user_name=user_name)
 
-    user_plate_music_image = draw_user_music_image(full_image,default_song_list,user_music_data,is_mai_version,plate_mode)
+    full_image = draw_user_music_image(full_image,default_song_list,user_music_data,is_mai_version,plate_mode)
+
+    basic_counter,advanced_counter,expert_counter,master_counter,rem_master_counter = music_count(user_music_data)
+
+    full_image = draw_user_total_counter(full_image,plate_mode,is_mai_version,basic_counter,advanced_counter,expert_counter,master_counter,rem_master_counter)
 
 
-    return user_plate_music_image
+
+    return full_image
+
+
+
+
 
 # full_image = draw_user_music_info('舞','神',qq=381268035)
 # full_image.show()
 async def main():
     full_image = await draw_user_music_info('祝','神',qq=381268035)
-    full_image.show()
+    full_image.save('./ssss.png')
     # print(result)
 
 
