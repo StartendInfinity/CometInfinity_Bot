@@ -555,13 +555,19 @@ class MusicList(List[Music]):
         musiclist_rem = []
         if is_mai_version:
             for music in self:
+                if int(music.id) > 99999:
+                    continue
                 if int(music.id) in MAI_DELETED_MUSIC_REM:
                     musiclist_rem.append(music)
             for music in self:
+                if int(music.id) > 99999:
+                    continue
                 if int(music.id) in MAI_DELETED_MUSIC_Normal:
                     musiclist.append(music)
         else:
             for music in self:
+                if int(music.id) > 99999:
+                    continue
                 if int(music.id) in DELETED_MUSIC:
                     continue
                 if music.version in music_version:

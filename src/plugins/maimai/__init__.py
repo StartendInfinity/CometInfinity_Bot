@@ -1,10 +1,9 @@
 from nonebot import on_command, on_regex, get_driver
 from nonebot.params import CommandArg, RegexGroup, Endswith, EventMessage
 from nonebot.adapters import Event
-from nonebot.adapters.onebot.v11 import Message, MessageSegment
+from nonebot.adapters.onebot.v11 import Message, MessageSegment,GroupMessageEvent
 import requests
 from nonebot.adapters.onebot.utils import rich_unescape
-
 
 #内建模块
 import math
@@ -26,6 +25,7 @@ from .lib.mai_best_50 import mai_best50
 from .lib.mai_score import mai_score, generate_tool
 from .lib.mai_lv_score import song_data_filter, draw_mai_lv
 from .lib.plate_map import VERSION_DF_MAP, NOW_VERSION
+from .lib.mai_plate_completion import draw_user_music_info
 
 #依赖项
 from typing import Tuple, Optional
@@ -956,3 +956,24 @@ async def _():
             base64_data = base64.b64encode(image_data).decode('utf-8')
         await mai_shincourse.send(MessageSegment.image(f"base64://{base64_data}"), reply_message = True)
 #-----course-----END
+
+#-----s-plate_completion-----START
+plate_completion = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭])([極极将舞神者]舞?)完成表\s?', priority=1, block=True)
+
+@plate_completion.handle()
+async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
+    qqid = event.get_user_id()
+    if f'{match[0]}{match[1]}' == '真将':
+        await plate_completion.finish()
+    
+    version_name = match[0]
+    plate_type:str = match[1]
+    plate_type = plate_type.replace('極','极')
+
+    
+    b64Data = await draw_user_music_info(version_name,plate_type,qq=event.user_id)
+    completion_message_list = [MessageSegment.reply(event.message_id),
+                                    MessageSegment.image(f"base64://{str(image_to_base64(b64Data), encoding='utf-8')}")]
+
+    await plate_completion.finish(completion_message_list, reply_message = True)
+#-----s-plate_completion-----END
