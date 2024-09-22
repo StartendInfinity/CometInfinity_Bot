@@ -961,7 +961,7 @@ async def _():
 plate_completion = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭])([極极将舞神者]舞?)完成表\s?', priority=1, block=True)
 
 @plate_completion.handle()
-async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
+async def _(event: GroupMessageEvent, message: Message = EventMessage(), match: Tuple = RegexGroup()):
     qqid = event.get_user_id()
     if f'{match[0]}{match[1]}' == '真将':
         await plate_completion.finish()
@@ -975,5 +975,5 @@ async def _(event: Event, message: Message = EventMessage(), match: Tuple = Rege
     completion_message_list = [MessageSegment.reply(event.message_id),
                                     MessageSegment.image(f"base64://{str(image_to_base64(b64Data), encoding='utf-8')}")]
 
-    await plate_completion.finish(completion_message_list, reply_message = True)
+    await plate_completion.finish(completion_message_list)
 #-----s-plate_completion-----END
