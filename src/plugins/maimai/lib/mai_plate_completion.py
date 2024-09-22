@@ -4,7 +4,7 @@ from src.plugins.maimai.lib.music import total_list
 from src.lib.client.diving_fish_client import df_client
 from src.plugins.maimai.lib.music_data_counter import MusicDataCounter
 from pathlib import Path
-
+import os
 from src.plugins.maimai.lib.plate_map import MAIPLATE_FILE_ID_MAP, VERSION_MAP, VERSION_DF_MAP, MAI_DELETED_MUSIC_REM,MAI_DELETED_MUSIC_Normal
 from src.plugins.maimai.lib import completion_utils as utils
 import asyncio
@@ -396,6 +396,7 @@ async def draw_user_music_info(version:str,plate_mode:str,qq:int = None,user_nam
         full_image = Image.open(base_image_path).convert('RGBA')
     else:
         full_image = merge_full_image(version,is_mai_version,default_song_list)
+        os.makedirs(COMPLETION_BASE_PATH,exist_ok=True)
         full_image.save(base_image_path)
         
     # 姓名框
