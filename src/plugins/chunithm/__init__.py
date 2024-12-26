@@ -12,6 +12,7 @@ from .lib.tool import *
 from .lib.chunithm_music import *
 from .lib.image import *
 from .lib.chart import get_chunithm_chart
+from .lib.chunithm_score_list import chu_score_list
 
 import aiofiles
 import re
@@ -32,8 +33,13 @@ best_30_pic = on_command('/b30' , aliases={'chub30','chu b30','cb30'}, priority=
 
 @best_30_pic.handle()
 async def _(event: Event, message: Message = CommandArg()):
-    user_id = str(event.get_user_id()) 
-    img, success = await generate_by_df({"qq": user_id})
+    username = str(message)
+    if username:
+        img, success = await generate_by_df({"username": username})
+    
+    else:
+        user_id = str(event.get_user_id()) 
+        img, success = await generate_by_df({"qq": user_id})
     if int(success) == 400:
         await best_30_pic.send("您还未绑定水鱼，请先绑定后再获取。", reply_message = True)
     await best_30_pic.send(Message([
@@ -562,3 +568,20 @@ async def _(event: Event, message: Message = EventMessage()):
 #             })
 #         ]))
 
+#-----chu_score_list start-----
+chu_lv_score = on_regex(r"^/chu 分数列表 (.+?)(?: -p (\d+))?$", priority = 1, block = True)
+
+
+@chu_lv_score.handle()
+async def _(event: Event):
+    plain_text = event.get_plaintext()
+    matchs = re.match(r"^/chu 分数列表 (.+?)(?: -p (\d+))?$", plain_text)
+    user_level = matchs.group(1)
+    user_page = matchs.group(2) if matchs.group(2) else 1
+    if user_page == None:
+        user_page == 1
+    user_qqid = str(event.get_user_id())
+
+    b64_data = await chu_score_list(qq = user_qqid, level = user_level, page = user_page)
+    await chu_lv_score.send(MessageSegment.image(f"base64://{b64_data}"), reply_message = True)
+#-----chu_score_list end-----

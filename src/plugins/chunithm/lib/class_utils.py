@@ -33,7 +33,7 @@ class ChartInfo(object):
     @classmethod
     def from_json_by_df(cls, data):
         def check_is_ajc(achievement,comboId):
-            fc = ['', 'fullcombo', 'alljustice']
+            fc = ['', 'fullcombo', 'alljustice', 'fullchain', 'fullchain2']
             if achievement == 1010000:
                 return 3
             else:
@@ -117,7 +117,7 @@ class BestList(object):
         return self.data[index]
 
 class UserData(object):
-    def __init__(self, user_Name,rating,best_30,recent_10,namePlate="2",icon="0",titleColor="Trophy",titleContent="Chunithm Best 30",level="??"):
+    def __init__(self, user_Name,rating,best_30,recent_10,namePlate="2",icon="0",titleColor="Trophy",titleContent="Chunithm Best 30",level="70"):
         self.userName = user_Name
         self.rating = rating
         self.best_30 = best_30

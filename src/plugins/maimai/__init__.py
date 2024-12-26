@@ -648,7 +648,7 @@ async def _(event: Event, message: Message = EventMessage()):
 #-----s-score_line-----END
 
 #-----s-plate_process-----START
-plate_process = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭])([極极将舞神者]舞?)进度\s?', priority=1, block=True)
+plate_process = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭祝])([極极将舞神者]舞?)进度\s?', priority=1, block=True)
 
 @plate_process.handle()
 async def _(event: Event, message: Message = EventMessage(), match: Tuple = RegexGroup()):
@@ -958,7 +958,7 @@ async def _():
 #-----course-----END
 
 #-----s-plate_completion-----START
-plate_completion = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭])([極极将舞神者]舞?)完成表\s?', priority=1, block=True)
+plate_completion = on_regex(mai_regex + r'([真超檄橙暁晓桃櫻樱紫菫堇白雪輝辉熊華华爽煌舞霸星宙祭祝])([極极将舞神者]舞?)完成表\s?', priority=1, block=True)
 
 @plate_completion.handle()
 async def _(event: GroupMessageEvent, message: Message = EventMessage(), match: Tuple = RegexGroup()):

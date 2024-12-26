@@ -196,10 +196,10 @@ class generate_tool():
                     base = generate_tool.simple_draw(base, "./src/static/mai/b50/UI_RSL_MBase_mode_SD.png", [19, 9], [38 + index * 280 ,pic_y + 66])
                 song_name = song_info["song_name"]
                 draw_info = ImageDraw.Draw(base)
-                if draw_info.textlength(song_name, HanSans35_16) > 172.0:
+                if draw_info.textlength(song_name, HanSans35_16) > 170.0:
                     for _count_ in range(len(song_name)):
                         text_len = draw_info.textlength(song_name[0:_count_], HanSans35_16)
-                        if text_len > 178.0:
+                        if text_len > 170.0:
                             song_name = song_info["song_name"][0:_count_ - 2] + "..."
                             break
                         count+=1
